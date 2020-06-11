@@ -1,0 +1,1 @@
+docker run --net snowpack_scrapenetwork -it --entrypoint /bin/bash snowpack_scraper -s
