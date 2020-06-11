@@ -1,17 +1,25 @@
 package org.mddarr.dakobedsnotel.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.mddarr.dakobedsnotel.writing.entity.Page;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
+import java.util.concurrent.Flow;
 
 @Entity
 @Table(name = "locations" )
-public class Location {
+public class Location implements Serializable {
     @Id
     private Integer location_id;
     private String location_name;
     private Integer elevation;
     private Integer region_id;
+
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<FlowData> flowData;
+
 
     public Integer getLocation_id() {
         return location_id;

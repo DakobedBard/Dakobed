@@ -31,3 +31,7 @@ spring:
     #    password: ${DAKOBED_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false

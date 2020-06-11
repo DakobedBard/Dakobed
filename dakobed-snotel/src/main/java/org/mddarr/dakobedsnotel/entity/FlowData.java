@@ -3,12 +3,13 @@ package org.mddarr.dakobedsnotel.entity;
 import org.mddarr.dakobedsnotel.writing.entity.Book;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 
 @Entity
 @Table(name = "snowpack")
-public class FlowData {
+public class FlowData implements Serializable {
     @Id
     Integer id;
 
@@ -37,6 +38,10 @@ public class FlowData {
         this.water_avg = water_avg;
         this.water_pct_avg = water_pct_avg;
         this.location = location;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public FlowData(){}
