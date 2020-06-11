@@ -9,7 +9,6 @@
       </v-toolbar>
     </div>
 
-      
       <v-toolbar flat dark class="py-0 mt">
         
         <v-app-bar-nav-icon class ="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -19,14 +18,14 @@
           </v-toolbar-title>
           <v-spacer></v-spacer>
       <v-toolbar-items class = "hidden-xs-only">
-      <v-btn  v-for="item in menuItems" :key="item.title" @click="selectRoute(item.route)" class ="grey--text" >
-
+        <v-btn  v-for="item in menuItems" :key="item.title" @click="selectRoute(item.route)" class ="grey--text" >
         <!-- <v-btn  v-for="item in menuItems" :key="item.title" :to= "item.route" class ="grey--text" > -->
           <v-icon left >
           </v-icon>
           {{item.title}}
         </v-btn>
       </v-toolbar-items>
+      
       <v-spacer></v-spacer>
       </v-toolbar>
     </nav>
@@ -50,6 +49,12 @@ export default {
   data(){
     return {
         drawer: false,
+              items: [
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me' },
+        { title: 'Click Me 2' },
+      ],
         menuItems:[
           {title:'Trip Reports', icon:'image-filter-hdr', route:'/landing/' },
           {title:'Gallery', icon:'image-filter-hdr', route:'/gallery/' }, 
