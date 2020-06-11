@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface SnotelRepository extends CrudRepository<FlowData, Integer> {
-//    List<FlowData> findByReport(Report report);
+    List<FlowData> findByLocation(Location location);
 }
