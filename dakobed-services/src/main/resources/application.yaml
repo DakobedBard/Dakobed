@@ -1,6 +1,7 @@
 server:
-  port: 8086
-
+  port: 8081
+var:
+  dumb: ${MYENV}
 
 spring:
   application:
@@ -21,13 +22,13 @@ spring:
       ddl-auto: update
   datasource:
     platform: postgres
-    #    url: jdbc:postgresql://localhost:5432/dakobedDB
+    url: jdbc:postgresql://localhost:5432/dakobedDB
+    password: postgres
 #    url: jdbc:postgresql://${DAKOBED}:5432/dakobed
     username: postgres
-    password: postgres
-    url: jdbc:postgresql://localhost:5432/dakobedDB
-#    url: jdbc:postgresql://${DAKOBED}:5432/dakobed
-    #    username: postgres
-    #    password: ${DAKOBED_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+#    password: ${DAKOBED_PASSWORD}
 
+#    url: jdbc:postgresql://${DAKOBED}:5432/dakobed
+#    username: postgres
+#    password: ${DAKOBED_PASSWORD}
+    driver-class-name: org.postgresql.Driver
