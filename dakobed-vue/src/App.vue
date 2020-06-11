@@ -1,60 +1,90 @@
+/*eslint no-unused-vars: "error"*/
+
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+    <nav>
+    <div>
+      <v-toolbar dark prominent  height="340px" src="https://dakobed.s3-us-west-1.amazonaws.com/panorama.jpg">
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      </v-toolbar>
+    </div>
 
+      
+      <v-toolbar flat dark class="py-0 mt">
+        
+        <v-app-bar-nav-icon class ="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-toolbar-title class="grey--text">
+            <span class="font-weight-light">Mathias</span>
+            <span>PORTFOLIO</span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+      <v-toolbar-items class = "hidden-xs-only">
+      <v-btn  v-for="item in menuItems" :key="item.title" @click="selectRoute(item.route)" class ="grey--text" >
+
+        <!-- <v-btn  v-for="item in menuItems" :key="item.title" :to= "item.route" class ="grey--text" > -->
+          <v-icon left >
+          </v-icon>
+          {{item.title}}
+        </v-btn>
+      </v-toolbar-items>
       <v-spacer></v-spacer>
+      </v-toolbar>
+    </nav>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+    <router-view></router-view>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+
+import { mapGetters, mapActions } from "vuex";
+import router from './router'
+
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    
   },
+  data(){
+    return {
+        drawer: false,
+        menuItems:[
+          {title:'Trip Reports', icon:'image-filter-hdr', route:'/landing/' },
+          {title:'Gallery', icon:'image-filter-hdr', route:'/gallery/' }, 
+          {title:'Data Pipelines', icon:'image-filter-hdr', route:'/pipelines/' }, 
+          {title:'Authentication', icon:'image-filter-hdr', route:'/authentication/' }, 
+          {title:'Locations', icon:'image-filter-hdr', route:'/locations/' }, 
+        ],
 
-  data: () => ({
-    //
-  }),
+        color: 'primary',
+        colors: [
+          'primary',
+          'blue',
+          'success',
+          'red',
+          'teal',
+        ],
+        right: false,
+        permanent: false,
+        miniVariant: false,
+        expandOnHover: false,
+        background: false,
+      }
+    },
+    methods: {
+      ...mapActions(["setSelection"]),
+      selectRoute(route){ // eslint-disable-line no-unused-vars
+        this.setSelection("landing")
+        router.push(route).catch(err => err)
+      }
+
+    },
+    computed: {
+    ...mapGetters(["allReports"]),
+    ...mapGetters(["reportSelection"]),
+    // mixins:[tripsMixin]
+    }
 };
 </script>
