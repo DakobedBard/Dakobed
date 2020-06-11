@@ -20,6 +20,6 @@ RUN pip install --upgrade pip
 COPY ./runscript.py /usr/src/app/runscript.py
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
-COPY snowpack /usr/src/app/snowpack
+COPY snotel /usr/src/app/snowpack
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
