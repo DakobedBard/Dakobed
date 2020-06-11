@@ -2,7 +2,7 @@ version: '2'
 services:
 
   scraper:
-    build: snowpack/
+    build: pipelines/snowpack/
     container_name: scraper
     depends_on:
       - postgres
