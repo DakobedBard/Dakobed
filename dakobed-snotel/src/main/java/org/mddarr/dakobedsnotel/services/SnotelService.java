@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Flow;
 
 @Service
 public class SnotelService {
@@ -22,6 +24,20 @@ public class SnotelService {
 
     @Autowired
     LocationRepository locationRepository;
+
+
+
+
+
+    public List<FlowData> getFlowDataLocationBetweenDates(Integer id, Date start, Date end) {
+        Optional<Location> location = locationRepository.findById(id);
+        if (location.isPresent()) {
+            return snotelRepository.findByLocationBetweenDates(location.get().getLocation_id()); //, start, end);
+        }
+        List<FlowData> flowData = new ArrayList<>();
+        return flowData;
+    }
+
 
     public List<FlowData> getFlowDataLocation(Integer id) {
         Optional<Location> location = locationRepository.findById(id);
