@@ -61,6 +61,7 @@ export default {
           {title:'Data Pipelines', icon:'image-filter-hdr', route:'/pipelines/' }, 
           {title:'Authentication', icon:'image-filter-hdr', route:'/authentication/' }, 
           {title:'Locations', icon:'image-filter-hdr', route:'/locations/' }, 
+                    {title:'Series', icon:'image-filter-hdr', route:'/series/' }, 
         ],
 
         color: 'primary',

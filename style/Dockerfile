@@ -1,11 +1,19 @@
 FROM  tensorflow/tensorflow:latest-gpu-jupyter
 
-COPY tftest.py tftest.py
-COPY img/style.jpg style.jpg
-COPY img/sword2.jpg sword2.jpg
 RUN mkdir results
 RUN pip install keras
 RUN pip install Pillow
-RUN python3 tftest.py  sword2.jpg    style.jpg results/my_result
+RUN pip install awscli
+RUN pip install --upgrade boto3
+RUN apt-get -qq update && apt-get install -y build-essential \
+    libssl-dev groff \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY
+COPY tftest.py tftest.py
+COPY img/style.jpg img/style.jpg
+COPY img/sword2.jpg img/sword2.jpg
+COPY uploadS3.py uploadS3.py
+
+#RUN python3 tftest.py  sword2.jpg    style.jpg results/my_result
+#RUN pip install -r requirements.txt
+#RUN python3 copy.py

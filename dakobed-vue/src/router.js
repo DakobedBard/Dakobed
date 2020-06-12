@@ -9,6 +9,7 @@ import GalleryMenu from './components/gallery/GalleryMenu'
 import Authentication from './components/auth/Authentication'
 import locations from './components/pipelines/snotel/locations'
 import LocationDetail from './components/pipelines/snotel/LocationDetail'
+import Series from './components/pipelines/snotel/Series'
 
 Vue.use(Router)
 
@@ -50,8 +51,14 @@ export default new Router({
         name:'location_detail',
         component: LocationDetail,
         props: true
-      }
+      },
 
+
+      {
+        path:'/series',
+        name:'series',
+        component: Series
+      },
       
 
   ]
