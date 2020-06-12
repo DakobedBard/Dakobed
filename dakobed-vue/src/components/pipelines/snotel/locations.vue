@@ -18,6 +18,7 @@
       :headers="headers"
       :items="locations"
       :search="search"
+      @click:row="locationClick"
     >
     
     <template v-slot:default>
@@ -29,7 +30,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="location in locations" :key="location.location_id">
+        <tr v-for="location in locations" :key="location.location_id"  @click="showAlert(props.item)" >
           <td>{{ location.location_name }}</td>
           <td> {{ location.elevation  }} </td>
           <td> Wenatchee </td>
@@ -46,6 +47,7 @@ export default {
   name: 'LocationsList',
   created(){
     this.locationRequest()
+     console.log("Clicked on the location " )
   },
 
   data: function() {
@@ -93,6 +95,14 @@ export default {
 	}
     ,
   methods: {
+        showAlert(a){
+      if (event.target.classList.contains('btn__content')) return;
+      alert('Alert! \n' + a.name);
+    },
+
+      locationClick(location){
+        console.log("Clicked on the location " + location.location_id)
+      },
         locationRequest: function(){
           axios.get('http://localhost:8086/data/location/')
                 .then(response => {this.locations = response.data})
