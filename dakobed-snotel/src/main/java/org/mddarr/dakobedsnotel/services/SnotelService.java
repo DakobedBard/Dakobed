@@ -32,7 +32,7 @@ public class SnotelService {
     public List<FlowData> getFlowDataLocationBetweenDates(Integer id, Date start, Date end) {
         Optional<Location> location = locationRepository.findById(id);
         if (location.isPresent()) {
-            return snotelRepository.findByLocationBetweenDates(location.get().getLocation_id()); //, start, end);
+            return snotelRepository.findByLocationBetweenDates(location.get().getLocation_id(), start, end);
         }
         List<FlowData> flowData = new ArrayList<>();
         return flowData;

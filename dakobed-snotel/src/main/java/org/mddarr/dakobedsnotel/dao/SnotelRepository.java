@@ -13,7 +13,7 @@ import java.util.List;
 public interface SnotelRepository extends JpaRepository<FlowData, Integer> {
     List<FlowData> findByLocation(Location location);
 
-    @Query(value = "SELECT * FROM snowpack u WHERE u.location_id = :location_id", nativeQuery = true) //  and u.date between :sdate and :edate")
-    List<FlowData> findByLocationBetweenDates(Integer location_id); // ,@Param("sdate") Date sdate, @Param("edate") Date edate);
+    @Query(value = "SELECT * FROM snowpack u WHERE u.location_id = :location_id and date between :sdate and :edate" , nativeQuery = true) //  and u.date between :sdate and :edate")
+    List<FlowData> findByLocationBetweenDates(Integer location_id, Date sdate, Date edate);
 
 }
