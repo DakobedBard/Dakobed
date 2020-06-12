@@ -8,8 +8,10 @@ import GalleryMenu from './components/gallery/GalleryMenu'
 // import Report from './components/report';
 import Authentication from './components/auth/Authentication'
 import locations from './components/pipelines/snotel/locations'
+import LocationDetail from './components/pipelines/snotel/LocationDetail'
 
 Vue.use(Router)
+
 
 export default new Router({
   mode:'history',
@@ -44,6 +46,12 @@ export default new Router({
         name:'locations',
         component: locations
       },
+      { path: '/location/:id', 
+        name:'location_detail',
+        component: LocationDetail,
+        props: true
+      }
+
       
 
   ]

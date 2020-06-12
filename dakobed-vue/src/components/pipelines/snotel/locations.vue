@@ -43,11 +43,12 @@
 </template>
 <script>
 import axios from 'axios'
+import router from '../../../router'
 export default {
   name: 'LocationsList',
   created(){
     this.locationRequest()
-     console.log("Clicked on the location " )
+
   },
 
   data: function() {
@@ -95,13 +96,12 @@ export default {
 	}
     ,
   methods: {
-        showAlert(a){
-      if (event.target.classList.contains('btn__content')) return;
-      alert('Alert! \n' + a.name);
-    },
 
       locationClick(location){
         console.log("Clicked on the location " + location.location_id)
+        const id = location.location_id
+        const name = location.location_name
+        router.push({ name: 'location_detail', params: { id:id, location_name: name } })
       },
         locationRequest: function(){
           axios.get('http://localhost:8086/data/location/')
