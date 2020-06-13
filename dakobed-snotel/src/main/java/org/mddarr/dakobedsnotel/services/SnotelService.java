@@ -5,8 +5,11 @@ import org.mddarr.dakobedsnotel.dao.LocationRepository;
 import org.mddarr.dakobedsnotel.dao.SnotelRepository;
 import org.mddarr.dakobedsnotel.entity.FlowData;
 import org.mddarr.dakobedsnotel.entity.Location;
+import org.mddarr.dakobedsnotel.entity.Series;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.text.html.Option;
@@ -24,9 +27,6 @@ public class SnotelService {
 
     @Autowired
     LocationRepository locationRepository;
-
-
-
 
 
     public List<FlowData> getFlowDataLocationBetweenDates(Integer id, Date start, Date end) {

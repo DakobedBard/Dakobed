@@ -14,9 +14,15 @@ logger.addHandler(handler)
 # Emit a log! :)
 logger.debug("Example message!")
 
-
-
 client = boto3.resource('s3')
 s3 = boto3.resource('s3')
+
+s3_client = boto3.client('s3')
+# s3.download_file('dakobed', 'OBJECT_NAME', 'FILE_NAME')
+s3_client.download_file('dakobed', 'mddarr/sunrise_style.jpg/', 'style.jpg')# s3.meta.client.upload_file(Filename='./img/sword2.jpg', Bucket='dakobed', Key='sword2.jpg')
+# print("whatt")
+
+
 s3.meta.client.upload_file(Filename='./img/sword2.jpg', Bucket='dakobed', Key='sword2.jpg')
-print("whatt")
+
+

@@ -37,6 +37,7 @@ services:
         build: .
         depends_on:
             - ecs-local-endpoints
+        command: python3 uploadS3.py
         networks:
             credentials_network:
                 ipv4_address: "169.254.170.3"
