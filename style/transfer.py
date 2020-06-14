@@ -2,6 +2,8 @@ import os
 
 # files = os.listdir('./transfer')
 
+target_dir = os.getenv('style_dir')
+
 files = os.listdir('./transfer/')
 filenames = [file.split('.')[0] for file in files]
 
@@ -30,7 +32,7 @@ parser = argparse.ArgumentParser(description='Neural style transfer with Keras.'
 #                     help='Path to the style reference image.')
 # parser.add_argument('result_prefix', metavar='res_prefix', type=str,
 #                     help='Prefix for the saved results.',  default='results/',required=False)
-parser.add_argument('--iter', type=int, default=5, required=False,
+parser.add_argument('--iter', type=int, default=1, required=False,
                     help='Number of iterations to run.')
 parser.add_argument('--content_weight', type=float, default=0.025, required=False,
                     help='Content weight.')
@@ -266,4 +268,4 @@ result_files.sort()
 final_image = result_files[-1]
 
 s3 = boto3.resource('s3')
-s3.meta.client.upload_file(Filename='./results/' + final_image, Bucket='dakobed', Key='result.png')
+s3.meta.client.upload_file(Filename='./results/' + final_image, Bucket='dakobed', Key=target_dir+ 'result.png')

@@ -35,3 +35,13 @@ def handler(event,context):
     })
   return str(response)
 
+
+ECR COMMANDS 
+
+aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 710339184759.dkr.ecr.us-west-2.amazonaws.com
+
+docker build -t dakobed-style .
+
+docker tag dakobed-style:latest 710339184759.dkr.ecr.us-west-2.amazonaws.com/dakobed-style:latest
+
+docker push 710339184759.dkr.ecr.us-west-2.amazonaws.com/dakobed-style:latest

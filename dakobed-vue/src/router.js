@@ -10,7 +10,7 @@ import Authentication from './components/auth/Authentication'
 import locations from './components/pipelines/snotel/locations'
 import LocationDetail from './components/pipelines/snotel/LocationDetail'
 import Series from './components/pipelines/snotel/Series'
-
+import TabsLanding from './components/tabs/TabsLanding'
 Vue.use(Router)
 
 
@@ -58,6 +58,13 @@ export default new Router({
         path:'/series',
         name:'series',
         component: Series
+      },
+      
+
+      {
+        path:'/tabs',
+        name:'tabs',
+        component: TabsLanding
       },
       
 

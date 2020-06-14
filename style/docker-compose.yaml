@@ -44,3 +44,4 @@ services:
         environment:
           AWS_DEFAULT_REGION: "us-east-2"
           AWS_CONTAINER_CREDENTIALS_RELATIVE_URI: "/creds"
+          style_dir: 'env'
