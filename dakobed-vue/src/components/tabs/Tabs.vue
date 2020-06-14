@@ -1,0 +1,61 @@
+<template>
+    
+    <v-container>
+      <v-layout>
+        <v-flex>
+
+            <div id="boo">
+            </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+
+    
+</template>
+
+<script>
+import Vex from 'vexflow';
+export default {
+    mounted(){
+        const VF = Vex.Flow;
+        var div = document.getElementById("boo")
+        var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+
+        // Size our SVG:
+        renderer.resize(500, 500);
+
+        // And get a drawing context:
+        var context = renderer.getContext();
+        // Create a stave at position 10, 40 of width 400 on the canvas.
+
+        // Add a clef and time signature.
+        var stave = new VF.TabStave(10, 40, 400);
+        stave.addClef("tab").setContext(context).draw();
+    
+    
+        var notes = [
+        // A single note
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
+
+        // A chord with the note on the 3rd string bent
+        new VF.TabNote({
+            positions: [{str: 2, fret: 10},
+                        {str: 3, fret: 9}],
+            duration: "q"}).
+        addModifier(new VF.Bend("Full"), 1),
+
+        // A single note with a harsh vibrato
+        new VF.TabNote({
+            positions: [{str: 2, fret: 5}],
+            duration: "h"}).
+        addModifier(new VF.Vibrato().setHarsh(true).setVibratoWidth(70), 0)
+        ];
+
+        VF.Formatter.FormatAndDraw(context, stave, notes);
+            
+    }
+}
+</script>

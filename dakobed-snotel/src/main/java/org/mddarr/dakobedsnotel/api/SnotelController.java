@@ -1,6 +1,7 @@
 package org.mddarr.dakobedsnotel.api;
 
 import org.mddarr.dakobedsnotel.entity.FlowData;
+import org.mddarr.dakobedsnotel.entity.Series;
 import org.mddarr.dakobedsnotel.services.SnotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,5 +32,17 @@ public class SnotelController {
                                                    @RequestParam("edate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date edate){
         return snotelService.getFlowDataLocationBetweenDates(id, sdate, edate);
     }
+
+
+//
+//    @GetMapping(value="series")
+//    Series getSeries(@RequestParam("id") Integer locationid, @RequestParam("sdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date sdate,
+//                                           @RequestParam("edate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date edate){
+//
+//        System.out.println("dfdf");
+//    }
+//
+
+
 
 }
