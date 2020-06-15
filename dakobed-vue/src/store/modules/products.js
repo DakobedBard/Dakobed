@@ -6,7 +6,7 @@ const state = {
 };
 
 const getters = {
-  allProducts: state => state.loadedReports,
+  allProducts: state => state.loadedProducts,
 
 };
 
@@ -14,7 +14,7 @@ const actions = {
 
   async fetchProducts({ commit }) {
     const response = await axios.get('http://localhost:8085/products/');
-    commit('setReports', response.data);
+    commit('setProducts', response.data);
   },
 
   };

@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,10 @@ import java.util.Optional;
 @SpringBootApplication
 public class DakobedProductServiceApplication implements CommandLineRunner {
 
-
+	public Boolean isEmpty(AmazonDynamoDB database, String tableName)  {
+		ScanRequest scanRequest = new ScanRequest().withTableName(tableName).withLimit(1);
+		return database.scan(scanRequest).getScannedCount() ==0;
+	}
 	private DynamoDBMapper dynamoDBMapper;
 
 	private static final Logger logger = LogManager.getLogger(DakobedProductServiceApplication.class);
@@ -47,68 +51,68 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 
 		TableUtils.createTableIfNotExists(amazonDynamoDB, tableRequest);
 
-		ProductDocument product = new ProductDocument();
-		product.setProductName("Aether Pro 70");
-		product.setProductDescription("Medium size trecking pack");
-		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aetherpro70.jpg");
-		product = productRepository.save(product);
-		logger.info("Saved product object: " + new Gson().toJson(product));
+		if(isEmpty(amazonDynamoDB, "dakobed-products")){
+			ProductDocument product = new ProductDocument();
+			product.setProductName("Aether Pro 70");
+			product.setProductDescription("Medium size trecking pack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aetherpro70.jpg");
+			product = productRepository.save(product);
+			logger.info("Saved product object: " + new Gson().toJson(product));
+
+			product = new ProductDocument();
+			product.setProductName("Archeon 45");
+			product.setProductDescription("Small trecking pack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon45.jpg");
+			product = productRepository.save(product);
+			logger.info("Saved product object: " + new Gson().toJson(product));
+
+			product = new ProductDocument();
+			product.setProductName("Archeon 70");
+			product.setProductDescription("Medium size trecking pack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon70.jpg");
+			product = productRepository.save(product);
+			logger.info("Saved product object: " + new Gson().toJson(product));
 
 
-		product = new ProductDocument();
-		product.setProductName("Archeon 45");
-		product.setProductDescription("Small trecking pack");
-		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon45.jpg");
-		product = productRepository.save(product);
-		logger.info("Saved product object: " + new Gson().toJson(product));
+			product = new ProductDocument();
+			product.setProductName("Atmos 50");
+			product.setProductDescription("Small backpack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmos50.jpg");
+			product = productRepository.save(product);
+			logger.info("Saved product object: " + new Gson().toJson(product));
 
+			product = new ProductDocument();
+			product.setProductName("Atmos 65");
+			product.setProductDescription("Medium size trecking pack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmos65.jpg");
+			product = productRepository.save(product);
+			logger.info("Saved product object: " + new Gson().toJson(product));
+			
+			product = new ProductDocument();
+			product.setProductName("Aura 50");
+			product.setProductDescription("Small backpack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aura50.jpg");
+			product = productRepository.save(product);
+			logger.info("Saved product object: " + new Gson().toJson(product));
+		}
 
+//
+//
 
-		product = new ProductDocument();
-		product.setProductName("Archeon 70");
-		product.setProductDescription("Medium size trecking pack");
-		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon70.jpg");
-		product = productRepository.save(product);
-		logger.info("Saved product object: " + new Gson().toJson(product));
+//
+//
+//
+//
+//		product = new ProductDocument();
+//		product.setProductName("Rook 50");
+//		product.setProductDescription("beginners trecking pack");
+//		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/rook50.jpg");
+//		product = productRepository.save(product);
 
-
-		product = new ProductDocument();
-		product.setProductName("Atmos 50");
-		product.setProductDescription("Small backpack");
-		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmos50.jpg");
-		product = productRepository.save(product);
-		logger.info("Saved product object: " + new Gson().toJson(product));
-
-
-
-		product = new ProductDocument();
-		product.setProductName("Atmost 65");
-		product.setProductDescription("Medium size trecking pack");
-		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmost65.jpg");
-		product = productRepository.save(product);
-		logger.info("Saved product object: " + new Gson().toJson(product));
-
-
-		product = new ProductDocument();
-		product.setProductName("Aura 50");
-		product.setProductDescription("Small backpack");
-		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aura50.jpg");
-		product = productRepository.save(product);
-		logger.info("Saved product object: " + new Gson().toJson(product));
-
-
-
-
-		product = new ProductDocument();
-		product.setProductName("Rook 50");
-		product.setProductDescription("beginners trecking pack");
-		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/rook50.jpg");
-		product = productRepository.save(product);
-
-		logger.info("Saved product object: " + new Gson().toJson(product));
-
-
-		String awsServiceId = product.getId();
+//		logger.info("Saved product object: " + new Gson().toJson(product));
+//
+//
+//		String awsServiceId = product.getId();
 
 
 
