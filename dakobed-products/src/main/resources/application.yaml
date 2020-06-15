@@ -1,5 +1,11 @@
 server:
-  port: 8040
+  port: 8084
+
+amazon.dynamodb.endpoint:
+  http://localhost:8000/
+amazon.aws.accessKey:
+
+amazon.aws.secretKey:
 
 
 spring:
@@ -19,4 +25,5 @@ spring:
     password: postgres
     url: jdbc:postgresql://localhost:5432/dakobedDB
     driver-class-name: org.postgresql.Driver
+
 
