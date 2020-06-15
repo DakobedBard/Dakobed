@@ -3,29 +3,28 @@
     
     <v-layout row wrap>
         <v-flex md6>
-          <v-card dark tile flat color="error">
-            <v-card-text>#1</v-card-text>
+            
+          <v-card tile flat @click="productClick()">
+            <v-card-text @click="productClick()">
+                <h2><router-link tag="span" :to="'/tabs'">{{productName}}</router-link></h2>
+            </v-card-text>
+            <v-img :src="imageURL" height="200px" width="120" @click="productClick()"></v-img>
           </v-card>
         </v-flex>
         <v-flex md6>
-          <v-card dark tile flat color="pink darken-4">
-            <v-card-text>#2</v-card-text>
+          <v-card tile flat >
+            <v-card-text> $ {{ productPrice }}</v-card-text>
           </v-card>
         </v-flex>
       </v-layout> 
 
-
-    <v-card >
-        <v-card-title>
-            {{ productName }}
-        </v-card-title>
-      <v-img :src="imageURL" height="200px" width="100"></v-img>
-        
-     </v-card>
-  
+    <router-view></router-view>
   </div>
 </template>
 <script>
+
+
+
 export default {
     props:{
         productID:String,
@@ -33,5 +32,15 @@ export default {
         productName: String,
         productPrice: Number
     },
+    methods:{
+        productClick(){
+            console.log("I get clicked")
+        }
+    }
 }
 </script>
+<style scoped>
+li a {
+    text-decoration: none;
+}
+</style>

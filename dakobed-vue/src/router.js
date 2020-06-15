@@ -13,6 +13,9 @@ import Series from './components/pipelines/snotel/Series'
 import TabsLanding from './components/tabs/TabsLanding'
 import Products from './components/Products'
 import Store from './components/store/Store'
+
+import ProductDetail from './components/store/ProductDetail'
+
 Vue.use(Router)
 
 
@@ -80,7 +83,14 @@ export default new Router({
         path:'/produts',
         name:'products',
         component: Products
+      },
+      
+      { path: '/product/:id',
+         component: ProductDetail 
       }
+
+
+      
       
 
   ]
