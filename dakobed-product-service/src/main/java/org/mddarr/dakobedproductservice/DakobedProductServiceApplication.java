@@ -48,29 +48,80 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 		TableUtils.createTableIfNotExists(amazonDynamoDB, tableRequest);
 
 		ProductDocument product = new ProductDocument();
+		product.setProductName("Aether Pro 70");
+		product.setProductDescription("Medium size trecking pack");
+		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aetherpro70.jpg");
+		product = productRepository.save(product);
+		logger.info("Saved product object: " + new Gson().toJson(product));
 
-		product.setProductName("Dakobed Product");
-		product.setProductDescription("Stringy piece of shit");
 
+		product = new ProductDocument();
+		product.setProductName("Archeon 45");
+		product.setProductDescription("Small trecking pack");
+		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon45.jpg");
+		product = productRepository.save(product);
+		logger.info("Saved product object: " + new Gson().toJson(product));
+
+
+
+		product = new ProductDocument();
+		product.setProductName("Archeon 70");
+		product.setProductDescription("Medium size trecking pack");
+		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon70.jpg");
+		product = productRepository.save(product);
+		logger.info("Saved product object: " + new Gson().toJson(product));
+
+
+		product = new ProductDocument();
+		product.setProductName("Atmos 50");
+		product.setProductDescription("Small backpack");
+		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmos50.jpg");
+		product = productRepository.save(product);
+		logger.info("Saved product object: " + new Gson().toJson(product));
+
+
+
+		product = new ProductDocument();
+		product.setProductName("Atmost 65");
+		product.setProductDescription("Medium size trecking pack");
+		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmost65.jpg");
+		product = productRepository.save(product);
+		logger.info("Saved product object: " + new Gson().toJson(product));
+
+
+		product = new ProductDocument();
+		product.setProductName("Aura 50");
+		product.setProductDescription("Small backpack");
+		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aura50.jpg");
+		product = productRepository.save(product);
+		logger.info("Saved product object: " + new Gson().toJson(product));
+
+
+
+
+		product = new ProductDocument();
+		product.setProductName("Rook 50");
+		product.setProductDescription("beginners trecking pack");
+		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/rook50.jpg");
 		product = productRepository.save(product);
 
-		logger.info("Saved AwsService object: " + new Gson().toJson(product));
+		logger.info("Saved product object: " + new Gson().toJson(product));
+
 
 		String awsServiceId = product.getId();
 
-		logger.info("AWS Service ID: " + awsServiceId);
 
-		Optional<ProductDocument> awsServiceQueried = productRepository.findById(awsServiceId);
 
-		if (awsServiceQueried.get() != null) {
-			logger.info("Queried object: " + new Gson().toJson(awsServiceQueried.get()));
-		}
 
-		Iterable<ProductDocument> awsServices = productRepository.findAll();
-
-		for (ProductDocument awsServiceObject : awsServices) {
-			logger.info("List object: " + new Gson().toJson(awsServiceObject));
-		}
+//		logger.info("AWS Service ID: " + awsServiceId);
+//		Optional<ProductDocument> awsServiceQueried = productRepository.findById(awsServiceId);
+//		if (awsServiceQueried.get() != null) {
+//			logger.info("Queried object: " + new Gson().toJson(awsServiceQueried.get()));
+//		}
+//		Iterable<ProductDocument> awsServices = productRepository.findAll();
+//		for (ProductDocument awsServiceObject : awsServices) {
+//			logger.info("List object: " + new Gson().toJson(awsServiceObject));
+//		}
 	}
 
 }
