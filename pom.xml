@@ -19,6 +19,8 @@
     <modules>
         <module> dakobed-orders</module>
         <module> dakobed-products </module>
+        <module> dakobed-product-service</module>
+        <module>dakobed-schema</module>
 <!--        <module> dakobed-schema</module>-->
 <!--        <module>dakobed-reports</module>-->
 <!--        <module>dakobed-services</module>-->
