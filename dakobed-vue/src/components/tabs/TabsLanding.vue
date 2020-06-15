@@ -10,7 +10,7 @@
         </v-flex>
         <v-flex md3>
 
-        <v-card flat class="mx-auto" max-width="400">
+        <v-card dark flat class="mx-auto" max-width="400">
           <v-list :flat="flat"> <v-list-item-group  v-model="model" :multiple="multiple" :mandatory="mandatory "
             color="grey">
             <v-list-item v-for="item in menuItems" :key="item.title"  @click="selectMenuItem(item.selection)">

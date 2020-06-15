@@ -4,6 +4,7 @@ import todos from './modules/todos';
 import reports from './modules/reports';
 import gallery from './modules/gallery'
 import auth from './modules/auth'
+import products from './modules/products'
 // Load Vuex
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
     todos,
     reports,
     gallery,
-    auth
+    auth,
+    products
   }
 });

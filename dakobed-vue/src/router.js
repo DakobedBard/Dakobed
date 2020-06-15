@@ -11,6 +11,8 @@ import locations from './components/pipelines/snotel/locations'
 import LocationDetail from './components/pipelines/snotel/LocationDetail'
 import Series from './components/pipelines/snotel/Series'
 import TabsLanding from './components/tabs/TabsLanding'
+import Products from './components/Products'
+import Store from './components/store/Store'
 Vue.use(Router)
 
 
@@ -66,6 +68,19 @@ export default new Router({
         name:'tabs',
         component: TabsLanding
       },
+
+      {
+        path:'/store',
+        name:'store',
+        component: Store
+      },
+
+
+      {
+        path:'/produts',
+        name:'products',
+        component: Products
+      }
       
 
   ]
