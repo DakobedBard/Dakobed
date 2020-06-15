@@ -17,9 +17,15 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>dakobed-reports</module>
-        <module>dakobed-services</module>
-        <module>dakobed-snotel</module>
+        <module> dakobed-orders</module>
+        <module> dakobed-products </module>
+<!--        <module> dakobed-schema</module>-->
+<!--        <module>dakobed-reports</module>-->
+<!--        <module>dakobed-services</module>-->
+<!--        <module>dakobed-snotel</module>-->
+<!--        <module>dakobed-twitter-service</module>-->
+<!--        <module>dakobed-twitter-producer</module>-->
+
     </modules>
     <dependencies>
         <dependency>
@@ -27,6 +33,7 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.5.2</version>
         </dependency>
+
     </dependencies>
     <repositories>
         <repository>
