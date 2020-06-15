@@ -12,6 +12,7 @@ public class ProductDocument {
     private String productName;
     private String productDescription;
     private String imageURL;
+    private Double price;
 
     public ProductDocument(){}
     public ProductDocument(String productName, String productDescription, String imageURL) {
@@ -54,5 +55,14 @@ public class ProductDocument {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+
+    @DynamoDBAttribute
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

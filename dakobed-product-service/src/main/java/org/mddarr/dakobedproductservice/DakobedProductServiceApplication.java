@@ -56,6 +56,7 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 			product.setProductName("Aether Pro 70");
 			product.setProductDescription("Medium size trecking pack");
 			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aetherpro70.jpg");
+			product.setPrice(220.00);
 			product = productRepository.save(product);
 			logger.info("Saved product object: " + new Gson().toJson(product));
 
@@ -63,6 +64,7 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 			product.setProductName("Archeon 45");
 			product.setProductDescription("Small trecking pack");
 			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon45.jpg");
+			product.setPrice(190.00);
 			product = productRepository.save(product);
 			logger.info("Saved product object: " + new Gson().toJson(product));
 
@@ -70,6 +72,8 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 			product.setProductName("Archeon 70");
 			product.setProductDescription("Medium size trecking pack");
 			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon70.jpg");
+			product.setPrice(210.00);
+
 			product = productRepository.save(product);
 			logger.info("Saved product object: " + new Gson().toJson(product));
 
@@ -78,6 +82,7 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 			product.setProductName("Atmos 50");
 			product.setProductDescription("Small backpack");
 			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmos50.jpg");
+			product.setPrice(190.00);
 			product = productRepository.save(product);
 			logger.info("Saved product object: " + new Gson().toJson(product));
 
@@ -85,13 +90,40 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 			product.setProductName("Atmos 65");
 			product.setProductDescription("Medium size trecking pack");
 			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmos65.jpg");
+			product.setPrice(170.00);
+
 			product = productRepository.save(product);
 			logger.info("Saved product object: " + new Gson().toJson(product));
-			
+
 			product = new ProductDocument();
 			product.setProductName("Aura 50");
 			product.setProductDescription("Small backpack");
 			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/aura50.jpg");
+			product.setPrice(184.00);
+			product = productRepository.save(product);
+
+
+			product = new ProductDocument();
+			product.setProductName("Ariel AG 55");
+			product.setProductDescription("Medium size backpack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/ariel55.jpg");
+			product.setPrice(290.00);
+			product = productRepository.save(product);
+
+			product = new ProductDocument();
+			product.setProductName("Ariel 75");
+			product.setProductDescription("Medium size backpack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/ariel75.jpg");
+			product.setPrice(290.00);
+			product = productRepository.save(product);
+
+			product = new ProductDocument();
+			product.setProductName("Ariel Pro 65");
+			product.setProductDescription("Deluxe size backpack");
+			product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/arielpro65.jpg");
+			product.setPrice(375.00);
+
+
 			product = productRepository.save(product);
 			logger.info("Saved product object: " + new Gson().toJson(product));
 		}
