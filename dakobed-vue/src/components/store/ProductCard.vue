@@ -3,7 +3,6 @@
     
     <v-layout row wrap>
         <v-flex md6>
-            
           <v-card tile flat @click="productClick()">
             <v-card-text @click="productClick()">
                 <h2><router-link tag="span" :to="'/tabs'">{{productName}}</router-link></h2>
@@ -23,7 +22,7 @@
 </template>
 <script>
 
-
+import router from '../../router'
 
 export default {
     props:{
@@ -34,7 +33,7 @@ export default {
     },
     methods:{
         productClick(){
-            console.log("I get clicked")
+            router.push({ path: `/product/${this.productID}` })
         }
     }
 }

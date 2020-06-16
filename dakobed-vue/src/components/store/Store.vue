@@ -4,7 +4,7 @@
       <v-layout row wrap>
         
           <v-flex xs6 md3 offset-sm1 v-for="item in allProducts" v-bind:key=item.id>
-            <ProductCard v-bind:productName="item.productName" v-bind:imageURL="item.imageURL" v-bind:productPrice="item.price"/>
+            <ProductCard v-bind:productID="item.id" v-bind:productName="item.productName" v-bind:imageURL="item.imageURL" v-bind:productPrice="item.price"/>
               <!-- {{item.productName}} dfdf
               <v-card >
                   <v-img :src="item.imageURL" height="200px" width="100"></v-img>

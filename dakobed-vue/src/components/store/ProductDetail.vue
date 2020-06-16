@@ -3,7 +3,7 @@
       <v-layout row wrap>
         <v-flex md6>
           <v-card dark tile flat color="error">
-            <v-card-text>#1</v-card-text>
+            <v-card-text>Product Detail</v-card-text>
           </v-card>
         </v-flex>
         <v-flex md6>
@@ -16,6 +16,9 @@
 </template>
 <script>
 export default {
+    created(){
+        console.log('The id is: ' + this.$route.params.id);
+    }
     
 }
 </script>
