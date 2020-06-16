@@ -4,3 +4,7 @@ aws dynamodb query \
     --key-condition-expression "productName = 'Aether Pro 70'"
 
 aws dynamodb scan --table-name dakobed-products
+
+aws dynamodb scan --table-name dakobed-products
+ 
+aws dynamodb list-tables --endpoint-url http://localhost:8000
