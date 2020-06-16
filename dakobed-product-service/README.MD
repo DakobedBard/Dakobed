@@ -5,6 +5,7 @@ aws dynamodb query \
 
 aws dynamodb scan --table-name dakobed-products
 
-aws dynamodb scan --table-name dakobed-products
+aws dynamodb scan --table-name Movies --endpoint-url http://localhost:8000
+
  
 aws dynamodb list-tables --endpoint-url http://localhost:8000
