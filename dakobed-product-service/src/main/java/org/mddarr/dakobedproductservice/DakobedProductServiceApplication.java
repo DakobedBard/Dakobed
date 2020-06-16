@@ -1,10 +1,12 @@
 package org.mddarr.dakobedproductservice;
 
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
@@ -17,15 +19,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
 public class DakobedProductServiceApplication implements CommandLineRunner {
 
-	public Boolean isEmpty(AmazonDynamoDB database, String tableName)  {
+	public Boolean isEmpty(AmazonDynamoDB database, String tableName) {
 		ScanRequest scanRequest = new ScanRequest().withTableName(tableName).withLimit(1);
-		return database.scan(scanRequest).getScannedCount() ==0;
+		return database.scan(scanRequest).getScannedCount() == 0;
 	}
+
 	private DynamoDBMapper dynamoDBMapper;
 
 	private static final Logger logger = LogManager.getLogger(DakobedProductServiceApplication.class);
@@ -39,53 +45,69 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(DakobedProductServiceApplication.class, args);
 	}
+
 	private boolean tableWasCreatedForTest;
+
+	public void createProductsTable(DynamoDB dynamoDB){
+		String tableName = "Products";
+
+		try {
+			List<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+			attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("N"));
+
+			List<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
+			keySchema.add(new KeySchemaElement().withAttributeName("Id").withKeyType(KeyType.HASH));
+
+			CreateTableRequest request = new CreateTableRequest()
+					.withTableName(tableName)
+					.withKeySchema(keySchema)
+					.withAttributeDefinitions(attributeDefinitions)
+					.withProvisionedThroughput(new ProvisionedThroughput()
+							.withReadCapacityUnits(5L)
+							.withWriteCapacityUnits(6L));
+
+			Table table = dynamoDB.createTable(request);
+
+			table.waitForActive();
+		} catch (Exception e) {
+			{
+				System.err.println("Unable to create table: ");
+				System.err.println(e.getMessage());
+			}
+		}
+	}
+
+
+
 	@Override
 	public void run(String... strings) throws Exception {
+		AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+				.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
+				.build();
 
-		dynamoDBMapper = new DynamoDBMapper(amazonDynamoDB);
-
-		CreateTableRequest ctr = dynamoDBMapper.generateCreateTableRequest(User.class)
-				.withProvisionedThroughput(new ProvisionedThroughput(1L, 1L));
-		tableWasCreatedForTest = TableUtils.createTableIfNotExists(amazonDynamoDB, ctr);
-		if (tableWasCreatedForTest) {
-			logger.info("Created table {}", ctr.getTableName());
-		}
-		TableUtils.waitUntilActive(amazonDynamoDB, ctr.getTableName());
-		logger.info("Table {} is active", ctr.getTableName());
+		DynamoDB dynamoDB = new DynamoDB(client);
+		if(isEmpty(client, "Products")){
+			createProductsTable(dynamoDB);
 		}
 
 
-//
-//
-
-//
-//
-//
-//
-//		product = new ProductDocument();
-//		product.setProductName("Rook 50");
-//		product.setProductDescription("beginners trecking pack");
-//		product.setImageURL("https://dakobed-osprety.s3-us-west-2.amazonaws.com/rook50.jpg");
-//		product = productRepository.save(product);
-
-//		logger.info("Saved product object: " + new Gson().toJson(product));
-//
-//
-//		String awsServiceId = product.getId();
-
-
-
-
-//		logger.info("AWS Service ID: " + awsServiceId);
-//		Optional<ProductDocument> awsServiceQueried = productRepository.findById(awsServiceId);
-//		if (awsServiceQueried.get() != null) {
-//			logger.info("Queried object: " + new Gson().toJson(awsServiceQueried.get()));
-//		}
-//		Iterable<ProductDocument> awsServices = productRepository.findAll();
-//		for (ProductDocument awsServiceObject : awsServices) {
-//			logger.info("List object: " + new Gson().toJson(awsServiceObject));
-//		}
-
-
+	}
 }
+//		try {
+//			System.out.println("Attempting to create table; please wait...");
+//			Table table = dynamoDB.createTable(tableName,
+//					Arrays.asList(new KeySchemaElement("year", KeyType.HASH), // Partition
+//							// key
+//							new KeySchemaElement("title", KeyType.RANGE)), // Sort key
+//					Arrays.asList(new AttributeDefinition("year", ScalarAttributeType.N),
+//							new AttributeDefinition("title", ScalarAttributeType.S)),
+//					new ProvisionedThroughput(10L, 10L));
+//			table.waitForActive();
+//			System.out.println("Success.  Table status: " + table.getDescription().getTableStatus());
+//
+//		}
+//		catch (Exception e) {
+//			System.err.println("Unable to create table: ");
+//			System.err.println(e.getMessage());
+//		}
+
