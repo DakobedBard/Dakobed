@@ -36,13 +36,13 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 //		ScanRequest scanRequest = new ScanRequest().withTableName(tableName).withLimit(1);
 //		return database.scan(scanRequest).getScannedCount() == 0;
 //	}
+	@Autowired
+	AmazonDynamoDB amazonDynamoDB;
 
 	private DynamoDBMapper dynamoDBMapper;
 
 	private static final Logger logger = LogManager.getLogger(DakobedProductServiceApplication.class);
 
-	@Autowired
-	private AmazonDynamoDB amazonDynamoDB;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -121,11 +121,11 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... strings) throws Exception {
-		AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
-				.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
-				.build();
+//		AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+//				.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
+//				.build();
 
-		DynamoDB dynamoDB = new DynamoDB(client);
+		DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 		createProductsTable(dynamoDB);
 		LoadProductsTableData(dynamoDB);
 
