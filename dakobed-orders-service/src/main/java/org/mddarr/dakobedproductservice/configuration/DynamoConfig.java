@@ -2,18 +2,15 @@ package org.mddarr.dakobedproductservice.configuration;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 
 @Configuration
-@EnableDynamoDBRepositories
-        (basePackages = "org.mddarr.dakobedproductservice.repositories")
-public class DynamoDBConfig {
+public class DynamoConfig {
 
     @Value("${amazon.dynamodb.endpoint}")
     private String dynamoDbEndpoint;
@@ -25,19 +22,16 @@ public class DynamoDBConfig {
     private String awsSecretKey;
 
     @Bean
-    public AmazonDynamoDB amazonDynamoDB() {
-        AmazonDynamoDB amazonDynamoDB
-                = new AmazonDynamoDBClient(amazonAWSCredentials());
-
-        if (!StringUtils.isEmpty(dynamoDbEndpoint)) {
-            amazonDynamoDB.setEndpoint(dynamoDbEndpoint);
-        }
-
-        return amazonDynamoDB;
+    public AmazonDynamoDB amazonDynamoDB(){
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:8000", "us-west-2"))
+                .build();
+        return client;
     }
 
     @Bean
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(awsAccessKey, awsSecretKey);
     }
+
 }
