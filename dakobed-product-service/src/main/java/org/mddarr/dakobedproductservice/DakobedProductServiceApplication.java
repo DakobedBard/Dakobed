@@ -5,9 +5,15 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,18 +25,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @SpringBootApplication
 public class DakobedProductServiceApplication implements CommandLineRunner {
 
-	public Boolean isEmpty(AmazonDynamoDB database, String tableName) {
-		ScanRequest scanRequest = new ScanRequest().withTableName(tableName).withLimit(1);
-		return database.scan(scanRequest).getScannedCount() == 0;
-	}
+//	public Boolean isEmpty(AmazonDynamoDB database, String tableName) {
+//		ScanRequest scanRequest = new ScanRequest().withTableName(tableName).withLimit(1);
+//		return database.scan(scanRequest).getScannedCount() == 0;
+//	}
 
 	private DynamoDBMapper dynamoDBMapper;
 
@@ -49,14 +54,15 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 	private boolean tableWasCreatedForTest;
 
 	public void createProductsTable(DynamoDB dynamoDB){
-		String tableName = "Products";
+		String tableName = "Dakobed-Products";
 
 		try {
 			List<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
-			attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("N"));
-
+			attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("S"));
+			attributeDefinitions.add(new AttributeDefinition().withAttributeName("price").withAttributeType("N"));
 			List<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
 			keySchema.add(new KeySchemaElement().withAttributeName("Id").withKeyType(KeyType.HASH));
+			keySchema.add(new KeySchemaElement().withAttributeName("price").withKeyType(KeyType.RANGE));
 
 			CreateTableRequest request = new CreateTableRequest()
 					.withTableName(tableName)
@@ -67,14 +73,48 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 							.withWriteCapacityUnits(6L));
 
 			Table table = dynamoDB.createTable(request);
-
 			table.waitForActive();
+
 		} catch (Exception e) {
 			{
 				System.err.println("Unable to create table: ");
 				System.err.println(e.getMessage());
 			}
 		}
+	}
+
+	public void LoadProductsTableData(DynamoDB dynamoDB) throws IOException {
+
+		Table table = dynamoDB.getTable("Dakobed-Products");
+		JsonParser parser = new JsonFactory().createParser(new File("/data/mddarr/Dakobed/dakobed-product-service/src/main/resources/products.json"));
+
+		JsonNode rootNode = new ObjectMapper().readTree(parser);
+		Iterator<JsonNode> iter = rootNode.iterator();
+		ObjectNode currentNode;
+
+		while (iter.hasNext()) {
+			currentNode = (ObjectNode) iter.next();
+
+			double price = currentNode.path("price").asDouble();
+			String productName = currentNode.path("productName").asText();
+			String imageURL = currentNode.path("image_url").asText();
+			try {
+
+				table.putItem(new Item().withPrimaryKey("Id", UUID.randomUUID().toString(), "price", price)
+				.withString("productName",productName).withString("imageURL",imageURL));
+
+//				table.putItem(new Item().withPrimaryKey("Id", UUID.randomUUID().toString(), "price", price).withJSON("productName",
+//						productName).withJSON("imageURL", imageURL));
+				System.out.println("PutItem succeeded: " + price + " " + productName);
+
+			}
+			catch (Exception e) {
+				System.err.println("Unable to add movie: " + price + " " + productName + " " + imageURL);
+				System.err.println(e.getMessage());
+				break;
+			}
+		}
+		parser.close();
 	}
 
 
@@ -86,9 +126,8 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 				.build();
 
 		DynamoDB dynamoDB = new DynamoDB(client);
-		if(isEmpty(client, "Products")){
-			createProductsTable(dynamoDB);
-		}
+		createProductsTable(dynamoDB);
+		LoadProductsTableData(dynamoDB);
 
 
 	}

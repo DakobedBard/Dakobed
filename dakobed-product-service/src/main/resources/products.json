@@ -1,0 +1,45 @@
+[
+    {
+      "productName": "Ariel Pro 65",
+      "price": 185.00,
+      "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/arielpro65.jpg"
+    },
+    {
+      "productName": "Atmos 50",
+      "price": 165.00,
+      "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/atmos65.jpg"
+    },
+    {
+      "productName": "Archeon  45",
+      "price": 155.00,
+      "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon45.jpg"
+    },
+
+  {
+    "productName": "Aether Pro 70",
+    "price": 285.00,
+    "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/aetherpro70.jpg"
+  },
+  {
+    "productName": "Archeon 70",
+    "price": 245.00,
+    "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/archeon70.jpg"
+  },
+  {
+    "productName": "Aura  50",
+    "price": 145.00,
+    "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/aura50.jpg"
+  },
+  {
+    "productName": "Ariel  75",
+    "price": 290.00,
+    "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/ariel75.jpg"
+  },
+
+  {
+    "productName": "Ariel AG 55",
+    "price": 220.00,
+    "image_url": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/ariel55.jpg"
+  }
+
+]
