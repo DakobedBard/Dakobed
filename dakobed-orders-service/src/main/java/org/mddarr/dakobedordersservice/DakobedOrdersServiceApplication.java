@@ -111,30 +111,33 @@ public class DakobedOrdersServiceApplication implements CommandLineRunner {
 		JsonNode rootNode = new ObjectMapper().readTree(parser);
 		Iterator<JsonNode> iter = rootNode.iterator();
 		ObjectNode currentNode;
-
+		int count = 0;
 		while (iter.hasNext()) {
 
 			currentNode = (ObjectNode) iter.next();
 			double price = currentNode.path("price").asDouble();
 			long order_time = currentNode.path("order_time").asLong();
 			String productName = currentNode.path("productName").asText();
-			String imageURL = currentNode.path("image_url").asText();
-			String customerId = currentNode.path("customerId").asText();
-			long quantity = currentNode.path("quantity").asLong();
-			String state = currentNode.path("state").asText();
+
+
+//			String customerId = currentNode.path("customerId").asText();
+//			long quantity = currentNode.path("quantity").asLong();
+//			String state = currentNode.path("state").asText();
 
 			DateTime date = new DateTime(Long.valueOf(order_time * 1000L), DateTimeZone.UTC);
 			System.out.println("The date at which the oder occurs is " + date.toString());
 			try {
 				table.putItem(new Item().withPrimaryKey("id", UUID.randomUUID().toString(), "Date", date.toString())
-						.withDouble("productName",price));
+						.withDouble("price",price));
+				System.err.println("added product: " + price + " " + productName );
 				System.out.println("PutItem succeeded: " + price + " " + productName);
 			}
 			catch (Exception e) {
-				System.err.println("Unable to add product: " + price + " " + productName + " " + imageURL);
+				System.err.println("Unable to add product: " + price + " " + productName );
 				System.err.println(e.getMessage());
 				break;
 			}
+			count +=1;
 		}
 		parser.close();
 	}
@@ -148,9 +151,9 @@ public class DakobedOrdersServiceApplication implements CommandLineRunner {
 	public void run(String... strings) throws Exception {
 		DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 		createOrdersTable(dynamoDB);
-		LoadOrdersData(dynamoDB);
-//		if(isEmpty(amazonDynamoDB,"Dakobed-Products")){
-//			LoadProductsTableData(dynamo
-//	}
+
+		if(isEmpty(amazonDynamoDB,"Dakobed-Orders")){
+			LoadOrdersData(dynamoDB);
+		}
 	}
 }

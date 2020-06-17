@@ -37,15 +37,11 @@ public class ProductService {
 
     public List<ProductDocument> getProducts(){
 
-        // Change to your Table_Name (you can load dynamically from lambda env as well)
         DynamoDBMapperConfig mapperConfig = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement("Dakobed-Products")).build();
 
         DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB, mapperConfig);
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-// Change to your model class
         List <ProductDocument> products = mapper.scan(ProductDocument.class, scanExpression);
-
-// Check the count and iterate the list and perform as desired.
         return products;
 
     }
