@@ -1,0 +1,10 @@
+[
+  {
+    "customerId": "customer1",
+    "state": "PENDING",
+    "price": 185.00,
+    "quantity": 2,
+    "productID": "product1",
+    "order_time": 1592423051
+  }
+]

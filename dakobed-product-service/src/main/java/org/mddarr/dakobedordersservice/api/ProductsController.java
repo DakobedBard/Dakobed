@@ -1,10 +1,10 @@
-package org.mddarr.dakobedproductservice.api;
+package org.mddarr.dakobedordersservice.api;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
-import org.mddarr.dakobedproductservice.models.ProductDocument;
-import org.mddarr.dakobedproductservice.services.ProductService;
+import org.mddarr.dakobedordersservice.models.ProductDocument;
+import org.mddarr.dakobedordersservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package org.mddarr.dakobedproductservice.models;
+package org.mddarr.dakobedordersservice.models;
 
 public class ProductDocument {
 

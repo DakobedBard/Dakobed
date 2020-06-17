@@ -1,4 +1,4 @@
-package org.mddarr.dakobedproductservice.configuration;
+package org.mddarr.dakobedordersservice.configuration;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;

@@ -1,4 +1,4 @@
-package org.mddarr.dakobedproductservice;
+package org.mddarr.dakobedordersservice;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;

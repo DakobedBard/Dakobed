@@ -1,4 +1,4 @@
-package org.mddarr.dakobedproductservice.dynamo;
+package org.mddarr.dakobedordersservice.dynamo;
 
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;

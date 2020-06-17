@@ -1,4 +1,4 @@
-package org.mddarr.dakobedproductservice.dynamo;
+package org.mddarr.dakobedordersservice.dynamo;
 
 
 import java.io.File;

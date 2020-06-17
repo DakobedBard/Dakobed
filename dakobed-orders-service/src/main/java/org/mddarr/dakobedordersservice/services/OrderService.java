@@ -1,4 +1,4 @@
-package org.mddarr.dakobedproductservice.services;
+package org.mddarr.dakobedordersservice.services;
 
 
 import org.mddarr.products.Product;
