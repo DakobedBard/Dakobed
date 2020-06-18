@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -59,7 +56,20 @@ public class OrderService {
     }
 
 
-    public void getOrderByCustomer(String customerID){
+    public List<OrderEntity> getCustomersOrders(String customerID){
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB);
+
+        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+        eav.put(":customerId", new AttributeValue().withS(customerID));
+
+        DynamoDBQueryExpression<OrderEntity> queryExpression = new DynamoDBQueryExpression<OrderEntity>()
+                .withKeyConditionExpression("CustomerId = :customerId").withExpressionAttributeValues(eav);
+
+        List<OrderEntity> orders = mapper.query(OrderEntity.class, queryExpression);
+        return orders;
+    }
+
+    public List<OrderEntity> getOrderByCustomer(String customerID){
         QuerySpec querySpec = new QuerySpec().withConsistentRead(true).withScanIndexForward(true)
                 .withReturnConsumedCapacity(ReturnConsumedCapacity.TOTAL);
         DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
@@ -70,16 +80,29 @@ public class OrderService {
                 .withValueMap(
                         new ValueMap().withString(":v_custid", customerID));
 
-        querySpec.withSelect(Select.ALL_PROJECTED_ATTRIBUTES);
+//        querySpec.withSelect(Select.ALL_PROJECTED_ATTRIBUTES);
+        querySpec.withSelect(Select.ALL_ATTRIBUTES);
+
 
         ItemCollection<QueryOutcome> items = index.query(querySpec);
         Iterator<Item> iterator = items.iterator();
 
         System.out.println("Query: printing results...");
-
+        List<OrderEntity> orders = new ArrayList<>();
         while (iterator.hasNext()) {
+            Item item = iterator.next();
+            String cid = item.get("CustomerId").toString();
+            String oid = item.get("OrderId").toString();
+            String order_status = item.get("OrderStatus").toString();
+            OrderEntity order = new OrderEntity();
+            order.setOrderId(oid);
+            order.setCustomerId(cid);
+            order.setOrderStatus(order_status);
+            orders.add(order);
+
             System.out.println(iterator.next().toJSONPretty());
         }
+        return orders;
     }
 
 

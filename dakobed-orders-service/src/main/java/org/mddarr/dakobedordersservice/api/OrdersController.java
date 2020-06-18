@@ -36,10 +36,16 @@ public class OrdersController {
 //        return orderService.getOrderDetail(id);
 //    }
     @RequestMapping("detail")
-    public List<OrderEntity> getOrderDetail(@RequestParam("id") String id, @RequestParam("date") String date){
+    public List<OrderEntity> getOrderDetailByDate(@RequestParam("id") String id, @RequestParam("date") String date){
 //        orderService.getOrderByCustomer(id);
         return orderService.customerOrdersAfterDate(id, date);
     }
+
+    @RequestMapping("customer-orders")
+    public List<OrderEntity> getCustomersOrders(@RequestParam("id") String id){
+        return orderService.getCustomersOrders(id);
+    }
+
 
 //    @RequestMapping("order")
 //    public void getOrderByCustomer(@RequestParam("id") String id){
