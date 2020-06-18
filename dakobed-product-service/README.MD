@@ -13,7 +13,7 @@ aws dynamodb list-tables --endpoint-url http://localhost:8000
 
 aws dynamodb scan --table-name gsi-example --endpoint-url http://localhost:8000
 
-
+aws dynamodb get-item --table-name Dakobed-Products --endpoint-url http://localhost:8000 --key '{ "id": {"S": "112078e5-896f-4486-a7bb-f38ec2f4fa93"}}' 
 
 
 28a8d4b1-1bdd-4d78-84c1-c0fe8dfa1dcb

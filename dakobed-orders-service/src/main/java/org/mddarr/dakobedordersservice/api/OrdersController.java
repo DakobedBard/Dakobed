@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import org.mddarr.dakobedordersservice.models.OrderDocument;
+import org.mddarr.dakobedordersservice.models.OrderEntity;
 import org.mddarr.dakobedordersservice.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,24 @@ public class OrdersController {
     }
 
     @RequestMapping(value="orders")
-    public List<OrderDocument> getProduct(){
+    public List<OrderEntity> getProduct(){
         return orderService.getOrders();
     }
+
+
+    @RequestMapping(value = "detail")
+    public OrderEntity orderDetail(@RequestParam("id") String id){
+        return orderService.getOrderDetail(id);
+    }
+    @RequestMapping("order-detail")
+    public void getOrderDetail(@RequestParam("id") String id){
+        orderService.getOrderByCustomerBetweenDates(id);
+    }
+
+    @RequestMapping("order")
+    public void getOrderByCustomer(@RequestParam("id") String id){
+        orderService.getOrderByID(id);
+    }
+
+
 }

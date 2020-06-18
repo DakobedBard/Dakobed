@@ -24,8 +24,7 @@ public class OrdersTable {
     public static void createTable(DynamoDB dynamoDB) {
 
         CreateTableRequest createTableRequest = new CreateTableRequest().withTableName(tableName)
-                .withProvisionedThroughput(
-                        new ProvisionedThroughput().withReadCapacityUnits((long) 1).withWriteCapacityUnits((long) 1));
+                .withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits((long) 1).withWriteCapacityUnits((long) 1));
 
         // Attribute definitions for table partition and sort keys
         ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
@@ -33,18 +32,15 @@ public class OrdersTable {
         attributeDefinitions.add(new AttributeDefinition().withAttributeName("OrderId").withAttributeType("S"));
 
         // Attribute definition for index primary key attributes
-        attributeDefinitions
-                .add(new AttributeDefinition().withAttributeName("OrderCreationDate").withAttributeType("N"));
+        attributeDefinitions.add(new AttributeDefinition().withAttributeName("OrderCreationDate").withAttributeType("N"));
         attributeDefinitions.add(new AttributeDefinition().withAttributeName("IsOpen").withAttributeType("N"));
 
         createTableRequest.setAttributeDefinitions(attributeDefinitions);
 
         // Key schema for table
         ArrayList<KeySchemaElement> tableKeySchema = new ArrayList<KeySchemaElement>();
-        tableKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition
-        // key
-        tableKeySchema.add(new KeySchemaElement().withAttributeName("OrderId").withKeyType(KeyType.RANGE)); // Sort
-        // key
+        tableKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition key
+        tableKeySchema.add(new KeySchemaElement().withAttributeName("OrderId").withKeyType(KeyType.RANGE)); // Sort key
 
         createTableRequest.setKeySchema(tableKeySchema);
 
@@ -55,10 +51,8 @@ public class OrdersTable {
 
         // Key schema for OrderCreationDateIndex
         ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
-        indexKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition
-        // key
-        indexKeySchema.add(new KeySchemaElement().withAttributeName("OrderCreationDate").withKeyType(KeyType.RANGE)); // Sort
-        // key
+        indexKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition key
+        indexKeySchema.add(new KeySchemaElement().withAttributeName("OrderCreationDate").withKeyType(KeyType.RANGE)); // Sort key
 
         orderCreationDateIndex.setKeySchema(indexKeySchema);
 

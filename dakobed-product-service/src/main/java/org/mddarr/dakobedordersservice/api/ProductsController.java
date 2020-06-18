@@ -43,4 +43,8 @@ public class ProductsController {
         return productService.productDetail(id);
     }
 
+    @RequestMapping(value = "product-detail")
+    public ProductEntity productEntity(@RequestParam("id") String id){
+        return productService.productDetailMapper(id);
+    }
 }

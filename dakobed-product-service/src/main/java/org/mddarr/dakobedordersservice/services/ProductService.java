@@ -62,6 +62,12 @@ public class ProductService {
         return itemList.get(0);
     }
 
+    public ProductEntity productDetailMapper(String id){
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB);
+        ProductEntity productEntity = mapper.load(ProductEntity.class, id );
+        return productEntity;
+    }
+
 
 
 }
