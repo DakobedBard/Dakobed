@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.mddarr.dakobedordersservice.dynamo.ProductsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -38,65 +39,6 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 		SpringApplication.run(DakobedProductServiceApplication.class, args);
 	}
 
-	public void createProductsTable(DynamoDB dynamoDB){
-		String tableName = "Dakobed-Products";
-
-		try {
-			List<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
-			attributeDefinitions.add(new AttributeDefinition().withAttributeName("id").withAttributeType("S"));
-			attributeDefinitions.add(new AttributeDefinition().withAttributeName("price").withAttributeType("N"));
-			List<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
-			keySchema.add(new KeySchemaElement().withAttributeName("id").withKeyType(KeyType.HASH));
-			keySchema.add(new KeySchemaElement().withAttributeName("price").withKeyType(KeyType.RANGE));
-
-			CreateTableRequest request = new CreateTableRequest()
-					.withTableName(tableName)
-					.withKeySchema(keySchema)
-					.withAttributeDefinitions(attributeDefinitions)
-					.withProvisionedThroughput(new ProvisionedThroughput()
-							.withReadCapacityUnits(5L)
-							.withWriteCapacityUnits(6L));
-
-			Table table = dynamoDB.createTable(request);
-			table.waitForActive();
-
-		} catch (Exception e) {
-			{
-				System.err.println("Unable to create table: ");
-				System.err.println(e.getMessage());
-			}
-		}
-	}
-
-	public void LoadProductsTableData(DynamoDB dynamoDB) throws IOException {
-
-		Table table = dynamoDB.getTable("Dakobed-Products");
-		JsonParser parser = new JsonFactory().createParser(new File("/data/mddarr/Dakobed/dakobed-product-service/src/main/resources/products.json"));
-		JsonNode rootNode = new ObjectMapper().readTree(parser);
-		Iterator<JsonNode> iter = rootNode.iterator();
-		ObjectNode currentNode;
-
-		while (iter.hasNext()) {
-
-			currentNode = (ObjectNode) iter.next();
-			double price = currentNode.path("price").asDouble();
-			String productName = currentNode.path("productName").asText();
-			String imageURL = currentNode.path("image_url").asText();
-
-			try {
-				table.putItem(new Item().withPrimaryKey("id", UUID.randomUUID().toString(), "price", price)
-				.withString("productName",productName).withString("imageURL",imageURL));
-				System.out.println("PutItem succeeded: " + price + " " + productName);
-			}
-			catch (Exception e) {
-				System.err.println("Unable to add product: " + price + " " + productName + " " + imageURL);
-				System.err.println(e.getMessage());
-				break;
-			}
-		}
-		parser.close();
-	}
-
 	public Boolean isEmpty(AmazonDynamoDB database, String tableName) {
 		ScanRequest scanRequest = new ScanRequest().withTableName(tableName).withLimit(1);
 		return database.scan(scanRequest).getScannedCount() == 0;
@@ -105,9 +47,10 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 	@Override
 	public void run(String... strings) throws Exception {
 		DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
-		createProductsTable(dynamoDB);
+
+		ProductsTable.createProductsTable(dynamoDB);
 		if(isEmpty(amazonDynamoDB,"Dakobed-Products")){
-			LoadProductsTableData(dynamoDB);
+			ProductsTable.loadProductsData(dynamoDB);
 		}
 
 

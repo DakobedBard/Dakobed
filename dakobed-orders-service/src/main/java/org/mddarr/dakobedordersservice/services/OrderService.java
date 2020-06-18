@@ -4,6 +4,7 @@ package org.mddarr.dakobedordersservice.services;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import org.mddarr.dakobedordersservice.models.OrderDocument;
 import org.mddarr.products.Product;
@@ -23,6 +24,12 @@ public class OrderService {
     @Autowired
     KafkaTemplate<String, Product> kafkaTemplateProduct;
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+//
+//    public List<OrderDocument> getOrdersBetweenDates(){
+//        DynamoDBQueryExpression<OrderDocument> query = new DynamoDBQueryExpression<OrderDocument>()
+//                .withHashKeyValues()
+//    }
+
 
 
     public List<OrderDocument> getOrders(){

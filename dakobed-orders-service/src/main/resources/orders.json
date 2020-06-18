@@ -1,7 +1,30 @@
+
 [
   {
-    "customerId": "customer1",
+    "customerId": "jerry@gmail.com",
     "price": 185.00,
-    "order_time": 1592423051
-  }
+    "order_time": 1592423051,
+    "order_status": "SHIPPING"
+  },
+  {
+    "customerId": "jerry@gmail.com",
+    "price": 185.00,
+    "order_time": 1592423032,
+    "order_status": "SHIPPING"
+
+},
+  {
+    "customerId": "jerry@gmail.com",
+    "price": 185.00,
+    "order_time": 1592423045,
+    "order_status": "PROCESSING"
+
+},
+  {
+    "customerId": "jerry@gmail.com",
+    "price": 185.00,
+    "order_time": 1592423021,
+    "order_status": "PROCESSING"
+
+}
 ]

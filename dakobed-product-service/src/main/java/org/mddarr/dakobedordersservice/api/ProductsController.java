@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -28,6 +29,13 @@ public class ProductsController {
     @RequestMapping(value = "products")
     public List<ProductDocument> addProduct(){
         return productService.getProducts();
+    }
+
+    @RequestMapping(value = "uuid")
+    public void genUUIDS(){
+        for(int i =0; i<50; i ++){
+            System.out.println(UUID.randomUUID().toString());
+        }
     }
 
 }
