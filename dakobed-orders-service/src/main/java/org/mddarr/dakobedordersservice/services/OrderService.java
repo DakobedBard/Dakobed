@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ReturnConsumedCapacity;
 import com.amazonaws.services.dynamodbv2.model.Select;
 import org.mddarr.dakobedordersservice.models.OrderDocument;
@@ -20,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -57,18 +60,19 @@ public class OrderService {
 
 
     public void getOrderByCustomer(String customerID){
-        DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
-
-        Table table = dynamoDB.getTable("Dakobed-Orders");
-
-
         QuerySpec querySpec = new QuerySpec().withConsistentRead(true).withScanIndexForward(true)
                 .withReturnConsumedCapacity(ReturnConsumedCapacity.TOTAL);
+        DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
+        Table table = dynamoDB.getTable("Dakobed-Orders");
+        Index index = table.getIndex("OrderCreationDateIndex");
 
         querySpec.withKeyConditionExpression("CustomerId = :v_custid")
-                .withValueMap(new ValueMap().withString(":v_custid", customerID));
+                .withValueMap(
+                        new ValueMap().withString(":v_custid", customerID));
 
-        ItemCollection<QueryOutcome> items = table.query(querySpec);
+        querySpec.withSelect(Select.ALL_PROJECTED_ATTRIBUTES);
+
+        ItemCollection<QueryOutcome> items = index.query(querySpec);
         Iterator<Item> iterator = items.iterator();
 
         System.out.println("Query: printing results...");
@@ -79,7 +83,24 @@ public class OrderService {
     }
 
 
-    public void getOrderByCustomerBetweenDates(String customerID){
+    public List<OrderEntity> customerOrdersAfterDate(String customerID, String orderDate){
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB);
+
+        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+        eav.put(":customerId", new AttributeValue().withS(customerID));
+        eav.put(":orderId", new AttributeValue().withS(orderDate));
+
+        DynamoDBQueryExpression<OrderEntity> queryExpression = new DynamoDBQueryExpression<OrderEntity>()
+                .withKeyConditionExpression("CustomerId = :customerId and OrderId > :orderId").withExpressionAttributeValues(eav);
+
+        List<OrderEntity> latestOrders = mapper.query(OrderEntity.class, queryExpression);
+
+        return latestOrders;
+    }
+
+
+
+    public void getOrderByCustomerAfterDatee(String customerID){
 
         QuerySpec querySpec = new QuerySpec().withConsistentRead(true).withScanIndexForward(true)
                 .withReturnConsumedCapacity(ReturnConsumedCapacity.TOTAL);
@@ -87,9 +108,9 @@ public class OrderService {
         Table table = dynamoDB.getTable("Dakobed-Orders");
         Index index = table.getIndex("OrderCreationDateIndex");
 
-        querySpec.withKeyConditionExpression("CustomerId = :v_custid and OrderCreationDate >= :v_orddate")
+        querySpec.withKeyConditionExpression("CustomerId = :v_custid") //  and OrderId >= :v_orddate")
                 .withValueMap(
-                        new ValueMap().withString(":v_custid", customerID).withNumber(":v_orddate", 20150131));
+                        new ValueMap().withString(":v_custid", customerID)); //.withNumber(":v_orddate", 20160638));
 
         querySpec.withSelect(Select.ALL_PROJECTED_ATTRIBUTES);
 

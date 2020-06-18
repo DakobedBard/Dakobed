@@ -11,23 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 
 @RestController
 public class OrdersController {
-    private DynamoDBMapper dynamoDBMapper;
 
+    private DynamoDBMapper dynamoDBMapper;
     @Autowired
     private OrderService orderService;
-
     @Autowired
     private AmazonDynamoDB amazonDynamoDB;
 
-    @RequestMapping(value = "products")
-    public String addProduct(){
-        return "dingus";
-    }
 
     @RequestMapping(value="orders")
     public List<OrderEntity> getProduct(){
@@ -35,19 +31,32 @@ public class OrdersController {
     }
 
 
-    @RequestMapping(value = "detail")
-    public OrderEntity orderDetail(@RequestParam("id") String id){
-        return orderService.getOrderDetail(id);
-    }
-    @RequestMapping("order-detail")
-    public void getOrderDetail(@RequestParam("id") String id){
-        orderService.getOrderByCustomerBetweenDates(id);
+//    @RequestMapping(value = "detail")
+//    public OrderEntity orderDetail(@RequestParam("id") String id){
+//        return orderService.getOrderDetail(id);
+//    }
+    @RequestMapping("detail")
+    public List<OrderEntity> getOrderDetail(@RequestParam("id") String id, @RequestParam("date") String date){
+//        orderService.getOrderByCustomer(id);
+        return orderService.customerOrdersAfterDate(id, date);
     }
 
-    @RequestMapping("order")
-    public void getOrderByCustomer(@RequestParam("id") String id){
-        orderService.getOrderByID(id);
-    }
+//    @RequestMapping("order")
+//    public void getOrderByCustomer(@RequestParam("id") String id){
+//        orderService.getOrderByID(id);
+//    }
+//
+//
+//    @RequestMapping("date-detail")
+//    public long getDate(@RequestParam("date") long date){
+//        return date;
+//    }
+
+//    @RequestMapping("date")
+//    public String getDate(@RequestParam("date") long date){
+//        Date d = new Date(date);
+//        return d.toString();
+//    }
 
 
 }
