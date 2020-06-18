@@ -4,11 +4,13 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
+import java.util.List;
+
 @DynamoDBTable(tableName="Dakobed-Orders")
 public class OrderEntity {
     private String OrderId;
     private String CustomerId;
-    private String productID;
+    private List<String> productIDs;
     private String OrderStatus;
     private long OrderCreationDate;
 
@@ -20,9 +22,9 @@ public class OrderEntity {
     public String getCustomerId() { return CustomerId;}
     public void setCustomerId(String customerID) { CustomerId = customerID; }
 
-    @DynamoDBAttribute(attributeName = "productID")
-    public String getProductID() { return productID; }
-    public void setProductID(String productID) { this.productID = productID;}
+    @DynamoDBAttribute(attributeName = "productIDs")
+    public List<String> getProductIDs() { return productIDs; }
+    public void setProductIDs(List<String> productIDs) { this.productIDs = productIDs;}
 
     @DynamoDBAttribute(attributeName = "OrderStatus")
     public String getOrderStatus() { return OrderStatus;}

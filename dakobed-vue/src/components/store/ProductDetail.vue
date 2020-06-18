@@ -1,12 +1,12 @@
 <template>
     <v-container>
       <v-layout row wrap>
-        <v-flex md6>
+        <v-flex md6 offset-2>
           <v-card dark tile flat color="error">
             <v-card-text>Product Detail</v-card-text>
           </v-card>
         </v-flex>
-        <v-flex md6>
+        <v-flex md4>
           <v-card  tile flat >
             <v-flex>
       

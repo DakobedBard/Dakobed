@@ -6,7 +6,8 @@
     "order_time": 20150120,
     "order_status": "SHIPPING",
     "orderID" : "20160630-28176",
-    "productID": "c99f8a59-4cef-4c81-a3ab-b214a25e7046"
+    "products": "112078e5-896f-4486-a7bb-f38ec2f4fa93,p2"
+    
   },
 
   {
@@ -15,25 +16,28 @@
     "order_time": 20150130,
     "order_status": "SHIPPING",
     "orderID": "20170609-25875",
-    "productID":"f6736634-b6d3-4d8c-a6a8-037edac31c81"
+    "products": "d77654bb-6adb-4d4a-b7b7-bfc7fd151a5e"
 
-},
+  },
   {
     "customerId": "alice@gmail.com",
     "price": 185.00,
     "order_time": 20150135,
     "order_status": "PROCESSING",
     "orderID": "20171129-29970",
-    "productID": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/arielpro65.jpg"
+    "products": "a78cbc60-3b7e-429d-b25d-b059c0fb7fe4"
 
-},
+
+  },
   {
     "customerId": "billy@gmail.com",
     "price": 185.00,
     "order_time": 20150134,
     "order_status": "PROCESSING",
     "orderID": "20170608-10171",
-    "productID": "https://dakobed-osprety.s3-us-west-2.amazonaws.com/aura50.jpg"
 
-}
+    "products": "a78cbc60-3b7e-429d-b25d-b059c0fb7fe4,112078e5-896f-4486-a7bb-f38ec2f4fa93"
+
+
+  }
 ]

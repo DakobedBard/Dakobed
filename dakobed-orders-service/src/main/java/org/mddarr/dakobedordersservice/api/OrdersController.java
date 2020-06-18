@@ -5,11 +5,12 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 import org.mddarr.dakobedordersservice.models.OrderDocument;
 import org.mddarr.dakobedordersservice.models.OrderEntity;
+import org.mddarr.dakobedordersservice.models.OrderRequest;
+import org.mddarr.dakobedordersservice.models.OrderResponse;
 import org.mddarr.dakobedordersservice.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,12 @@ public class OrdersController {
 
     @RequestMapping(value="orders")
     public List<OrderEntity> getProduct(){
-        return orderService.getOrders();
+        List<OrderEntity> orders = orderService.getOrders();
+        for(int i =0; i < orders.size();i++){
+            System.out.println("The orders have " + orders.get(i).getProductIDs().size() + " products");
+
+        }
+        return orders;
     }
 
 
@@ -45,6 +51,11 @@ public class OrdersController {
     public List<OrderEntity> getCustomersOrders(@RequestParam("id") String id){
         return orderService.getCustomersOrders(id);
     }
+//
+//    @PostMapping("post-order")
+//    public ResponseEntity<OrderResponse> postOrder(@RequestBody OrderRequest orderRequest){
+//
+//    }
 
 
 //    @RequestMapping("order")
