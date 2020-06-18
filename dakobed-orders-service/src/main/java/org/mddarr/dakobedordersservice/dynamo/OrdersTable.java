@@ -4,77 +4,153 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.*;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.UUID;
 
 public class OrdersTable {
     public static String tableName = "Dakobed-Orders";
+
     public static void createTable(DynamoDB dynamoDB) {
-
-        // Attribute definitions
-        ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
-
-        attributeDefinitions.add(new AttributeDefinition().withAttributeName("IssueId").withAttributeType("S"));
-        attributeDefinitions.add(new AttributeDefinition().withAttributeName("Title").withAttributeType("S"));
-        attributeDefinitions.add(new AttributeDefinition().withAttributeName("CreateDate").withAttributeType("S"));
-        attributeDefinitions.add(new AttributeDefinition().withAttributeName("DueDate").withAttributeType("S"));
-
-        // Key schema for table
-        ArrayList<KeySchemaElement> tableKeySchema = new ArrayList<KeySchemaElement>();
-        tableKeySchema.add(new KeySchemaElement().withAttributeName("IssueId").withKeyType(KeyType.HASH)); // Partition
-        // key
-        tableKeySchema.add(new KeySchemaElement().withAttributeName("Title").withKeyType(KeyType.RANGE)); // Sort
-        // key
-
-        // Initial provisioned throughput settings for the indexes
-        ProvisionedThroughput ptIndex = new ProvisionedThroughput().withReadCapacityUnits(1L)
-                .withWriteCapacityUnits(1L);
-
-        // CreateDateIndex
-        GlobalSecondaryIndex createDateIndex = new GlobalSecondaryIndex().withIndexName("CreateDateIndex")
-                .withProvisionedThroughput(ptIndex)
-                .withKeySchema(new KeySchemaElement().withAttributeName("CreateDate").withKeyType(KeyType.HASH), // Partition
-                        // key
-                        new KeySchemaElement().withAttributeName("IssueId").withKeyType(KeyType.RANGE)) // Sort
-                // key
-                .withProjection(
-                        new Projection().withProjectionType("INCLUDE").withNonKeyAttributes("Description", "Status"));
-
-        // TitleIndex
-        GlobalSecondaryIndex titleIndex = new GlobalSecondaryIndex().withIndexName("TitleIndex")
-                .withProvisionedThroughput(ptIndex)
-                .withKeySchema(new KeySchemaElement().withAttributeName("Title").withKeyType(KeyType.HASH), // Partition
-                        // key
-                        new KeySchemaElement().withAttributeName("IssueId").withKeyType(KeyType.RANGE)) // Sort
-                // key
-                .withProjection(new Projection().withProjectionType("KEYS_ONLY"));
-
-        // DueDateIndex
-        GlobalSecondaryIndex dueDateIndex = new GlobalSecondaryIndex().withIndexName("DueDateIndex")
-                .withProvisionedThroughput(ptIndex)
-                .withKeySchema(new KeySchemaElement().withAttributeName("DueDate").withKeyType(KeyType.HASH)) // Partition
-                // key
-                .withProjection(new Projection().withProjectionType("ALL"));
 
         CreateTableRequest createTableRequest = new CreateTableRequest().withTableName(tableName)
                 .withProvisionedThroughput(
-                        new ProvisionedThroughput().withReadCapacityUnits((long) 1).withWriteCapacityUnits((long) 1))
-                .withAttributeDefinitions(attributeDefinitions).withKeySchema(tableKeySchema)
-                .withGlobalSecondaryIndexes(createDateIndex, titleIndex, dueDateIndex);
+                        new ProvisionedThroughput().withReadCapacityUnits((long) 1).withWriteCapacityUnits((long) 1));
+
+        // Attribute definitions for table partition and sort keys
+        ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+        attributeDefinitions.add(new AttributeDefinition().withAttributeName("CustomerId").withAttributeType("S"));
+        attributeDefinitions.add(new AttributeDefinition().withAttributeName("OrderId").withAttributeType("S"));
+
+        // Attribute definition for index primary key attributes
+        attributeDefinitions
+                .add(new AttributeDefinition().withAttributeName("OrderCreationDate").withAttributeType("N"));
+        attributeDefinitions.add(new AttributeDefinition().withAttributeName("IsOpen").withAttributeType("N"));
+
+        createTableRequest.setAttributeDefinitions(attributeDefinitions);
+
+        // Key schema for table
+        ArrayList<KeySchemaElement> tableKeySchema = new ArrayList<KeySchemaElement>();
+        tableKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition
+        // key
+        tableKeySchema.add(new KeySchemaElement().withAttributeName("OrderId").withKeyType(KeyType.RANGE)); // Sort
+        // key
+
+        createTableRequest.setKeySchema(tableKeySchema);
+
+        ArrayList<LocalSecondaryIndex> localSecondaryIndexes = new ArrayList<LocalSecondaryIndex>();
+
+        // OrderCreationDateIndex
+        LocalSecondaryIndex orderCreationDateIndex = new LocalSecondaryIndex().withIndexName("OrderCreationDateIndex");
+
+        // Key schema for OrderCreationDateIndex
+        ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
+        indexKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition
+        // key
+        indexKeySchema.add(new KeySchemaElement().withAttributeName("OrderCreationDate").withKeyType(KeyType.RANGE)); // Sort
+        // key
+
+        orderCreationDateIndex.setKeySchema(indexKeySchema);
+
+        // Projection (with list of projected attributes) for
+        // OrderCreationDateIndex
+        Projection projection = new Projection().withProjectionType(ProjectionType.INCLUDE);
+        ArrayList<String> nonKeyAttributes = new ArrayList<String>();
+        nonKeyAttributes.add("ProductCategory");
+        nonKeyAttributes.add("ProductName");
+        projection.setNonKeyAttributes(nonKeyAttributes);
+
+        orderCreationDateIndex.setProjection(projection);
+
+        localSecondaryIndexes.add(orderCreationDateIndex);
+
+        // IsOpenIndex
+        LocalSecondaryIndex isOpenIndex = new LocalSecondaryIndex().withIndexName("IsOpenIndex");
+
+        // Key schema for IsOpenIndex
+        indexKeySchema = new ArrayList<KeySchemaElement>();
+        indexKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition
+        // key
+        indexKeySchema.add(new KeySchemaElement().withAttributeName("IsOpen").withKeyType(KeyType.RANGE)); // Sort
+        // key
+
+        // Projection (all attributes) for IsOpenIndex
+        projection = new Projection().withProjectionType(ProjectionType.ALL);
+
+        isOpenIndex.setKeySchema(indexKeySchema);
+        isOpenIndex.setProjection(projection);
+
+        localSecondaryIndexes.add(isOpenIndex);
+
+        // Add index definitions to CreateTable request
+        createTableRequest.setLocalSecondaryIndexes(localSecondaryIndexes);
 
         System.out.println("Creating table " + tableName + "...");
-        dynamoDB.createTable(createTableRequest);
+        System.out.println(dynamoDB.createTable(createTableRequest));
 
         // Wait for table to become active
         System.out.println("Waiting for " + tableName + " to become ACTIVE...");
         try {
             Table table = dynamoDB.getTable(tableName);
             table.waitForActive();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
+
+    public static void loadOrdersData(DynamoDB dynamoDB) throws IOException {
+
+        Table table = dynamoDB.getTable("Dakobed-Orders");
+        JsonParser parser = new JsonFactory().createParser(new File("/data/mddarr/Dakobed/dakobed-orders-service/src/main/resources/orders.json"));
+        JsonNode rootNode = new ObjectMapper().readTree(parser);
+        Iterator<JsonNode> iter = rootNode.iterator();
+        ObjectNode currentNode;
+        int count = 0;
+        while (iter.hasNext()) {
+
+            currentNode = (ObjectNode) iter.next();
+            double price = currentNode.path("price").asDouble();
+            long order_time = currentNode.path("order_time").asLong();
+            String productID = currentNode.path("productID").asText();
+            String customerID = currentNode.path("customerId").asText();
+            String orderId = currentNode.path("orderID").asText();
+            String order_status = currentNode.path("order_status").asText();
+            Item item;
+
+
+            item = new Item().withPrimaryKey("CustomerId",customerID)
+                    .withString("OrderId", orderId )
+                    .withNumber("OrderCreationDate", order_time)
+                    .withString("productID", productID)
+                    .withString("OrderStatus", order_status);
+
+            DateTime date = new DateTime(Long.valueOf(order_time * 1000L), DateTimeZone.UTC);
+            System.out.println("The date at which the oder occurs is " + date.toString());
+            try {
+                table.putItem(item);
+                System.err.println("added product: " +  " " + productID);
+            }
+            catch (Exception e) {
+                System.err.println("Unable to add product: " + " " + productID);
+                System.err.println(e.getMessage());
+                break;
+            }
+            count +=1;
+        }
+        parser.close();
+    }
+
+
 
 //    public static void LoadData(){
 //        Item().withPrimaryKey("CustomerId", "alice@example.com").withNumber("OrderId", 1)

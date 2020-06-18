@@ -4,6 +4,9 @@ aws dynamodb query \
     --key-condition-expression "productName = 'Aether Pro 70'"
 
 aws dynamodb scan --table-name Dakobed-Products --endpoint-url http://localhost:8000
+
+aws dynamodb scan --table-name Dakobed-Orders --endpoint-url http://localhost:8000
+
 aws dynamodb describe-table --table-name Dakobed-Products --endpoint-url http://localhost:8000
 
 aws dynamodb list-tables --endpoint-url http://localhost:8000
@@ -12,12 +15,7 @@ aws dynamodb scan --table-name gsi-example --endpoint-url http://localhost:8000
 
 
 
-c99f8a59-4cef-4c81-a3ab-b214a25e7046
-f6736634-b6d3-4d8c-a6a8-037edac31c81
-154d0ef0-e8b8-44f8-8cc8-eb7ccac82701
-7292ed1e-9964-4cdb-bf11-16b2d02351d2
-7ee71c5d-ffee-42b3-8e1b-31e6bda5a425
-b33236c3-eafb-4437-97a1-dfdbe9b4e7c2
+
 28a8d4b1-1bdd-4d78-84c1-c0fe8dfa1dcb
 48aa0ad2-4d31-49dc-9f26-bcfb35830a28
 d9bea13d-5fa2-4df9-af2e-8b2422f49cfa
