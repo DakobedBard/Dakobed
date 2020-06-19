@@ -14,9 +14,7 @@ import org.joda.time.DateTimeZone;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
 public class OrdersTable {
     public static String tableName = "Dakobed-Orders";
@@ -55,8 +53,7 @@ public class OrdersTable {
 
         // Key schema for OrderCreationDateIndex
         ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
-        indexKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition
-        // key
+        indexKeySchema.add(new KeySchemaElement().withAttributeName("CustomerId").withKeyType(KeyType.HASH)); // Partition key
         indexKeySchema.add(new KeySchemaElement().withAttributeName("OrderCreationDate").withKeyType(KeyType.RANGE)); // Sort
         // key
 
@@ -121,27 +118,32 @@ public class OrdersTable {
             currentNode = (ObjectNode) iter.next();
             double price = currentNode.path("price").asDouble();
             long order_time = currentNode.path("order_time").asLong();
-            String productID = currentNode.path("productID").asText();
             String customerID = currentNode.path("customerId").asText();
             String orderId = currentNode.path("orderID").asText();
             String order_status = currentNode.path("order_status").asText();
+            String productsListString = currentNode.path("products").asText();
+
+            ArrayList<String> productStringsList = new ArrayList<>(Arrays.asList(productsListString.split(",")));
+
+            List<String> productsList = Arrays.asList(productsListString.split(","));
+            Set<String> products = new HashSet<>(productsList);
             Item item;
 
 
             item = new Item().withPrimaryKey("CustomerId",customerID)
                     .withString("OrderId", orderId )
                     .withNumber("OrderCreationDate", order_time)
-                    .withString("productID", productID)
+                    .withList("productIDs",productStringsList)
                     .withString("OrderStatus", order_status);
 
             DateTime date = new DateTime(Long.valueOf(order_time * 1000L), DateTimeZone.UTC);
             System.out.println("The date at which the oder occurs is " + date.toString());
             try {
                 table.putItem(item);
-                System.err.println("added product: " +  " " + productID);
+                System.err.println("added product: " +  " " + products);
             }
             catch (Exception e) {
-                System.err.println("Unable to add product: " + " " + productID);
+                System.err.println("Unable to add product: " + " " + products);
                 System.err.println(e.getMessage());
                 break;
             }

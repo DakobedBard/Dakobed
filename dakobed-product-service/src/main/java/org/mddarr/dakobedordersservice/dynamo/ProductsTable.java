@@ -23,10 +23,10 @@ public class ProductsTable {
         try {
             List<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
             attributeDefinitions.add(new AttributeDefinition().withAttributeName("id").withAttributeType("S"));
-            attributeDefinitions.add(new AttributeDefinition().withAttributeName("price").withAttributeType("N"));
+//            attributeDefinitions.add(new AttributeDefinition().withAttributeName("price").withAttributeType("N"));
             List<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
             keySchema.add(new KeySchemaElement().withAttributeName("id").withKeyType(KeyType.HASH));
-            keySchema.add(new KeySchemaElement().withAttributeName("price").withKeyType(KeyType.RANGE));
+//            keySchema.add(new KeySchemaElement().withAttributeName("price").withKeyType(KeyType.RANGE));
 
             CreateTableRequest request = new CreateTableRequest()
                     .withTableName(tableName)
