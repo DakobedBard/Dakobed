@@ -17,16 +17,25 @@ export default {
 
     created(){
         
+
+
         const products = []
         console.log(products)
         const productsMap = this.getCart
+        this.productsMap = productsMap
         console.log(productsMap)
         console.log("whattt")
         productsMap.forEach(data => products.push(data))
         console.log(products)
+        this.products=products
     },
 
+    data () {
+     return {
 
+        products:[]
+     }
+  },
     computed:{
         ...mapGetters(["getCart"]),
     },

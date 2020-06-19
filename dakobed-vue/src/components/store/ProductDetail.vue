@@ -35,15 +35,17 @@
         
             </v-card>
           </v-flex>
-
           <v-flex md4>
            <v-card  tile flat >
             <v-flex>
                 <v-card-text> <h1>{{ productName }} </h1> </v-card-text>
             </v-flex>
   
-          <v-card-text> <h3> $ {{ price }} </h3> </v-card-text>
+              <v-card-text> <h3> $ {{ price }} </h3> </v-card-text>
             </v-card>           
+                  
+            <v-btn rounded class="error mt4" @click="addToCart()" > Add to Cart </v-btn>
+          
             </v-flex>
            
       </v-layout>
@@ -56,7 +58,9 @@ import { mapActions } from "vuex";
 import router from '../../router'
 export default {
     created(){
+        this.id = this.$route.params.id
         console.log('The id is: ' + this.$route.params.id);
+        this.addDeleteItem({id:this.id,quantity: 1})
     },
 
     data () {

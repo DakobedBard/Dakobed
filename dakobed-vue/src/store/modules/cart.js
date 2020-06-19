@@ -27,6 +27,7 @@ const mutations = {
         }else {
           const greeting = "Good evening";
           console.log(greeting)
+          state.cart.set(productID, quantity)
         }
         if(state.cart.get(productID) == 0){
             state.cart.delete(productID)
