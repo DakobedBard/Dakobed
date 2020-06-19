@@ -90,12 +90,18 @@ def gen_url(month, day, year):
 
 # def insert_snotel_data(dict, date_):
 
-def write_snotel_measurement(location, date_, dynamoDB):
+def write_snotel_measurement(location, date_, measurment_dict, dynamoDB):
     dynamoDB.put_item(
         TableName="Snotel",
         Item={
             "Location": {"S": location },
-            "Date": {"S": date_}
+            "Date": {"S": date_},
+            "SnowCurrent":{"N": str(measurment_dict["snow_current"]) },
+            "SnowMedian": {"N": str(measurment_dict["snow_median"])},
+            "SnowPctMedian": {"N": str(measurment_dict["snow_pct_median"])},
+            "WaterCurrent": {"N": str(measurment_dict["water_current"])},
+            "WaterCurrentAverage": {"N": str(measurment_dict["snow_median"])},
+            "WaterPctAverage": {"N": str(measurment_dict["snow_pct_median"])}
         }
     )
 
@@ -106,22 +112,22 @@ def validate_data(data):
 
 def insert_data(basins_dict, date_, dynamodb):
 
-    locationID = 1
     for region in basins_dict.keys():
         basins_dict[region].pop('Basin Index')
         locations = basins_dict[region].keys()
 
         for location in locations:
             location_dict = basins_dict[region][location]
+            measurment_dict = {
+            "snow_current" : validate_data(location_dict['Snow Current (in)']),
+            "snow_median" : validate_data(location_dict['Snow Median (in)']),
+            "snow_pct_median" : validate_data(location_dict['Snow Pct of Median']),
+            "water_current" : validate_data(location_dict['Water Current ']),
+            "water_current_average" :  validate_data(location_dict['Water Average (in)']),
+            "water_pct_average" : validate_data(location_dict['Water Pct of Average'])
+            }
 
-            snow_current = validate_data(location_dict['Snow Current (in)'])
-            snow_median = validate_data(location_dict['Snow Median (in)'])
-            snow_pct_median = validate_data(location_dict['Snow Pct of Median'])
-            water_current = validate_data(location_dict['Water Current '])
-            water_current_average = validate_data(location_dict['Water Average (in)'])
-            water_pct_average = validate_data(location_dict['Water Pct of Average'])
-            locationID += 1
-            write_snotel_measurement(location, date_, dynamodb)
+            write_snotel_measurement(location, date_, measurment_dict, dynamodb)
 
 def scrape_snowpack_data(startdate, enddate, dynamodb ):
     dates = date_list(startdate, enddate)
