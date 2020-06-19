@@ -9,9 +9,9 @@ import java.util.List;
 
 
 @DynamoDBTable(tableName="Snotel")
-public class Snotel {
+public class SnotelData {
     private String location;
-    private String date;
+    private String date_;
     private double snowCurrent;
     private double snowMedian;
     private double snowPctMedian;
@@ -19,23 +19,22 @@ public class Snotel {
     private double waterMedian;
     private double waterPctMedian;
 
-
-    @DynamoDBHashKey(attributeName="Location")
+    @DynamoDBHashKey(attributeName="LocationID")
     public String getLocation() {return location; }
-    public void setLocation(String location) { location = location;}
+    public void setLocation(String location) { this.location = location;}
 
     @DynamoDBRangeKey(attributeName = "Date")
-    public String getDate() { return date;}
-    public void setDate(String date) { date = date; }
+    public String getDate() { return date_;}
+    public void setDate(String date_) { this.date_ = date_; }
 
     @DynamoDBAttribute(attributeName = "SnowCurrent")
     public double getSnowCurrent() {return snowCurrent; }
     public void setSnowCurrent(double snowCurrent) {this.snowCurrent = snowCurrent;}
 
     @DynamoDBAttribute(attributeName = "SnowMedian")
-    public double getSnowMedian() {return snowCurrent; }
-    public void setSnowMedian(double snowCurrent) {this.snowCurrent = snowCurrent;}
-    
+    public double getSnowMedian() {return snowMedian; }
+    public void setSnowMedian(double snowMedian) {this.snowMedian = snowMedian;}
+
     @DynamoDBAttribute(attributeName = "SnowPctMedian")
     public double getSnowPctMedian() { return snowPctMedian;}
     public void setSnowPctMedian(double snowPctMedian) {this.snowPctMedian = snowPctMedian;}
@@ -52,8 +51,6 @@ public class Snotel {
     @DynamoDBAttribute(attributeName = "WaterPctAverage")
     public double getWaterPctMedian() {return waterPctMedian;}
     public void setWaterPctMedian(double waterPctMedian) {this.waterPctMedian = waterPctMedian; }
-
-
 
 }
 

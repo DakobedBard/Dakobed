@@ -94,7 +94,7 @@ def write_snotel_measurement(location, date_, measurment_dict, dynamoDB):
     dynamoDB.put_item(
         TableName="Snotel",
         Item={
-            "Location": {"S": location },
+            "LocationID": {"S": location },
             "Date": {"S": date_},
             "SnowCurrent":{"N": str(measurment_dict["snow_current"]) },
             "SnowMedian": {"N": str(measurment_dict["snow_median"])},

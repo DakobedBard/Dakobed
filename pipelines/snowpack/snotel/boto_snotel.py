@@ -13,7 +13,7 @@ def create_snotel_table(dynamodb = None):
         resp = dynamodb.create_table(
             AttributeDefinitions=[
                 {
-                    "AttributeName": "Location",
+                    "AttributeName": "LocationID",
                     "AttributeType": "S"
                 },
                 {
@@ -24,7 +24,7 @@ def create_snotel_table(dynamodb = None):
             TableName="Snotel",
             KeySchema=[
                 {
-                    "AttributeName": "Location",
+                    "AttributeName": "LocationID",
                     "KeyType": "HASH"
                 },
                 {
@@ -43,6 +43,7 @@ def create_snotel_table(dynamodb = None):
         print(e)
 
 dynamodb = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+delete_snotel_table(dynamodb)
 create_snotel_table(dynamodb)
 
 #delete_snotel_table(dynamodb)
