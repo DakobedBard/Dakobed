@@ -1,7 +1,7 @@
 // import axios from 'axios';
 
 const state = {
-    cart: Map()
+    cart: new Map()
 
 };
 
@@ -12,17 +12,21 @@ const getters = {
 const actions = {
 
 
-  async changeProductCartCount({commit}, productID, quantity){
-    commit('addDeleteItem', productID, quantity)
+  async addDeleteItem({commit}, product){
+    commit('addDeleteItem', product)
+
   }
 };
 
 const mutations = {
-    addDeleteItem (state, productID, quantity) {
+    addDeleteItem (state, product) {
+        const productID = product.id
+        const quantity = product.quantity
         if(state.cart.has(productID)){
             state.cart.set(state.cart.get(productID) + quantity)
-        }else{
-            state.cart.set(productID) = quantity
+        }else {
+          const greeting = "Good evening";
+          console.log(greeting)
         }
         if(state.cart.get(productID) == 0){
             state.cart.delete(productID)

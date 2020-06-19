@@ -5,6 +5,7 @@ import reports from './modules/reports';
 import gallery from './modules/gallery'
 import auth from './modules/auth'
 import products from './modules/products'
+import cart from './modules/cart'
 // Load Vuex
 Vue.use(Vuex);
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     reports,
     gallery,
     auth,
-    products
+    products,
+    cart
   }
 });

@@ -3,7 +3,7 @@
     <v-layout>
       <v-flex md6 offset-3>
         <v-card>
-          Hello
+          {{products }}
         </v-card>
       </v-flex>
     </v-layout>
@@ -14,6 +14,19 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+
+    created(){
+        
+        const products = []
+        console.log(products)
+        const productsMap = this.getCart
+        console.log(productsMap)
+        console.log("whattt")
+        productsMap.forEach(data => products.push(data))
+        console.log(products)
+    },
+
+
     computed:{
         ...mapGetters(["getCart"]),
     },
