@@ -15,6 +15,8 @@ import Products from './components/Products'
 import Store from './components/store/Store'
 
 import ProductDetail from './components/store/ProductDetail'
+import ShoppingCart from './components/store/ShoppingCart'
+
 
 Vue.use(Router)
 
@@ -78,7 +80,6 @@ export default new Router({
         component: Store
       },
 
-
       {
         path:'/produts',
         name:'products',
@@ -87,11 +88,12 @@ export default new Router({
       
       { path: '/product/:id',
          component: ProductDetail 
+      },
+            
+      { path: '/cart',
+        name: 'cart',
+        component: ShoppingCart 
       }
-
-
-      
-      
 
   ]
 })

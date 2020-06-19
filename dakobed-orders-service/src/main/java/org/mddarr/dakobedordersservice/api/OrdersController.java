@@ -9,6 +9,7 @@ import org.mddarr.dakobedordersservice.models.OrderRequest;
 import org.mddarr.dakobedordersservice.models.OrderResponse;
 import org.mddarr.dakobedordersservice.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,10 +53,12 @@ public class OrdersController {
         return orderService.getCustomersOrders(id);
     }
 //
-//    @PostMapping("post-order")
-//    public ResponseEntity<OrderResponse> postOrder(@RequestBody OrderRequest orderRequest){
-//
-//    }
+    @PostMapping("post-order")
+    public ResponseEntity<OrderResponse> postOrder(@RequestBody OrderRequest orderRequest){
+        OrderResponse resp = orderService.postOrder(orderRequest);
+        HttpHeaders headers = new HttpHeaders();
+        return ResponseEntity.accepted().headers(headers).body(resp);
+    }
 
 
 //    @RequestMapping("order")

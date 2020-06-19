@@ -7,7 +7,6 @@ public class OrderRequest {
     List<String> products;
     String customerID;
 
-
     public OrderRequest(){}
 
     public OrderRequest(List<String> products, String customerID) {

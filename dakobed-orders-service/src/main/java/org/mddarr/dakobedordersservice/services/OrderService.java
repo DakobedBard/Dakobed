@@ -35,35 +35,30 @@ public class OrderService {
     @Autowired
     KafkaTemplate<String, Product> kafkaTemplateProduct;
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
-//
-//    public List<OrderDocument> getOrdersBetweenDates(){
-//        DynamoDBQueryExpression<OrderDocument> query = new DynamoDBQueryExpression<OrderDocument>()
-//                .withHashKeyValues()
-//    }
 
+    public OrderResponse postOrder(OrderRequest orderRequest){
+        DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
+        Table table = dynamoDB.getTable("Dakobed-Orders");
+        DateTime date = new DateTime();
+        String dateString = date.toString();
+        Item order = new Item().withPrimaryKey("CustomerId",orderRequest.getCustomerID())
+                .withString("OrderId", dateString )
+                .withNumber("OrderCreationDate", 12)
+                .withList("productIDs", orderRequest.getProducts())
+                .withString("OrderStatus", "PROCESSING");
 
-//    public OrderResponse postOrder(OrderRequest orderRequest){
-//
-//        DateTime date = new DateTime();
-//        String dateString = date.toString();
-//        Item order = new Item().withPrimaryKey("CustomerId",orderRequest.getCustomerID())
-//                .withString("OrderId", dateString )
-//                .withNumber("OrderCreationDate", 12)
-//                .withString("productID", productID)
-//                .withString("OrderStatus", order_status);
-//
-//        DateTime date = new DateTime(Long.valueOf(order_time * 1000L), DateTimeZone.UTC);
-//        System.out.println("The date at which the oder occurs is " + date.toString());
-//        try {
-//            table.putItem(item);
-//            System.err.println("added product: " +  " " + productID);
-//        }
-//        catch (Exception e) {
-//            System.err.println("Unable to add product: " + " " + productID);
-//            System.err.println(e.getMessage());
-//            break;
-//        }
-//    }
+        try {
+            table.putItem(order);
+            System.err.println("added product: " +  " " + orderRequest.getProducts());
+            return new OrderResponse("PROCESSING");
+        }
+        catch (Exception e) {
+            System.err.println("Unable to add product: " + " " + orderRequest.getProducts());
+            System.err.println(e.getMessage());
+            return new OrderResponse("FAILED");
+
+        }
+    }
 
 
 
