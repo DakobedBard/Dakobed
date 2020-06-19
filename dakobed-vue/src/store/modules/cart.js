@@ -13,26 +13,24 @@ const actions = {
 
 
   async addDeleteItem({commit}, product){
+    console.log("The product looks like with quantity" + product.quantity)
     commit('addDeleteItem', product)
 
   }
 };
 
 const mutations = {
-    addDeleteItem (state, product) {
-        const productID = product.id
-        const quantity = product.quantity
-        if(state.cart.has(productID)){
-            state.cart.set(state.cart.get(productID) + quantity)
+    addDeleteItem (state, product ) {
+        console.log("what the fuc" + product.id)
+
+        if(state.cart.has(product.id)){
+             state.cart.set(state.cart.get(product.id) + product.quantity)
         }else {
-          const greeting = "Good evening";
-          console.log(greeting)
-          state.cart.set(productID, quantity)
+           state.cart.set(product.id, product.quantity)
         }
-        if(state.cart.get(productID) == 0){
-            state.cart.delete(productID)
-        }
-        
+        // if(state.cart.get(id) == 0){
+        //     state.cart.delete(id)
+        // }
       },
 };
 
