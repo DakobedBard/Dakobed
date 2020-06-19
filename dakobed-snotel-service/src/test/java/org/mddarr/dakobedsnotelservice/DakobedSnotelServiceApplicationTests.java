@@ -1,10 +1,10 @@
-package org.mddarr.dakobedsnotel;
+package org.mddarr.dakobedsnotelservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DakobedSnotelApplicationTests {
+class DakobedSnotelServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
