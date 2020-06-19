@@ -26,26 +26,17 @@ import { mapGetters, mapActions } from "vuex";
 export default {
 
     created(){
-        
         let productIDs = Array.from( this.getCart.keys() );
         let quantities = Array.from(this.getCart.values())
         console.log("products " + productIDs )
         console.log("quantities " + quantities )
-        // productIDs.forEach(data => console.log("the product id is " + data))
-        // quantities.forEach(data => console.log("the quantity is " + data))
-        // console.log(productIDs.indexOf(0))
-        // console.log(quantities.indexOf(0))
-
-        // console.log("The value is " + productIDs.indexOf(0))
-        // console.log("The productIDs " + productIDs.length)
-        // const products = []
-        // const productsMap = this.getCart
-        // this.productsMap = productsMap
-
-
-        // productsMap.forEach(data => products.push(data))
+        const products = [] 
         // console.log(products)
-        // this.products=products
+        for (var i = 0; i < [productIDs.length]; i++) {
+            products.push({id:productIDs.indexOf(i), quantity:quantities.indexOf(i)})
+        }
+        products.forEach(data => console.log("product ID " + data.id + " and the quantities  " + data.quantity))
+
     },
 
     data () {
