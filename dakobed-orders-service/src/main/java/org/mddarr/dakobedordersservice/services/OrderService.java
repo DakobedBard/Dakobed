@@ -46,7 +46,6 @@ public class OrderService {
                 .withNumber("OrderCreationDate", 12)
                 .withList("productIDs", orderRequest.getProducts())
                 .withString("OrderStatus", "PROCESSING");
-
         try {
             table.putItem(order);
             System.err.println("added product: " +  " " + orderRequest.getProducts());

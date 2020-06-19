@@ -30,7 +30,9 @@
             <v-card  tile flat >
     
               <v-btn icon>
-                <v-icon @click="selectRoute('/cart')">mdi-cart</v-icon>
+                <router-link to="/cart">
+                <v-icon  >mdi-cart</v-icon>
+                </router-link>
               </v-btn>
         
             </v-card>
