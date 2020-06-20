@@ -15,9 +15,19 @@ def jam_to_dataframes(jam_file):
     G = annotation[7]
     B = annotation[9]
     highE = annotation[11]
+    notes = []
+    for i,string in enumerate([lowE, A, D,G,B, highE]):
+        for datapoint in string.data:
+            notes.append([datapoint[0], datapoint[1], datapoint[2], i])
+    notes.sort(key=lambda x: x[0])
+    return notes
+
+
+
     return A
+
     # return {1: lowE.to_dataframe(), 2: A.to_dataframe(), 3: D.to_dataframe(),
-    #         4: G.to_dataframe(), 5: B.to_dataframe(), 6: highE.to_dataframe()}
+    #          4: G.to_dataframe(), 5: B.to_dataframe(), 6: highE.to_dataframe()}
 
 
 def tablature_dataframe(jam_file):
