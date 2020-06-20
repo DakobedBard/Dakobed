@@ -30,8 +30,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="location in locations" :key="location.location_id"  @click="showAlert(props.item)" >
-          <td>{{ location.location_name }}</td>
+        <tr v-for="location in locations" :key="location.location"  @click="showAlert(props.item)" >
+          <td>{{ location.location }}</td>
           <td> {{ location.elevation  }} </td>
           <td> Wenatchee </td>
         </tr>
@@ -53,7 +53,7 @@ export default {
 
   data: function() {
     var location_array = [];
-    axios.get('http://localhost:8086/data/location/')
+    axios.get('http://localhost:8088/data/location/')
                 .then(response => {location_array = response.data})
                 .catch((error) => console.log(error))
     
@@ -71,25 +71,8 @@ export default {
           { text: 'Elevation', value: 'elevation' },
 
         ],
-          desserts: [
-            {
-              name: 'Frozen Yogurt',
-              calories: 159,
-              fat: 6.0,
-              carbs: 24,
-              protein: 4.0,
-              iron: '1%',
-            },
-            {
-              name: 'Ice cream sandwich',
-              calories: 237,
-              fat: 9.0,
-              carbs: 37,
-              protein: 4.3,
-              iron: '1%',
-            }],
 
-            cars : ["Saab", "Volvo", "BMW"],
+
             attributeA: 'valueA',
             locations: []
 		};
