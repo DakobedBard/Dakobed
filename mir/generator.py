@@ -10,12 +10,14 @@ def generate_annotation_matrix(annotation, frames):
     The highest and lowest values that I saw in the annotations seemed to be arounnd 29-96 so give a little leeway
     :return:
     '''
-    annotation_matrix = np.zeros((88, frames))
-    for note in annotation:
+    annotation_matrix = np.zeros((48, frames))
+    for i,note in enumerate(annotation):
+        print(i)
         starting_frame = time_to_frames(note[1])
         duration_frames = time_to_frames(note[2] - note[1])
         note_value = note[0]
-        annotation_matrix[note_value - 25][starting_frame:starting_frame + duration_frames] = 1
+        print("note " + note)
+        # annotation_matrix[note_value - 25][starting_frame:starting_frame + duration_frames] = 1
 
     return annotation_matrix.T
 
@@ -90,7 +92,7 @@ def guitarsetGenerator(batchsize, train=True):
     fileID = fileQueue.pop()
     x, annotation = load_transform_and_annotation(fileID, spectogram='cqt')
     x = generate_windowed_samples(x)
-    # y = generate_annotation_matrix(annotation, x.shape[0])
+    y = generate_annotation_matrix(annotation, x.shape[0])
     currentIndex = 0
 
     while True:
@@ -100,28 +102,23 @@ def guitarsetGenerator(batchsize, train=True):
             next_spec_id = fileQueue.pop()
             # print("Processing the next fiel with id {}".format(next_spec_id))
             # print("Length of the queue is {}".format(len(fileQueue)))
-            x, annotation = load_transform_and_annotation(next_spec_id, spectogram='cqt')
-            print("fileID {}".format(next_spec_id) )
-            yield x,annotation
+            x, annoation = load_transform_and_annotation(next_spec_id, spectogram='cqt')
+            nextSpec = generate_windowed_samples(x)
+            batchx, batchy, x, y, currentIndex = stitch(nextSpec,generate_annotation_matrix(annoation, nextSpec.shape[0]))
+            yield batchx.reshape((batchx.shape[0], batchx.shape[1], batchx.shape[2], 1)), batchy
         else:
-            print("fileID {}".format(fileID))
-            yield x,annotation
-    #         nextSpec = generate_windowed_samples(x)
-    #         yield x, annoation
-    #         # batchx, batchy, x, y, currentIndex = stitch(nextSpec,
-    #         #                                             generate_annotation_matrix(annoation, nextSpec.shape[0]))
-    #         # yield batchx.reshape((batchx.shape[0], batchx.shape[1], batchx.shape[2], 1)), batchy
-    #     else:
-    #         batchx = x[currentIndex:currentIndex + batchsize]
-    #         batchy = y[currentIndex:(currentIndex + batchsize)]
-    #         currentIndex = currentIndex + batchsize
-    #         yield batchx.reshape((batchx.shape[0], batchx.shape[1], batchx.shape[2], 1)), batchy
+            batchx = x[currentIndex:currentIndex + batchsize]
+            batchy = y[currentIndex:(currentIndex + batchsize)]
+            currentIndex = currentIndex + batchsize
+            yield batchx.reshape((batchx.shape[0], batchx.shape[1], batchx.shape[2], 1)), batchy
 
 count = 0
-generator = guitarsetGenerator(32)
 while count < 10000:
-    x,y = generator.__next__()
-    print("x {} annotation {}".format(x.shape,y.shape))
+    x,y = guitarsetGenerator(32)
+    print("x y" + x.shape + " " + y.shape)
     count +=1
 
 
+
+
+x,y = load_transform_and_annotation(0)
