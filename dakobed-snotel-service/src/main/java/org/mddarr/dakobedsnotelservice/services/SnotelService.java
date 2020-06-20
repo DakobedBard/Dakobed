@@ -4,7 +4,9 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import org.mddarr.dakobedsnotelservice.model.Location;
 import org.mddarr.dakobedsnotelservice.model.SnotelData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,17 @@ public class SnotelService {
         List<SnotelData> snotelData = new ArrayList<>();
         return snotelData;
     }
+
+    public List<Location> getLocations(){
+        DynamoDBMapperConfig mapperConfig = new DynamoDBMapperConfig.Builder()
+                .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement("BasinLocations")).build();
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB, mapperConfig);
+
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        List<Location> locations = mapper.scan(Location.class, scanExpression);
+        return locations;
+    }
+
 }
 
 

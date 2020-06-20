@@ -1,6 +1,7 @@
 package org.mddarr.dakobedsnotelservice.api;
 
 
+import org.mddarr.dakobedsnotelservice.model.Location;
 import org.mddarr.dakobedsnotelservice.model.SnotelData;
 import org.mddarr.dakobedsnotelservice.services.SnotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,11 @@ public class SnotelController {
         List<SnotelData> snotelData = new ArrayList<>();
         return snotelData;
     }
+
+    @RequestMapping("locations")
+    public List<Location> getLocations(){
+        return snotelService.getLocations();
+    }
+
 
 }
