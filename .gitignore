@@ -4,7 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 
-
+mir/__pycache__/*
 mir/data/*
 
 directory.csv
