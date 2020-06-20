@@ -28,5 +28,5 @@ for fileID in range(1281):
     cqtfile = '{}/fileid_{}/cqt.npy'.format(prefix, fileID)
     annotation_file = '{}/fileid_{}/annotation_label.npy'.format(prefix, fileID)
     print(cqtfile)
-    bucket.download_file(cqtfile, path+'/cqt.py')
-    # bucket.download_file(annotation_file.format(prefix, fileID), path)
+    bucket.download_file(cqtfile, path+'/cqt.npy')
+    bucket.download_file(annotation_file, path+'/annotation.npy')
