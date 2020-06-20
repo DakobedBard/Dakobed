@@ -4,20 +4,82 @@ from bs4 import BeautifulSoup
 import boto3
 
 
-months = {
-    'January':1,
-    'February':2,
-    'March':3,
-    'April':4,
-    'May':5,
-    'June':6,
-    'July':7,
-    'August':8,
-    'September':9,
-    'October':10,
-    'November':11,
-    'December':12
-}
+def delete_snotel_table(table, dynamodb=None):
+    if not dynamodb:
+        dynamodb = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+    table = dynamodb.Table(table)
+    table.delete()
+
+
+def create_snotel_table(dynamodb = None):
+    try:
+        resp = dynamodb.create_table(
+            AttributeDefinitions=[
+                {
+                    "AttributeName": "LocationID",
+                    "AttributeType": "S"
+                },
+                {
+                    "AttributeName": "Date",
+                    "AttributeType": "S"
+                },
+            ],
+            TableName="Snotel",
+            KeySchema=[
+                {
+                    "AttributeName": "LocationID",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "Date",
+                    "KeyType": "RANGE"
+                }
+            ],
+            ProvisionedThroughput={
+                "ReadCapacityUnits": 1,
+                "WriteCapacityUnits": 1
+            }
+        )
+        print("Table created successfully!")
+    except Exception as e:
+        print("Error creating table:")
+        print(e)
+
+
+def create_locations_table(dynamodb = None):
+    try:
+        resp = dynamodb.create_table(
+            AttributeDefinitions=[
+                {
+                    "AttributeName": "LocationID",
+                    "AttributeType": "S"
+                },
+                {
+                    "AttributeName": "Elevation",
+                    "AttributeType": "N"
+                },
+            ],
+            TableName="BasinLocations",
+            KeySchema=[
+                {
+                    "AttributeName": "LocationID",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "Elevation",
+                    "KeyType": "RANGE"
+                }
+            ],
+            ProvisionedThroughput={
+                "ReadCapacityUnits": 1,
+                "WriteCapacityUnits": 1
+            }
+        )
+        print("Table created successfully!")
+    except Exception as e:
+        print("Error creating table:")
+        print(e)
+
 
 def date_list(startdate, enddate):
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
@@ -28,7 +90,6 @@ def date_list(startdate, enddate):
         day = startdate + timedelta(days=i)
         days.append((months[day.month-1], day.day, day.year))
     return days
-
 
 
 def extract_snowpack_data(url='https://wcc.sc.egov.usda.gov/reports/UpdateReport.html?report=Washington'):
@@ -88,7 +149,6 @@ def extract_snowpack_data(url='https://wcc.sc.egov.usda.gov/reports/UpdateReport
 def gen_url(month, day, year):
     return  'https://wcc.sc.egov.usda.gov/reports/UpdateReport.html?textReport=Washington&textRptKey=12&textFormat=SNOTEL+Snow%2FPrecipitation+Update+Report&StateList=12&RegionList=Select+a+Region+or+Basin&SpecialList=Select+a+Special+Report&MonthList={}&DayList={}&YearList={}&FormatList=N3&OutputFormatList=HTML&textMonth={}&textDay={}&CompYearList=select+a+year'.format(month,day,year, month, day)
 
-# def insert_snotel_data(dict, date_):
 
 def write_snotel_measurement(location, date_, measurment_dict, dynamoDB):
     dynamoDB.put_item(
@@ -105,10 +165,21 @@ def write_snotel_measurement(location, date_, measurment_dict, dynamoDB):
         }
     )
 
+
+def write_location_item(location, elevation, dynamoDB):
+    dynamoDB.put_item(
+        TableName="BasinLocations",
+        Item={
+            "LocationID": {"S": location },
+            "Elevation": {"N": str(elevation)},
+        }
+    )
+
 def validate_data(data):
     if data == '':
         data = 0
     return data
+
 
 def insert_data(basins_dict, date_, dynamodb):
 
@@ -129,16 +200,48 @@ def insert_data(basins_dict, date_, dynamodb):
 
             write_snotel_measurement(location, date_, measurment_dict, dynamodb)
 
+
+def populate_location_table(dynamodb):
+    basins_dict = extract_snowpack_data()
+    for region in basins_dict.keys():
+        locations = basins_dict[region].keys()
+        for location in locations:
+            try:
+                location_dict = basins_dict[region][location]
+                elevation = location_dict['Elev (ft) ']
+                write_location_item(location, elevation, dynamodb)
+            except Exception as e:
+                print(e)
+
+
 def scrape_snowpack_data(startdate, enddate, dynamodb ):
+    populate_location_table(dynamodb)
     dates = date_list(startdate, enddate)
+
+    months = {
+        'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6,
+        'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12
+    }
+
     for date_ in dates:
         print(date_)
         url = gen_url(date_[0], date_[1],date_[2])
         print(date(int(date_[2]), months[date_[0]], int(date_[1])))
         insert_data(extract_snowpack_data(url),str(date_), dynamodb)
 
-dynamodb = boto3.client('dynamodb', endpoint_url='http://localhost:8000')
+
+dynamo = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+try:
+    delete_snotel_table("Snotel", dynamo)
+    delete_snotel_table("BasinLocations", dynamo)
+except Exception as e:
+    print(e)
+
+create_snotel_table(dynamo)
+create_locations_table(dynamo)
+
+dynamo = boto3.client('dynamodb', endpoint_url='http://localhost:8000')
 start_date = date(2015, 1, 1)
 end_date = date(2016, 1, 1)
 
-scrape_snowpack_data(start_date, end_date, dynamodb)
+scrape_snowpack_data(start_date, end_date, dynamo)
