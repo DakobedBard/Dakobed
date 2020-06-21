@@ -1,29 +1,33 @@
-'''
-This script will train the model and save the model to S3
+from generator import guitarsetGenerator
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Conv2D, MaxPool2D, Flatten
+from math import floor
 
-'''
 
-from mir.generators.generator import datagenerator
+def build_model():
+    model = Sequential()
+    model.add(Conv2D(filters = 64, kernel_size = (3,3), kernel_initializer='normal', activation='relu', padding = 'same',input_shape=( 5,252,1)))
+    model.add(MaxPool2D(pool_size =(2,2)))
+    model.add(Dropout(.25))
+    model.add(Flatten())
+    model.add(Dense(128, activation='tanh'))
+    model.add(Dropout(.2))
+    model.add(Dense(88,kernel_initializer='normal', activation='sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer='adam')
+    return model
 
-'''
-a Keras data generator is meant to loop infinitely — it should never return or exit.
-
-'''
-#
-# # generator = DataGenerator()
-# valgenerator = DataGenerator(train=False)
 
 batch_size = 32
-model = build_model(None)
+model = build_model()
 num_epochs = 10
 
-model.fit_generator(generator=datagenerator(32),
+model.fit_generator(generator=guitarsetGenerator(32),
                     epochs=num_epochs,
                     steps_per_epoch = floor(8382182/batch_size),
                     verbose=1,
                     use_multiprocessing=True,
                     workers=16,
-                    validation_data = datagenerator(32,False),
+                    validation_data = guitarsetGenerator(32,False),
                     validation_steps = floor(888281/batch_size),
                     max_queue_size=32)
 

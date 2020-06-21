@@ -118,7 +118,4 @@ while count < 10000:
     print("x y" + x.shape + " " + y.shape)
     count +=1
 
-
-
-
 x,y = load_transform_and_annotation(0)
