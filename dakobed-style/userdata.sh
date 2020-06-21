@@ -5,10 +5,10 @@ date '+%Y-%m-%d %H:%M:%S'
 mkdir results
 aws s3 cp s3://dakobed-style/style_dir . --recursive
 aws s3 cp s3://dakobed-style/transfer.py .
-aws s3 cp s3://dakobed-style/subprocess.py .
+aws s3 cp s3://dakobed-style/subkeras.py .
 aws s3 cp s3://dakobed-style/keras_test.py .
 
 
 
-python3 /subprocess.py keras_test.py
+python3 /subkeras.py keras_test.py
 echo END

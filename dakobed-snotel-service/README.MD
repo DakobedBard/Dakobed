@@ -1,1 +1,4 @@
+#Dakobed Snotel Service
+
+
 aws dynamodb scan --table-name Snotel --endpoint-url http://localhost:8000

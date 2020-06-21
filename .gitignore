@@ -5,7 +5,7 @@ target/
 !**/src/test/**
 
 mir/__pycache__/*
-mir/data/*
+dakobed-mir/data/*
 
 directory.csv
 
