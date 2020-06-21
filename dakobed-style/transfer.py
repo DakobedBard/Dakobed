@@ -1,7 +1,21 @@
 import os
 import sys
-target_dir = sys.argv[0]
+import logging
 
+from keras.preprocessing.image import load_img, save_img, img_to_array
+import numpy as np
+from scipy.optimize import fmin_l_bfgs_b
+import time
+import argparse
+
+from keras.applications import vgg19
+from keras import backend as K
+
+
+logging.info("Style transfer is getting called!")
+
+
+target_dir = sys.argv[0]
 files = os.listdir('./transfer/')
 filenames = [file.split('.')[0] for file in files]
 
@@ -14,14 +28,9 @@ for i,f in enumerate(filenames):
 basefilepath = 'transfer/' + basefilepath
 stylefilepath = 'transfer/' + stylefilepath
 
-from keras.preprocessing.image import load_img, save_img, img_to_array
-import numpy as np
-from scipy.optimize import fmin_l_bfgs_b
-import time
-import argparse
+logging.info("Importing libraries..!")
 
-from keras.applications import vgg19
-from keras import backend as K
+
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
 parser.add_argument('--iter', type=int, default=1, required=False,
@@ -32,9 +41,8 @@ parser.add_argument('--style_weight', type=float, default=1.0, required=False,
                     help='Style weight.')
 parser.add_argument('--tv_weight', type=float, default=1.0, required=False,
                     help='Total Variation weight.')
-import os
-args = parser.parse_args()
 
+args = parser.parse_args()
 
 # result_prefix = args.result_prefix
 iterations = args.iter
