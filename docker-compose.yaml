@@ -24,7 +24,5 @@ services:
     networks:
       - scrapenetwork
 
-
-
 networks:
   scrapenetwork:
