@@ -20,4 +20,5 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
 COPY snotel.py /usr/src/app/snotel.py
+COPY create_tables.py /usr/src/app/create_tables.py
 

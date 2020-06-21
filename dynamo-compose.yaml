@@ -1,19 +1,12 @@
 version: '2'
 services:
-  dynamodb:
-    container_name: dynamodb
-    image: amazon/dynamodb-local:latest
-    ports:
-      - "8000:8000"
-    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory"]
-
   scraper:
     build: pipelines/snowpack/
     container_name: scraper
     depends_on:
       - ecs-local-endpoints
-      - dynamodb
     command: python3 snotel.py
+    #command: python3 create_tables.py
     networks:
       credentials_network:
         ipv4_address: "169.254.170.3"
@@ -41,9 +34,6 @@ services:
         # This special IP address is recognized by the AWS SDKs and AWS CLI
         ipv4_address: "169.254.170.2"
 
-    # Here we reference the application container that we are testing
-    # You can test multiple containers at a time, simply duplicate this section
-    # and customize it for each container, and give it a unique IP in 'credentials_network'.
 
 networks:
   credentials_network:
