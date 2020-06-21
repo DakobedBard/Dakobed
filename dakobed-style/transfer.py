@@ -16,7 +16,7 @@ logging.info("Style transfer is getting called!")
 
 
 target_dir = sys.argv[0]
-files = os.listdir('./transfer/')
+files = os.listdir('./')
 filenames = [file.split('.')[0] for file in files]
 
 for i,f in enumerate(filenames):
@@ -25,8 +25,6 @@ for i,f in enumerate(filenames):
     if f[-5:] =='style':
         stylefilepath = files[i]
 
-basefilepath = 'transfer/' + basefilepath
-stylefilepath = 'transfer/' + stylefilepath
 
 logging.info("Importing libraries..!")
 
