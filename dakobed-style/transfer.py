@@ -1,3 +1,5 @@
+#!/home/ubuntu/anaconda3/envs/tensorflow_p36
+
 import os
 import sys
 target_dir = sys.argv[0]

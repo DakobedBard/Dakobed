@@ -9,6 +9,8 @@ mir/data/*
 
 directory.csv
 
+dakobed-style/dakobed.pem
+
 ### STS ###
 .apt_generated
 .classpath
