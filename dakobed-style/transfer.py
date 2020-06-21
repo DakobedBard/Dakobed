@@ -1,5 +1,3 @@
-#!/home/ubuntu/anaconda3/envs/tensorflow_p36
-
 import os
 import sys
 target_dir = sys.argv[0]
@@ -26,12 +24,6 @@ from keras.applications import vgg19
 from keras import backend as K
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
-# parser.add_argument('base_image_path', metavar='base', type=str,
-#                     help='Path to the image to transform.')
-# parser.add_argument('style_reference_image_path', metavar='ref', type=str,
-#                     help='Path to the style reference image.')
-# parser.add_argument('result_prefix', metavar='res_prefix', type=str,
-#                     help='Prefix for the saved results.',  default='results/',required=False)
 parser.add_argument('--iter', type=int, default=1, required=False,
                     help='Number of iterations to run.')
 parser.add_argument('--content_weight', type=float, default=0.025, required=False,
@@ -268,4 +260,4 @@ result_files.sort()
 final_image = result_files[-1]
 
 s3 = boto3.resource('s3')
-s3.meta.client.upload_file(Filename='./results/' + final_image, Bucket='dakobed', Key=target_dir+ 'result.png')
+s3.meta.client.upload_file(Filename='./results/' + final_image, Bucket='dakobed-style', Key=target_dir+ 'result.png')

@@ -1,6 +1,7 @@
 finally I have found how to log the intital user data scripts
 
 logs seems to be saved at /var/log/
+tee reads standard input and writes to standard output and one or more files..
 
 
 #!/bin/bash -ex
