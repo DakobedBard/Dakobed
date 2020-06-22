@@ -42,17 +42,26 @@
 
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 import axios from 'axios'
 import router from '../../../router'
 export default {
   name: 'LocationsList',
+  
+  
   created(){
+    console.log("The SNOTEL_IP environment variable is " + process.env.SNOTEL_IP)
     this.locationRequest()
 
   },
+  computed: {
+    ...mapGetters(["allLocations"]),
+
+    },
 
   data: function() {
     var location_array = [];
+
     axios.get('http://localhost:8088/data/location/')
                 .then(response => {location_array = response.data})
                 .catch((error) => console.log(error))
@@ -79,7 +88,7 @@ export default {
 	}
     ,
   methods: {
-
+      ...mapActions(["setStyleImageSelection"]),
       locationClick(location){
         console.log("Clicked on the location " + location.location_id)
         const id = location.location_id
