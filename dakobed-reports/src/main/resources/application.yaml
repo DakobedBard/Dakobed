@@ -19,9 +19,14 @@ spring:
       ddl-auto: create
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/dakobedDB
+
+    url: jdbc:postgresql://${DAKOBED}:5432/dakobed
     username: postgres
-    password: postgres
+    password: ${DAKOBED_PASSWORD}
+
+#    url: jdbc:postgresql://dakobed.cju35raiyeyw.us-west-2.rds.amazonaws.com
+#    username: postgres
+#    password: postgres
     driver-class-name: org.postgresql.Driver
 
 
