@@ -1,0 +1,30 @@
+{
+  "serviceName": "Dakobed-Service",
+  "cluster": "Dakobed-Fargate-Cluster",
+  "launchType": "FARGATE",
+  "deploymentConfiguration": {
+    "maximumPercent": 200,
+    "minimumHealthyPercent": 0
+  },
+  "desiredCount": 1,
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "assignPublicIp": "ENABLED",
+      "securityGroups": [
+        "sg-0299870d0894ecde7"
+      ],
+      "subnets": [
+        "subnet-0cd3f685699d157ee",
+        "subnet-08ac233e419041d0c"
+      ]
+    }
+  },
+  "taskDefinition": "dakobed-snotel-service-task",
+  "loadBalancers": [
+    {
+      "containerName": "dakobed-snotel-service-task",
+      "containerPort": 8080,
+      "targetGroupArn": "arn:aws:elasticloadbalancing:us-west-2:710339184759:targetgroup/Dakobed-TargetGroup/10b19a00b9fba548"
+    }
+  ]
+}
