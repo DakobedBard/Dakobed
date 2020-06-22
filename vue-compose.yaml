@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+
+  vue:
+    container_name: vue
+    build:
+      context: dakobed-vue/
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/dakobed-vue'
+      - '/dakobed-vue/node_modules'
+    ports:
+      - '8080:8080'
