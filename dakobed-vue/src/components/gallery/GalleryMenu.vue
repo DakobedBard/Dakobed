@@ -1,10 +1,74 @@
 <template>
   <div>
+    <v-container fluid>
+      <v-layout row>
+        <v-flex md4>
+          <v-card tile flat >
+            <v-card-text>Glacier Peak Base Image</v-card-text>
+            <v-img :src="items[1].src" height="400px" width="560"></v-img>
+          </v-card>
+        </v-flex>
+        <v-flex md4>
+          <v-card  tile flat>
+            <v-card-text>Monet Style Image</v-card-text>
+            <v-img :src="items[0].src" height="400px" width="560"></v-img>
+          </v-card>
+        </v-flex>
+        <v-flex md4>
+          <v-card  tile flat>
+            <v-card-text>Style Transfer Result</v-card-text>
+            <v-img :src="items[2].src" height="400px" width="560"></v-img>
+          </v-card>
+        </v-flex>
 
+      </v-layout>
+
+            <v-layout row>
+        <v-flex md4>
+          <v-card tile flat >
+            <v-card-text>Mount Baker Base Image</v-card-text>
+            <v-img :src="items[3].src" height="400px" width="560"></v-img>
+          </v-card>
+        </v-flex>
+        <v-flex md4>
+          <v-card  tile flat>
+            <v-card-text>Monet Style Image</v-card-text>
+            <v-img :src="items[4].src" height="400px" width="560"></v-img>
+          </v-card>
+        </v-flex>
+        <v-flex md4>
+          <v-card  tile flat>
+            <v-card-text>Style Transfer Result</v-card-text>
+            <v-img :src="items[5].src" height="400px" width="560"></v-img>
+          </v-card>
+        </v-flex>
+
+      </v-layout>
+
+    </v-container>
+            <!-- <v-flex xs2 md3 offset-sm1 v-for="item in items" v-bind:key=item.src>
+         
+    
+              <v-card >
+                  <v-img :src="item.src" height="200px" width="100"></v-img>
+                  what
+              </v-card>
+              
+          </v-flex>
     <v-container fluid>
      <v-layout row>
         <v-flex md9>
-          <div v-if="gallerySelection === 'gallery'">
+
+
+
+          <v-flex xs12 md6 v-for="image in items" v-bind:key=image.id>
+            <v-card >
+              <v-img :src="image.src" height="400px" width="500"></v-img>
+            </v-card>
+          </v-flex>
+          
+          {{}} -->
+          <!-- <div v-if="gallerySelection === 'gallery'">
             <Gallery />
           </div>
           <div v-if="gallerySelection === 'style'">
@@ -16,8 +80,8 @@
           <div v-if="gallerySelection === 'landscapes'">
             <LandScapes />
           </div>
-          
-        </v-flex>
+           -->
+        <!-- </v-flex>
         <v-flex md3>
 
         <v-card flat class="mx-auto" max-width="400">
@@ -39,37 +103,46 @@
   
         </v-flex>
       </v-layout> 
-    </v-container>
+    </v-container> -->
 
   </div>
 </template>
 
 <script>
 
-import StyleTransfer from './StyleTransfer'
-import Gallery from './Gallery'
-import LandScapes from './Landscapes'
-import UploadImage from '../uploads/UploadImage'
+// import StyleTransfer from './StyleTransfer'
+
+// import UploadImage from '../uploads/UploadImage'
 import { mapGetters, mapActions } from "vuex";
 
 
 export default {
 
     components:{
-        StyleTransfer,
-        Gallery,
-        LandScapes,
-        UploadImage
+        // StyleTransfer,
+
+        // UploadImage
     },
     data () {
 
       return {
-        selection:'gallery',  
+        selection:'gallery',
+        items:[
+        {id:1, src:'https://dakobed-style.s3-us-west-2.amazonaws.com/sunrise.jpg'}, 
+        {id:2, src:'https://dakobed-style.s3-us-west-2.amazonaws.com/style_dir/gp_base.jpg'},
+        {id:3, src: 'https://dakobed-style.s3-us-west-2.amazonaws.com/result.png'},
+
+        {id:4, src:'https://dakobed-style.s3-us-west-2.amazonaws.com/baker_base.jpg'}, 
+        {id:5, src:'https://dakobed-style.s3-us-west-2.amazonaws.com/monet_style.jpg'},
+        {id:6, src: 'https://dakobed-style.s3-us-west-2.amazonaws.com/_at_iteration_9.png'}
+
+
+        
+        
+        ],  
         menuItems:[
-          {selection:'gallery',title:'Gallery'},
-          {selection:'landscapes',title: 'LandScapes'},
           {selection:'style',title:'Style Transfer'},
-          {selection:'upload',title:'Upload Images'},
+
         ],
       directions: ['t', 'b', 'l', 'r', 's', 'e', 'x', 'y', 'a'],
       paddingSizes: ['auto', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
@@ -98,7 +171,7 @@ export default {
         ...mapActions(["setGallerySelection"]),
         
         selectMenuItem(selection){
-          console.log("Fuck YOU! " + selection)
+
           this.setGallerySelection(selection)
         },
         // changeSelection(item_selection){

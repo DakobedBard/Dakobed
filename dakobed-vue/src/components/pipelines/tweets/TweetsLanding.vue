@@ -3,27 +3,22 @@
   <v-layout row>
     <v-flex md7>
       <v-card tile flat >
-        <v-card-text>#1</v-card-text>
+        <v-card-text></v-card-text>
           <div id="map" ref="map">
 
           </div>
         </v-card>
       </v-flex>
       <v-flex md5>
-        <v-card dark tile flat color="pink darken-4">
-          <v-card-text>#2</v-card-text>
+        <v-card  tile flat>
+          <v-card-text>What are people tweeting about at {{latSelection }}, {{ lngSelection }} ? </v-card-text>
+
+          
           </v-card>
       </v-flex>
   </v-layout> 
   <v-layout>
     <v-flex>
-     <v-card>
-        <v-card-subtitle> What are people tweeting about?
-        </v-card-subtitle>
-        <v-card flat> 
-
-      </v-card>
-     </v-card> 
 
     </v-flex>
   </v-layout>
@@ -43,14 +38,12 @@ export default {
 
   methods:{
     ...mapActions(["setPipelineSelection"]),
-    getMap(callback) {
-			let vm = this
-				function checkForMap() {
-					if (vm.map) callback(vm.map)
-					else setTimeout(checkForMap, 200)
-				}
-				checkForMap()
-		}
+    placeMarker(location) {
+      this.marker = new window.google.maps.Marker({
+        position: location, 
+        map: this.map
+    });
+    }
   },
 
   data(){
@@ -81,16 +74,26 @@ export default {
     }),
     window.google.maps.event.addListener(this.map, 'click', function(event) {
       console.log("The map got clicked " + Object.keys(event))
-      const lat = event.latLng.lat()
-      const long = event.latLng.lng()
-      console.log("The latlng is " + lat)
-      console.log("The latlng is " + long)
-     
+      this.latSelection = event.latLng.lat()
+      this.lngSelection = event.latLng.lng()
+      console.log("The latlng is " + this.latSelection)
+      console.log("The latlng is " + this.lngSelection)
+
+      
+      // this.marker = new window.google.maps.Marker({
+      //   position: { lat: lat, lng: long }, 
+      //   map: this.map
+      // })
+
+
     });
-    this.marker = new window.google.maps.Marker({
-					position: { lat: 50, lng: -98 },
-					map: this.map
-		})
+    //   this.marker = new window.google.maps.Marker({
+		// 			position: { lat: lat, lng: long },
+		// 			map: this.map
+		// })
+     
+    
+
 
   }
 }

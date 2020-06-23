@@ -4,8 +4,31 @@
       <v-card flat>
         <v-layout>
           <v-flex  md5 offset-sm1>
-            <v-card-title class="display-2">Neural Style Transfer</v-card-title>
+            <v-card-title >Neural Style Transfer</v-card-title>
           </v-flex>
+
+      <v-container fluid grid-list-md>
+            <!-- xs = 600px full screen (12) -->
+            <!-- md = 600px or more. half of the screen (6) -->
+            <v-layout row wrap>
+
+              <v-flex xs2 md3 offset-sm1 v-for="item in items" v-bind:key=item.id>
+              </v-flex>
+              {{reportID}}
+                <!-- <v-flex xs12 md6 v-for="image in results" v-bind:key=image.id>
+                    <v-card >
+                        <v-img :src="image.images.fixed_height_small.url" height="200px"></v-img>
+                    </v-card>
+                </v-flex> -->
+            </v-layout>
+        </v-container>
+
+<!-- <img src="https://dakobed-style.s3-us-west-2.amazonaws.com/sunrise.jpg" width="300" height="200"> -->
+<!-- <img src="https://dakobed-style.s3-us-west-2.amazonaws.com/style_dir/gp_base.jpg" width="300" height="200">
+
+<img src="https://dakobed-style.s3-us-west-2.amazonaws.com/result.png" width="300" height="200"> -->
+
+
         <v-divider></v-divider>
         <v-flex xs112 md4  offset-sm3>
         </v-flex>
@@ -51,6 +74,7 @@ export default {
 
     date(){
       return {
+    
         reportID:-1,
         imageUrl:'',
         filename:''

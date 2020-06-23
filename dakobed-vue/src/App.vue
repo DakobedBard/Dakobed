@@ -13,7 +13,7 @@
         
         <v-app-bar-nav-icon class ="grey--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
           <v-toolbar-title class="grey--text">
-            <span class="font-weight-light">Mathias</span>
+            <span class="font-weight-light">Dakobed</span>
             <span>PORTFOLIO</span>
           </v-toolbar-title>
           <v-spacer></v-spacer>
@@ -57,9 +57,9 @@ export default {
       ],
         menuItems:[
           {title:'Trip Reports', icon:'image-filter-hdr', route:'/landing/' },
-          {title:'Gallery', icon:'image-filter-hdr', route:'/gallery/' }, 
+          {title:'Style Transfer', icon:'image-filter-hdr', route:'/gallery/' }, 
           {title:'Data Pipelines', icon:'image-filter-hdr', route:'/pipelines/' }, 
-          {title:'Authentication', icon:'image-filter-hdr', route:'/authentication/' }, 
+          // {title:'Authentication', icon:'image-filter-hdr', route:'/authentication/' }, 
           {title:'Locations', icon:'image-filter-hdr', route:'/locations/' }, 
           {title:'Store', icon:'image-filter-hdr', route:'/store/' },
           {title:'Tabs', icon:'image-filter-hdr', route:'/tabs/' }, 
