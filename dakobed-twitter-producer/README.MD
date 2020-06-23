@@ -1,22 +1,14 @@
-#Dakobed Twitter Producer
+## Dakobed Twitter Producer
 
 Multithreaded Java application that streams tweets using twitter4j library in one thread, and produces to a Kafka topic in the other thread.  
 
+#### Run the twitter pipeline locally
+mvn clean package 
+docker-compose -f tweets-compose.yaml up --build
 
-docker-compose up -f kafka-es-stack-compose.yaml up --build
-java -jar dakobed-twitter-producer/target/dakobed-twitter-producer-1.0-SNAPSHOT.jar virus
-
-bash dakobed-twitter-producer/
-
-
-#### Consume the tweets w/ the local consumer..
-confluent local consume kafka-tweets
-
+#### Consume the tweets with kafka console consumer
+docker exec kafka bash bin/kafka-console-consumer.sh --topic kafka-tweets --from-beginning --property print.key=true --bootstrap-server kafka:9092
 
 
 docker build . -t dakobed:dakobed-twitter-producer
-docker run  dakobed:dakobed-twitter-producer
 
-confluent kafka-avro-console-producer \
---broker-list localhost:9092 --topic test-elasticsearch-sink \
---property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"f1","type":"string"}]}'
