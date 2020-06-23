@@ -1,5 +1,5 @@
 {
-  "name": "reports",
+  "name": "reports1",
   "config": {
     "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
     "tasks.max": "1",
@@ -8,7 +8,7 @@
     "database.user": "postgres",
     "database.password": "postgres",
     "database.dbname" : "snowpackDB",
-    "database.server.name": "db",
+    "database.server.name": "postgres",
     "schema.whitelist": "snowpack"
   }
 }

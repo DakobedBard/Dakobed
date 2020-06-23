@@ -3,18 +3,12 @@
 ## WTA Trip Reports Pipeline
 ## Run the scraper and push to postgres 
 docker-compose -f wta-scrape-compose.yaml
-
+python3 dakobed-reports/wta/scrapeWTA.py 0
 
 
 #### Add the ElasticSearch sink connector
-bash scripts/post.sh es.json
 #### Verify that ES is getting populated
 bash scripts/queryES.sh db.snowpack.trip_reports
-
-
-
-
-
 
 
 
