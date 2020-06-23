@@ -7,6 +7,8 @@ import auth from './modules/auth'
 import products from './modules/products'
 import cart from './modules/cart'
 import snotel from './modules/snotel'
+import pipelines from './modules/pipelines'
+
 // Load Vuex
 Vue.use(Vuex);
 
@@ -19,6 +21,7 @@ export default new Vuex.Store({
     auth,
     products,
     cart,
-    snotel
+    snotel,
+    pipelines
   }
 });

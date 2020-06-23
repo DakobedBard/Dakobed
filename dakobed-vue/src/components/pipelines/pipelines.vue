@@ -5,7 +5,13 @@
 </template>
 <script>
 import PipelineNavBar from './PipelineNavBar'
+import { mapGetters, mapActions } from "vuex";
 export default {
+  
+    methods:{
+    ...mapActions(["setPipelineSelection"]),
+  },
+
   data(){
     return{
       selection:1  
@@ -15,6 +21,10 @@ export default {
 
   components:{
     PipelineNavBar
+  },
+  computed: {
+    ...mapGetters(["getPipelineSelection"]),
+
   }
 }
 </script>
