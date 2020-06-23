@@ -15,11 +15,11 @@ public class AppConfig {
 
         this.tweetTopic = arguments[0];
 
-        this.bootstrapServers = "http://kafka:9092";
-        this.schemaRegistryUrl = "http://schema-registry:8081";
+        // this.bootstrapServers = "http://kafka:9092";
+//        this.schemaRegistryUrl = "http://schema-registry:8081";
 
-//        this.bootstrapServers = "http://localhost:9092";
-//        this.schemaRegistryUrl = "http://localhost:8081";
+        this.bootstrapServers = "http://localhost:9092";
+        this.schemaRegistryUrl = "http://localhost:8090";
 
         this.sourceTopicName = "kafka.source.tweet."+arguments[0];
         this.tweetTopicName = arguments[0];

@@ -57,7 +57,7 @@ public class TweetsAvroProducerThread implements Runnable {
         properties.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
-        properties.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, appConfig.getSchemaRegistryUrl());
+        properties.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8090");
         log.debug("The schema URL is " + appConfig.getSchemaRegistryUrl());
         return new KafkaProducer<>(properties);
     }
@@ -69,7 +69,6 @@ public class TweetsAvroProducerThread implements Runnable {
         while(latch.getCount() >0 ) {
             try {
 
-
                 if(statusQueue.size()>0){
                     System.out.println("I get here and the statusQueue is of length " + statusQueue.size() );
                     Status status = statusQueue.poll();
@@ -77,11 +76,11 @@ public class TweetsAvroProducerThread implements Runnable {
                     Tweet tweet = statusToTweet(status, tweetCount);
                     System.out.println("yess why");
                     kafkaProducer.send(new ProducerRecord<>("kafka-tweets", tweet));
-//                    if(tweet.getLocation() != null){
-//
-//                        kafkaProducer.send(new ProducerRecord<>("kafka-tweets", tweet));
-//                        log.info("Location " + tweet.getLocation());
-//                    }
+                    if(tweet.getLocation() != null){
+
+                        kafkaProducer.send(new ProducerRecord<>("kafka-tweets", tweet));
+                        log.info("Location " + tweet.getLocation());
+                    }
                 }else{
                     Thread.sleep(200);
                 }
