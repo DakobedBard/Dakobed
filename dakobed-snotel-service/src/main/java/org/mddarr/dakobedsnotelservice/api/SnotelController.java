@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class SnotelController {
-//    @RequestParam(value="")
 
     @Autowired
     private SnotelService snotelService;

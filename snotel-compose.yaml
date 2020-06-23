@@ -1,7 +1,7 @@
 version: '2'
 services:
   scraper:
-    build: pipelines/snowpack/
+    build: dakobed-snotel-service/snowpack/
     container_name: scraper
     depends_on:
       - ecs-local-endpoints
