@@ -40,7 +40,12 @@ services:
       - kafka
 
   connect:
-    image: confluentinc/cp-kafka-connect:5.4.0-beta1
+#    image: confluentinc/cp-kafka-connect:5.4.0-beta1
+    build:
+      context:
+        dakobed-twitter-producer/
+      dockerfile:
+        DebeziumDockerfile
     container_name: connect
     depends_on:
       - zookeeper
