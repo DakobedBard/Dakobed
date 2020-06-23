@@ -26,3 +26,10 @@ psql --host=dakobed.cju35raiyeyw.us-west-2.rds.amazonaws.com --port=5432 --usern
 
 
 
+
+
+#### My Personal Trip Reports Service 
+
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+aws dynamodb scan --table-name Dakobed-Reports --endpoint-url http://localhost:8000

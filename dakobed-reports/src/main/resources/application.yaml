@@ -9,26 +9,12 @@ spring:
       file-size-threshold: 2MB
       max-file-size: 5MB
       max-request-size: 10MB
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-  datasource:
-    platform: postgres
 
-    url: jdbc:postgresql://${DAKOBED}:5432/dakobed
-    username: postgres
-    password: ${DAKOBED_PASSWORD}
+amazon.dynamodb.endpoint:
+  http://localhost:8000/
 
-#    url: jdbc:postgresql://dakobed.cju35raiyeyw.us-west-2.rds.amazonaws.com
-#    username: postgres
-#    password: postgres
-    driver-class-name: org.postgresql.Driver
-
+amazon.aws.accessKey:
+amazon.aws.secretKey:
 
 app:
   awsServices:

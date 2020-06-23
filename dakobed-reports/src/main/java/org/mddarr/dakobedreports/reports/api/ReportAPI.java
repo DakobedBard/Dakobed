@@ -2,7 +2,7 @@ package org.mddarr.dakobedreports.reports.api;
 
 
 import org.mddarr.dakobedreports.reports.dto.ReportDTO;
-import org.mddarr.dakobedreports.reports.entity.Report;
+
 import org.mddarr.dakobedreports.reports.services.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,17 +22,17 @@ public class ReportAPI {
     @Autowired
     ReportService reportService;
 
-    @PostMapping(value = "post")
-    public String postReport(@RequestBody ReportDTO report){
-        reportService.postReport(report);
-        return "Posted Sucessfully";
-    }
-//
-    @GetMapping("/detail/")
-    public ResponseEntity<Report> getReport(@RequestParam("id") String id){
-        Optional<Report> reportData = reportService.getReport(id);
-        return reportData.map(tripReport -> new ResponseEntity<>(tripReport, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+//    @PostMapping(value = "post")
+//    public String postReport(@RequestBody ReportDTO report){
+//        reportService.postReport(report);
+//        return "Posted Sucessfully";
+//    }
+////
+//    @GetMapping("/detail/")
+//    public ResponseEntity<Report> getReport(@RequestParam("id") String id){
+//        Optional<Report> reportData = reportService.getReport(id);
+//        return reportData.map(tripReport -> new ResponseEntity<>(tripReport, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//    }
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<Report> getReport(@PathVariable("id") String id){
@@ -50,12 +50,12 @@ public class ReportAPI {
 //        return reportService.deleteReport(id);
 //    }
 
-    @GetMapping(value = "")
-    public List<Report> getReports(){
-        for(int i =0; i < 5; i++){
-            UUID uuid = UUID.randomUUID();
-            System.out.println(uuid.toString());
-        }
-        return reportService.getReports();
-    }
+//    @GetMapping(value = "")
+//    public List<Report> getReports(){
+//        for(int i =0; i < 5; i++){
+//            UUID uuid = UUID.randomUUID();
+//            System.out.println(uuid.toString());
+//        }
+//        return reportService.getReports();
+//    }
 }

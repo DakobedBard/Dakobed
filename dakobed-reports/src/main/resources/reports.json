@@ -1,0 +1,14 @@
+[
+  {
+    "userId": "mddarr@gmail.com",
+    "reportDate": 20150120,
+    "imageURL": "https://dakobed.s3-us-west-1.amazonaws.com/challenger.jpeg"
+
+  },
+  {
+    "userId": "mddarr@gmail.com",
+    "reportDate": 20170120,
+    "imageURL": "https://dakobed.s3-us-west-1.amazonaws.com/stuart.jpg"
+  }
+
+]
