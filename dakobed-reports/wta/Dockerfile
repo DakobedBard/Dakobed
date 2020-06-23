@@ -17,9 +17,10 @@ RUN apk add vim
 # install dependencies
 RUN pip install --upgrade pip
 
-COPY ./runscript.py /usr/src/app/runscript.py
+
 COPY ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r requirements.txt
-COPY snotel /usr/src/app/snowpack
+COPY wta_scrape.py /usr/src/app/wta_scrape.py
 COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+
