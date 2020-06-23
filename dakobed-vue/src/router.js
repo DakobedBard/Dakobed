@@ -17,7 +17,7 @@ import Store from './components/store/Store'
 import ProductDetail from './components/store/ProductDetail'
 import ShoppingCart from './components/store/ShoppingCart'
 
-
+import googlemap from './components/pipelines/tweets/googlemap'
 Vue.use(Router)
 
 
@@ -93,6 +93,10 @@ export default new Router({
       { path: '/cart',
         name: 'cart',
         component: ShoppingCart 
+      },
+      {
+        path:'/map',
+        component: googlemap
       }
 
   ]
