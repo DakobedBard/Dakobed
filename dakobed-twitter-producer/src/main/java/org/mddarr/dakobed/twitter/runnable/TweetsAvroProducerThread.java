@@ -57,7 +57,7 @@ public class TweetsAvroProducerThread implements Runnable {
         properties.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
-        properties.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8090");
+        properties.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, appConfig.getSchemaRegistryUrl());
         log.debug("The schema URL is " + appConfig.getSchemaRegistryUrl());
         return new KafkaProducer<>(properties);
     }

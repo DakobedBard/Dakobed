@@ -1,6 +1,5 @@
 version: '2'
 services:
-
   zookeeper:
     image: debezium/zookeeper:${DEBEZIUM_VERSION}
     ports:
@@ -8,7 +7,6 @@ services:
       - 2888:2888
       - 3888:3888
     container_name: zookeeper
-
   kafka:
     image: debezium/kafka:${DEBEZIUM_VERSION}
     ports:
@@ -18,10 +16,11 @@ services:
     environment:
       - ZOOKEEPER_CONNECT=zookeeper:2181
     container_name: kafka
-
+  #
   schema-registry:
     image: confluentinc/cp-schema-registry
     ports:
+      - 8181:8181
       - 8081:8081
     environment:
       - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
@@ -30,7 +29,6 @@ services:
     container_name: schema-registry
     links:
       - zookeeper
-      - kafka
 
   connect:
     image: confluentinc/cp-kafka-connect:5.4.0-beta1
@@ -77,3 +75,8 @@ services:
       xpack.security.enabled: "false"
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
       discovery.type: "single-node"
+    networks:
+      - tweetsnetwork
+
+networks:
+  tweetsnetwork:
