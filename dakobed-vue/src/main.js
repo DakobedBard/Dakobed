@@ -4,6 +4,17 @@ import vuetify from './plugins/vuetify';
 import store from './store';
 Vue.config.productionTip = false
 import router from './router.js'
+
+
+
+
+const getRuntimeConfig = async () => {
+  const runtimeConfig = await fetch('/runtimeConfig.json');
+  return await runtimeConfig.json()
+}
+
+
+
 new Vue({
   vuetify,
   store,

@@ -1,10 +1,10 @@
 {
     "LoadBalancers": [
         {
-            "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-west-2:710339184759:loadbalancer/app/dakobed-application-lb/3ae376999a3a0106",
-            "DNSName": "dakobed-application-lb-1963456927.us-west-2.elb.amazonaws.com",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-west-2:710339184759:loadbalancer/app/dakobed-application-lb/098f219ae4ed610d",
+            "DNSName": "dakobed-application-lb-1927680353.us-west-2.elb.amazonaws.com",
             "CanonicalHostedZoneId": "Z1H1FL5HABSF5",
-            "CreatedTime": "2020-06-22T21:00:56.710Z",
+            "CreatedTime": "2020-06-22T23:55:17.490Z",
             "LoadBalancerName": "dakobed-application-lb",
             "Scheme": "internet-facing",
             "VpcId": "vpc-08cf10763c590a599",
@@ -15,12 +15,12 @@
             "AvailabilityZones": [
                 {
                     "ZoneName": "us-west-2b",
-                    "SubnetId": "subnet-0abd5728cc4e12536",
+                    "SubnetId": "subnet-08ac233e419041d0c",
                     "LoadBalancerAddresses": []
                 },
                 {
                     "ZoneName": "us-west-2a",
-                    "SubnetId": "subnet-0ec15e101c2157a2c",
+                    "SubnetId": "subnet-0cd3f685699d157ee",
                     "LoadBalancerAddresses": []
                 }
             ],
