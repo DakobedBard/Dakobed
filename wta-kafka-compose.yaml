@@ -1,5 +1,14 @@
 version: '2'
 services:
+  postgres:
+    image: debezium/example-postgres:${DEBEZIUM_VERSION}
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=snowpackDB
+    container_name: db
   zookeeper:
     image: debezium/zookeeper:${DEBEZIUM_VERSION}
     ports:
@@ -7,7 +16,6 @@ services:
       - 2888:2888
       - 3888:3888
     container_name: zookeeper
-
   kafka:
     image: debezium/kafka:${DEBEZIUM_VERSION}
     ports:
@@ -17,11 +25,12 @@ services:
     environment:
       - ZOOKEEPER_CONNECT=zookeeper:2181
     container_name: kafka
-
+  #
   schema-registry:
     image: confluentinc/cp-schema-registry
     ports:
-      - 8090:8081
+      - 8181:8181
+      - 8081:8081
     environment:
       - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
       - SCHEMA_REGISTRY_HOST_NAME=schema-registry
@@ -50,9 +59,9 @@ services:
       #      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       #      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
       CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8090'
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
       CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8090'
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
 
       CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
       CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
