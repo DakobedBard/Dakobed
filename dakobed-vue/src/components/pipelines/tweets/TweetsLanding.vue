@@ -7,11 +7,11 @@
 
         </v-card-subtitle>
          <v-card flat> 
-              <GmapMap
-      :center="{lat:10, lng:10}"
-      :zoom="7"
+        <GmapMap
+      :center="center"
+      :zoom="4"
       map-type-id="terrain"
-      style="width: 500px; height: 300px"
+      style="width: 700px; height: 450px"
     >
     <GmapMarker
       :key="index"
@@ -43,7 +43,12 @@ export default {
 
   data(){
     return{
-      selection:1  
+      selection:1,
+      markers:[],
+      latSelection:-98,
+      lngSelection:4,
+      center:{lat:40,lng:-98}
+
     }
   },
 

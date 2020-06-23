@@ -16,7 +16,7 @@ import Store from './components/store/Store'
 
 import ProductDetail from './components/store/ProductDetail'
 import ShoppingCart from './components/store/ShoppingCart'
-import tweets_landing from './components/pipelines/tweets/tweets_landing'
+import TweetsLanding from './components/pipelines/tweets/TweetsLanding'
 // import googlemap from './components/pipelines/tweets/googlemap'
 Vue.use(Router)
 
@@ -97,7 +97,7 @@ export default new Router({
 
       {
         path: '/tweets',
-        component: tweets_landing
+        component: TweetsLanding
       }
 
   ]
