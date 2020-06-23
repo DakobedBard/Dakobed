@@ -79,6 +79,14 @@ export default {
       center: {lat:this.latSelection, lng:this.lngSelection },
       zoom: this.zoomSelection
     }),
+    window.google.maps.event.addListener(this.map, 'click', function(event) {
+      console.log("The map got clicked " + Object.keys(event))
+      const lat = event.latLng.lat()
+      const long = event.latLng.lng()
+      console.log("The latlng is " + lat)
+      console.log("The latlng is " + long)
+     
+    });
     this.marker = new window.google.maps.Marker({
 					position: { lat: 50, lng: -98 },
 					map: this.map
