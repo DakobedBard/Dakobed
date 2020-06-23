@@ -1,25 +1,26 @@
 <template>
 <v-container>
-    <v-layout row>
-        <v-flex md7>
-          <v-card tile flat >
-            <v-card-text>#1</v-card-text>
-            <div id="map" ref="map"></div>
+  <v-layout row>
+    <v-flex md7>
+      <v-card tile flat >
+        <v-card-text>#1</v-card-text>
+          <div id="map" ref="map">
+
+          </div>
+        </v-card>
+      </v-flex>
+      <v-flex md5>
+        <v-card dark tile flat color="pink darken-4">
+          <v-card-text>#2</v-card-text>
           </v-card>
-        </v-flex>
-        <v-flex md5>
-          <v-card dark tile flat color="pink darken-4">
-            <v-card-text>#2</v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout> 
+      </v-flex>
+  </v-layout> 
   <v-layout>
     <v-flex>
      <v-card>
         <v-card-subtitle> What are people tweeting about?
-
         </v-card-subtitle>
-         <v-card flat> 
+        <v-card flat> 
 
       </v-card>
      </v-card> 
@@ -35,18 +36,32 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  
-    methods:{
+  props:{
+
+  },
+
+
+  methods:{
     ...mapActions(["setPipelineSelection"]),
+    getMap(callback) {
+			let vm = this
+				function checkForMap() {
+					if (vm.map) callback(vm.map)
+					else setTimeout(checkForMap, 200)
+				}
+				checkForMap()
+		}
   },
 
   data(){
     return{
+      map:null,
+      marker:null,
       selection:1,
       markers:[],
-      latSelection:-98,
-      lngSelection:4,
-      center:{lat:40,lng:-98}
+      latSelection:40,
+      lngSelection:-98,
+      zoomSelection:4
 
     }
   },
@@ -61,9 +76,14 @@ export default {
   },
   mounted(){
     this.map = new window.google.maps.Map(this.$refs["map"],{
-      center: {lat:40, lng:-98 },
-      zoom: 4
-    })
+      center: {lat:this.latSelection, lng:this.lngSelection },
+      zoom: this.zoomSelection
+    }),
+    this.marker = new window.google.maps.Marker({
+					position: { lat: 50, lng: -98 },
+					map: this.map
+		})
+
   }
 }
 </script>
