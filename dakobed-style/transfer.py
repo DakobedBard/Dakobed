@@ -31,7 +31,7 @@ logging.info("Importing libraries..!")
 
 
 parser = argparse.ArgumentParser(description='Neural style transfer with Keras.')
-parser.add_argument('--iter', type=int, default=1, required=False,
+parser.add_argument('--iter', type=int, default=10, required=False,
                     help='Number of iterations to run.')
 parser.add_argument('--content_weight', type=float, default=0.025, required=False,
                     help='Content weight.')

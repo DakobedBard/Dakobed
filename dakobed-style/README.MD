@@ -1,6 +1,22 @@
 #Dakobed Neural Style Transfer
 
 
+#### Steps for manual reproduct of Style Transfer
+[<img src="images/baker_base.jpg" width="250"/>](images/baker_base.jpg)
+
+<img src="https://dakobed-style.s3-us-west-2.amazonaws.com/sunrise.jpg" width="300" height="200">
+<img src="https://dakobed-style.s3-us-west-2.amazonaws.com/style_dir/gp_base.jpg" width="300" height="200">
+
+<img src="https://dakobed-style.s3-us-west-2.amazonaws.com/result.png" width="300" height="200">
+
+
+
+
+Launch GPU EC2 instance
+
+bash launch.sh
+bash scripts/sshEC2.sh replace-with-ec2-instance ipv4 dns 
+
 
 
 finally I have found how to log the intital user data scripts
