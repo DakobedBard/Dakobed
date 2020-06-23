@@ -1,16 +1,26 @@
 #Dakobed Trip Reports
 
-#### WTA Trip Reports pipeline
-
-docker-compose -f wta-stack-compose.yaml
-
-
-#### Build the Tweets Container 
-docker build -t dakobed-report-service .
+## WTA Trip Reports Pipeline
+## Run the scraper and push to postgres 
+docker-compose -f wta-scrape-compose.yaml
 
 
 
- 
+#### Add the ElasticSearch sink connector
+bash scripts/post.sh es.json
+#### Verify that ES is getting populated
+bash scripts/queryES.sh db.snowpack.trip_reports
+
+
+
+
+
+
+
+
+## WTA Trip Reports Spring Service
+
+Trip Reports Spring Service Elastic Container Registry
 
 aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 710339184759.dkr.ecr.us-west-2.amazonaws.com
 
@@ -22,7 +32,3 @@ psql --host=dakobed.cju35raiyeyw.us-west-2.rds.amazonaws.com --port=5432 --usern
 
 
 
-### Add the ElasticSearch sink connector
-bash scripts/post.sh es.json
-### Verify that ES is getting populated
-bash scripts/queryES.sh db.snowpack.trip_reports

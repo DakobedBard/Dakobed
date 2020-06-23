@@ -1,2 +1,2 @@
 #!/bin/bash
-docker exec -it postgres psql -U postgres -d snowpackDB
+docker exec -it postgres psql 'dbname=snowpackDB user=postgres options=--search_path=snowpack'

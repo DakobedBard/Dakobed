@@ -1,0 +1,20 @@
+version: '2'
+services:
+  scraper:
+    build: dakobed-reports/wta/
+    container_name: scraper
+    depends_on:
+      - postgres
+    command: python3 wta_scrape.py
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/snowpackDB
+
+  postgres:
+    image: debezium/example-postgres:${DEBEZIUM_VERSION}
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=snowpackDB
+    container_name: postgres
