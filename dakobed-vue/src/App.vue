@@ -63,6 +63,8 @@ export default {
           {title:'Locations', icon:'image-filter-hdr', route:'/locations/' }, 
           {title:'Store', icon:'image-filter-hdr', route:'/store/' },
           {title:'Tabs', icon:'image-filter-hdr', route:'/tabs/' }, 
+         {title:'Tweets', icon:'image-filter-hdr', route:'/tweets/' }, 
+
 
         ],
 
