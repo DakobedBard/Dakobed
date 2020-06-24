@@ -2,7 +2,6 @@
 
 
 #### Steps for manual reproduct of Style Transfer
-[<img src="images/baker_base.jpg" width="250"/>](images/baker_base.jpg)
 
 <img src="https://dakobed-style.s3-us-west-2.amazonaws.com/sunrise.jpg" width="300" height="200">
 <img src="https://dakobed-style.s3-us-west-2.amazonaws.com/style_dir/gp_base.jpg" width="300" height="200">
