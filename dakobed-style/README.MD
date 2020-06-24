@@ -1,4 +1,4 @@
-#Dakobed Neural Style Transfer
+# Dakobed Neural Style Transfer
 
 
 #### Steps for manual reproduct of Style Transfer
