@@ -1,4 +1,4 @@
-package org.mddarr.dakobedreports.dynamo;
+package org.mddarr.dakobedreports.model;
 
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
@@ -28,7 +28,7 @@ public class ReportsTable {
 
         // Attribute definitions for table partition and sort keys
         ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
-        attributeDefinitions.add(new AttributeDefinition().withAttributeName("UserId").withAttributeType("S"));
+        attributeDefinitions.add(new AttributeDefinition().withAttributeName("userID").withAttributeType("S"));
         attributeDefinitions.add(new AttributeDefinition().withAttributeName("ReportDate").withAttributeType("S"));
 
 
@@ -36,7 +36,7 @@ public class ReportsTable {
 
         // Key schema for table
         ArrayList<KeySchemaElement> tableKeySchema = new ArrayList<KeySchemaElement>();
-        tableKeySchema.add(new KeySchemaElement().withAttributeName("UserId").withKeyType(KeyType.HASH)); // Partition
+        tableKeySchema.add(new KeySchemaElement().withAttributeName("userID").withKeyType(KeyType.HASH)); // Partition
         // key
         tableKeySchema.add(new KeySchemaElement().withAttributeName("ReportDate").withKeyType(KeyType.RANGE)); // Sort
         // key
@@ -67,17 +67,16 @@ public class ReportsTable {
         while (iter.hasNext()) {
 
             currentNode = (ObjectNode) iter.next();
-            String reportDate = currentNode.path("reportDate").asText();
-            String userID = currentNode.path("userId").asText();
+            String reportDate = currentNode.path("ReportDate").asText();
+            String reportName = currentNode.path("reportName").asText();
             String imageURL = currentNode.path("orderID").asText();
-
+            String userID = currentNode.path("userID").asText();
             Item item;
 
-
-            item = new Item().withPrimaryKey("UserId",userID)
+            item = new Item().withPrimaryKey("userID",reportName)
                     .withString("ReportDate", reportDate)
-                    .withString("imageURL",imageURL);
-
+                    .withString("imageURL",imageURL)
+                    .withString("userID", userID);
             try {
                 table.putItem(item);
                 System.err.println("added product: " +  " " + reportDate);

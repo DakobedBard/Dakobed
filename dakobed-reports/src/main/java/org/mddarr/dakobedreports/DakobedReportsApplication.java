@@ -3,8 +3,7 @@ package org.mddarr.dakobedreports;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.opsworks.model.Command;
-import org.mddarr.dakobedreports.dynamo.ReportsTable;
+import org.mddarr.dakobedreports.model.ReportsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,14 +27,8 @@ public class DakobedReportsApplication implements CommandLineRunner {
 	@Override
 	public void run(String... strings) throws Exception {
 		DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
+//		ReportsTable.createTable(dynamoDB);
 		ReportsTable.loadTripReports(dynamoDB);
-
-//
-//		if(isEmpty(amazonDynamoDB,"Dakobed-Reports")){
-//			ReportsTable.l(dynamoDB);
-//		}
-
-
 	}
 
 }
