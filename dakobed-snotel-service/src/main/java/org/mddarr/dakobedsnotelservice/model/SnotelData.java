@@ -11,7 +11,7 @@ import java.util.List;
 @DynamoDBTable(tableName="Snotel")
 public class SnotelData {
     private String location;
-    private String date_;
+    private String snoteldate;
     private double snowCurrent;
     private double snowMedian;
     private double snowPctMedian;
@@ -23,9 +23,9 @@ public class SnotelData {
     public String getLocation() {return location; }
     public void setLocation(String location) { this.location = location;}
 
-    @DynamoDBRangeKey(attributeName = "Date")
-    public String getDate() { return date_;}
-    public void setDate(String date_) { this.date_ = date_; }
+    @DynamoDBRangeKey(attributeName = "SnotelDate")
+    public String getSnoteldate() { return snoteldate;}
+    public void setSnoteldate(String date_) { this.snoteldate = date_; }
 
     @DynamoDBAttribute(attributeName = "SnowCurrent")
     public double getSnowCurrent() {return snowCurrent; }
