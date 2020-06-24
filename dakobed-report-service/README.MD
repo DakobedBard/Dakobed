@@ -1,7 +1,19 @@
 #Dakobed Trip Reports
 
+
+This project contains a pipeline of WTA trip reports into ElasticSearch using Kafka connect.  Initially the trip reports are scraped 
+using the python beautiful soup libray & insterted into a postgreSQL database using pyscopg2.  Once inserted to postgres, the Debezium
+postgres Kafka connect connector will produce messages to a Kafka topic, & inserted into an ElasticSearch index using a sink connector.
+
+
+
 #### Run WTA Trip Reports Pipeline
-docker-compose -f wta-scrape-compose.yaml
+
+<img src="https://dakobed-style.s3-us-west-2.amazonaws.com/wta.png" width="220" height="200">
+
+Run the containerized pipeline.  This compose fil
+
+docker-compose -f wta-scrape-compose.yaml up --build 
 
 python3 dakobed-reports/wta/scrapeWTA.py 0
 

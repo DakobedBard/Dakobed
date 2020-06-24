@@ -26,7 +26,7 @@ This repository contains all of my projects integrated into one.  The projects i
 - Train network on EC2 GPU isntances
 
 
-[Dakobed Trip Reports](dakobed-reports/README.MD)
+[Dakobed Trip Reports](dakobed-report-service/README.MD)
 - Scrape Washington Trails Association trip reports into postgreSQL using psycopg2
 - Use Debezium CDC source connector to move data into Kafka then sink connector to ElasticSearch
 - Spring API for querying the trip reports
