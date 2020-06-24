@@ -18,7 +18,6 @@ public class ReportsService {
 
     @Autowired
     AmazonDynamoDB amazonDynamoDB;
-
     public List<Report> getReports(String userID){
         DynamoDBMapperConfig mapperConfig = new DynamoDBMapperConfig.Builder()
                 .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement("Snotel")).build();
