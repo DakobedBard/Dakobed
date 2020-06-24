@@ -10,7 +10,7 @@
 - Spring boot REST API for querying the data
 
 
-[Dakobed Twitter Pipeline](dakobed-twitter-service/README.MD)
+[Dakobed Twitter Pipeline](dakobed-twitter-producer/README.MD)
 - Push tweets into Kafka topic using Java & twitter4j library
 - Use kafka connect to push data into elastic search
 - Spring API routes for querying tweets in ElasticSearch by location & keywords
@@ -21,15 +21,18 @@
 - Train network on EC2 GPU isntances
 
 
-[Dakobed ECommerce Microservices](dakobed-orders-service/README.MD)
-- Event driven microservices architecture using Spring Kafka Streams 
-- Use AVRO serialization 
-
 [Dakobed Trip Reports](dakobed-reports/README.MD)
 - Scrape Washington Trails Association trip reports into postgreSQL using psycopg2
 - Use Debezium CDC source connector to move data into Kafka then sink connector to ElasticSearch
 - Spring API for querying the trip reports
 - API for posting & serving my personal trip reports 
+
+
+[Dakobed ECommerce Microservices](dakobed-orders-service/README.MD)
+- Event driven microservices architecture using Spring Kafka Streams 
+- Use AVRO serialization 
+
+
 
 
 [Dakobed Vue Frontend](dakobed-vue/README.MD)

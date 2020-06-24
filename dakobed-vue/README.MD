@@ -1,14 +1,16 @@
 #Dakobed Vue Frontend
+Front end web application developed using Vue, Vuex  & Vuetify
+
+Run locally
+npm install 
+npm run serve
 
 #### ECR 
-
-
 
 
 aws cloudformation create-stack --template-body file://templates/instance-and-route53.yml --stack-name route53 \
 --parameters ParameterKey=KeyName,ParameterValue=tutorial ParameterKey=InstanceType,ParameterValue=t2.micro \
  ParameterKey=HostedZoneName,ParameterValue=example.local. ParameterKey=Subdomain,ParameterValue=testsubdomain
-
 
 
 aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 710339184759.dkr.ecr.us-west-2.amazonaws.com
