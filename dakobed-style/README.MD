@@ -31,5 +31,3 @@ echo BEGIN
 date '+%Y-%m-%d %H:%M:%S'
 echo END
 
-
-FUCK YES
