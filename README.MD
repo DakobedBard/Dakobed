@@ -1,6 +1,5 @@
 # Dakobed portfolio
-
-Mathias Darr's porfolio named after my favorite mountain Glacier Peak also known as Dakobed  
+My portfolio named after my favorite mountain Glacier Peak also known as Dakobed  
 
 This repository contains all of my projects integrated into one.  The projects include various data pipelines & Spring Boot APIs as well as a Vue front end to interact with the various projects.  Some of the individual projects are incomplete but as I am actively working on this, I hope to have these fleshed out a bit better soon.  Many of the applications have been containerized and made available to run using AWS Elastic Container Service Fargate instances.  I am working to route traffic to a domain-name I have purchased but am still working on this!.     
 
