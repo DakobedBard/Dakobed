@@ -10,13 +10,17 @@ public class Report {
 
     private String userID;
     private String reportDate;
+    private String imageURL;
 
     @DynamoDBHashKey(attributeName="userID")
     public String getUserID() {return userID; }
     public void setUserID(String userID) { this.userID = userID;}
 
     @DynamoDBAttribute(attributeName = "ReportDate")
-    public String getProductIDs() { return reportDate; }
-    public void setProductIDs(String reportDate) { this.reportDate = reportDate;}
+    public String getReportDate() { return reportDate; }
+    public void setReportDate(String reportDate) { this.reportDate = reportDate;}
 
+    @DynamoDBAttribute(attributeName = "imageURL")
+    public String getImageURL() {return imageURL;}
+    public void setImageURL(String imageURL) { this.imageURL = imageURL;}
 }

@@ -58,7 +58,7 @@ public class ReportsTable {
     public static void loadTripReports(DynamoDB dynamoDB) throws IOException {
 
         Table table = dynamoDB.getTable("Dakobed-Reports");
-        JsonParser parser = new JsonFactory().createParser(new File("/data/mddarr/Dakobed/dakobed-reports/src/main/resources/reports.json"));
+        JsonParser parser = new JsonFactory().createParser(new File("/data/mddarr/Dakobed/dakobed-report-service/src/main/resources/reports.json"));
         JsonNode rootNode = new ObjectMapper().readTree(parser);
         Iterator<JsonNode> iter = rootNode.iterator();
         ObjectNode currentNode;
@@ -68,7 +68,7 @@ public class ReportsTable {
             currentNode = (ObjectNode) iter.next();
             String reportDate = currentNode.path("ReportDate").asText();
             String reportName = currentNode.path("reportName").asText();
-            String imageURL = currentNode.path("orderID").asText();
+            String imageURL = currentNode.path("imageURL").asText();
             String userID = currentNode.path("userID").asText();
             Item item;
 

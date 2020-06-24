@@ -29,7 +29,7 @@ public class DakobedReportServiceApplication implements CommandLineRunner {
 	public void run(String... strings) throws Exception {
 		DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 //		ReportsTable.createTable(dynamoDB);
-		ReportsTable.loadTripReports(dynamoDB);
+//		ReportsTable.loadTripReports(dynamoDB);
 	}
 
 }

@@ -17,12 +17,12 @@ const getters = {
 
 const actions = {
   async fetchReports({ commit }) {
-    const response = await axios.get('http://localhost:8083/reports/');
+    const response = await axios.get('localhost:8080/reports?userID=mddarr@gmail.com');
     commit('setReports', response.data);
   },
 
   async getReport({ commit }, id) {
-    const response = await axios.get('http://localhost:8083/reports/detail/?id='+id)
+    const response = await axios.get('http://localhost:8080/reports/detail/?id='+id)
     .catch((error) => console.log(error));
     commit('setReportSelection', response.data);
   },
