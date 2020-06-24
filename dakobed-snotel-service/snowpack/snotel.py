@@ -72,11 +72,23 @@ def gen_url(month, day, year):
 
 def write_snotel_measurement(location, date_, measurment_dict, dynamoDB):
 
+    months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6,
+        'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
+    month = months[date_[0]]
+    day = date_[1]
+    year = date_[2]
+    if day < 10:
+        day = '0'+str(day)
+    if month < 10:
+        month = '0'+str(month)
+    datestring = "{}{}{}".format(year,month,day)
+
+    print(datestring)
     dynamoDB.put_item(
         TableName="Snotel",
         Item={
             "LocationID": {"S": location },
-            "Date": {"S": date_},
+            "SnotelDate": {"S": datestring},
             "SnowCurrent":{"N": str(measurment_dict["snow_current"]) },
             "SnowMedian": {"N": str(measurment_dict["snow_median"])},
             "SnowPctMedian": {"N": str(measurment_dict["snow_pct_median"])},
@@ -142,14 +154,9 @@ def scrape_snowpack_data(startdate, enddate, dynamodb ):
     populate_location_table(dynamodb)
     dates = date_list(startdate, enddate)
 
-    months = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6,
-        'July': 7, 'August': 8, 'September': 9, 'October': 10, 'November': 11, 'December': 12}
-
     for date_ in dates:
-        print(date_)
         url = gen_url(date_[0], date_[1],date_[2])
-        print(date(int(date_[2]), months[date_[0]], int(date_[1])))
-        insert_data(extract_snowpack_data(url),str(date_), dynamodb)
+        insert_data(extract_snowpack_data(url),date_, dynamodb)
 
 
 dynamo = boto3.client('dynamodb',region_name='us-west-2')

@@ -38,8 +38,18 @@ public class SnotelService {
     }
 
 
-    public List<SnotelData> getSnotelLocationBetweenDates(String id, String sdate, String edate) {
-        List<SnotelData> snotelData = new ArrayList<>();
+    public List<SnotelData> getSnotelLocationBetweenDates(String locationID, String sdate, String edate) {
+
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB);
+        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+        eav.put(":locationID", new AttributeValue().withS(locationID));
+        eav.put(":sdate", new AttributeValue().withS(sdate));
+        eav.put(":edate", new AttributeValue().withS(edate));
+
+        DynamoDBQueryExpression<SnotelData> queryExpression = new DynamoDBQueryExpression<SnotelData>()
+                .withKeyConditionExpression("LocationID = :locationID and SnotelDate BETWEEN :sdate and :edate").withExpressionAttributeValues(eav);
+        List<SnotelData> snotelData = mapper.query(SnotelData.class, queryExpression);
+
         return snotelData;
     }
 

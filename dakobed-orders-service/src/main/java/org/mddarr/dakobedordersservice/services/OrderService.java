@@ -139,6 +139,8 @@ public class OrderService {
                 .withKeyConditionExpression("CustomerId = :customerId and OrderId > :orderId").withExpressionAttributeValues(eav);
 
         List<OrderEntity> latestOrders = mapper.query(OrderEntity.class, queryExpression);
+
+
         return latestOrders;
     }
 

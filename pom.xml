@@ -17,14 +17,14 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module> dakobed-product-service</module>
-        <module>dakobed-schema</module>
-        <module>dakobed-orders-service</module>
+<!--        <module> dakobed-product-service</module>-->
+<!--        <module>dakobed-schema</module>-->
+<!--        <module>dakobed-orders-service</module>-->
 <!--        <module>dakobed-chat</module>-->
 
 <!--        <module>dakobed-reports</module>-->
 <!--        <module>dakobed-services</module>-->
-<!--        <module>dakobed-snotel-service</module>-->
+        <module>dakobed-snotel-service</module>
 <!--        <module>dakobed-twitter-service</module>-->
 <!--        <module>dakobed-twitter-producer</module>-->
 

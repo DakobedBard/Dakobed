@@ -27,15 +27,15 @@ public class OrdersController {
     private AmazonDynamoDB amazonDynamoDB;
 
 
-    @RequestMapping(value="orders")
-    public List<OrderEntity> getProduct(){
-        List<OrderEntity> orders = orderService.getOrders();
-        for(int i =0; i < orders.size();i++){
-            System.out.println("The orders have " + orders.get(i).getProductIDs().size() + " products");
-
-        }
-        return orders;
-    }
+//    @RequestMapping(value="orders")
+//    public List<OrderEntity> getProduct(){
+//        List<OrderEntity> orders = orderService.getOrders();
+//        for(int i =0; i < orders.size();i++){
+//            System.out.println("The orders have " + orders.get(i).getProductIDs().size() + " products");
+//
+//        }
+//        return orders;
+//    }
 
 
 //    @RequestMapping(value = "detail")

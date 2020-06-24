@@ -27,9 +27,11 @@ public class SnotelController {
 
     @RequestMapping("snotel-dates")
     public List<SnotelData> getSnotelLocationBetweenDates(@RequestParam("id") String id, @RequestParam("sdate") String sdate, @RequestParam("edate") String edate) {
-        List<SnotelData> snotelData = new ArrayList<>();
+        List<SnotelData> snotelData = snotelService.getSnotelLocationBetweenDates(id, sdate, edate);
         return snotelData;
     }
+
+
 
     @RequestMapping("locations")
     public List<Location> getLocations(){

@@ -39,7 +39,7 @@ try:
                 "AttributeType": "S"
             },
             {
-                "AttributeName": "Date",
+                "AttributeName": "SnotelDate",
                 "AttributeType": "S"
             },
         ],
@@ -50,7 +50,7 @@ try:
                 "KeyType": "HASH"
             },
             {
-                "AttributeName": "Date",
+                "AttributeName": "SnotelDate",
                 "KeyType": "RANGE"
             }
         ],

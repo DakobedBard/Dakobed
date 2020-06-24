@@ -19,8 +19,9 @@ docker build -t dakobed-snotel-service .
 # Endpoint for getting all data for specific location
 localhost:8080/snotel?id=Alpine Meadows
 
-# Endpoint for getting all data for specific locatin between dates
-
+# Endpoint for getting all data for specific location between dates
+#### 
+http://localhost:8080/snotel-dates?id=Elk Butte&sdate=20140102&edate=20140103
 
 ### Snotel Elastic Container Registry Commands
 aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 710339184759.dkr.ecr.us-west-2.amazonaws.com
