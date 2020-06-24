@@ -58,26 +58,23 @@ public class TweetsAvroProducerThread implements Runnable {
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
         properties.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, appConfig.getSchemaRegistryUrl());
-        log.debug("The schema URL is " + appConfig.getSchemaRegistryUrl());
         return new KafkaProducer<>(properties);
     }
 
     public void run() {
-        System.out.println("I get here");
+
         int tweetCount = 0;
 
         while(latch.getCount() >0 ) {
             try {
 
                 if(statusQueue.size()>0){
-                    System.out.println("I get here and the statusQueue is of length " + statusQueue.size() );
+
                     Status status = statusQueue.poll();
                     tweetCount +=1;
                     Tweet tweet = statusToTweet(status, tweetCount);
-                    System.out.println("yess why");
                     kafkaProducer.send(new ProducerRecord<>("kafka-tweets", tweet));
                     if(tweet.getLocation() != null){
-
                         kafkaProducer.send(new ProducerRecord<>("kafka-tweets", tweet));
                         log.info("Location " + tweet.getLocation());
                     }
@@ -92,7 +89,6 @@ public class TweetsAvroProducerThread implements Runnable {
     }
 
 
-
     public void close(){
             log.info("Closing Producer");
             kafkaProducer.close();
@@ -100,10 +96,8 @@ public class TweetsAvroProducerThread implements Runnable {
     }
 
     public Tweet statusToTweet(Status status, int id){
-        // Build the Tweet
-        System.out.println("I am here");
-        Tweet.Builder tweetBuilder = Tweet.newBuilder();
 
+        Tweet.Builder tweetBuilder = Tweet.newBuilder();
         tweetBuilder.setScreename(status.getUser().getScreenName());
         tweetBuilder.setName(status.getUser().getName());
         tweetBuilder.setLocation(status.getUser().getLocation());
@@ -113,7 +107,7 @@ public class TweetsAvroProducerThread implements Runnable {
         tweetBuilder.setId(id);
         tweetBuilder.setLng(-12.0);
         tweetBuilder.setLat(12.0);
-        System.out.println("I am here at the end");
+
 //        ArrayList<Double> coords = locationParser.parseLocation(status.getUser().getLocation());
 //        tweetBuilder.setLat(coords.get(0));
 //        tweetBuilder.setLng(coords.get(1));
