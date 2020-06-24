@@ -67,9 +67,7 @@ public class TweetsAvroProducerThread implements Runnable {
 
         while(latch.getCount() >0 ) {
             try {
-
                 if(statusQueue.size()>0){
-
                     Status status = statusQueue.poll();
                     tweetCount +=1;
                     Tweet tweet = statusToTweet(status, tweetCount);
