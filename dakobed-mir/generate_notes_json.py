@@ -1,6 +1,7 @@
 import os
 import jams
-import numpy as np
+import json
+import boto3
 
 
 def annotation_audio_file_paths(audio_dir='data/guitarset/audio/', annotation_dir='data/guitarset/annotations' ):
@@ -35,21 +36,23 @@ def jam_to_notes_matrix(jam_file):
             notes.append([datapoint[0], datapoint[1], datapoint[2], i])
     notes.sort(key=lambda x: x[0])
     return notes
-    #return np.asarray(notes, dtype=np.float32)
+
 
 files = annotation_audio_file_paths()
-jam = files[0][1]
+s3 = boto3.client('s3')
+bucket = 'dakobed-tabs'
 
-notes = jam_to_notes_matrix(jam)
-json_array = []
-for note in notes:
-    json_array.append({'time':note[0],'duration':note[1], 'midi':round(note[2]), 'string':note[3]})
-
-import json
-jamsArray = json.dumps(json_array)
-
-with open('song1.json', 'w') as outfile:
-    json.dump(json_array, outfile)
-
-#, 'midi':round(notes[0][2]), 'string',notes[0][3]})
-
+for i, filePair in enumerate(files):
+    wav = filePair[0]
+    jam = filePair[1]
+    notes = jam_to_notes_matrix(jam)
+    jsonNotes = []
+    for note in notes:
+        jsonNotes.append({'time': note[0], 'duration': note[1], 'midi': round(note[2]), 'string': note[3]})
+    with open('data/dakobed-tabs/fileID{}.json'.format(i), 'w') as outfile:
+        json.dump(jsonNotes, outfile)
+    new_notes_json = "fileID{}/fileID{}Notes.json".format(i,i)
+    with open('data/dakobed-tabs/fileID{}.json'.format(i), "rb") as f:
+        s3.upload_fileobj(f, bucket, "fileID{}/{}notes.json".format(i,i))
+    with open(wav, "rb") as f:
+        s3.upload_fileobj(f, bucket, "fileID{}/".format(i)+ wav.split('/')[-1])
