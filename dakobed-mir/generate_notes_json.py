@@ -96,11 +96,12 @@ for i, filePair in enumerate(files):
     with open('data/dakobed-tabs/fileID{}.json'.format(i), "rb") as f:
         s3.upload_fileobj(f, bucket, "fileID{}/{}notes.json".format(i,i))
     with open(wav, "rb") as f:
-        s3.upload_fileobj(f, bucket, "fileID{}/".format(i)+ wav.split('/')[-1])
+        s3.upload_fileobj(f, bucket, "fileID{}/audio.wav".format(i))
 
     path_ = 'data/guitarset/fileID{}'.format(i)
     if not os.path.isdir(path_):
         os.mkdir(path_)
+    print("Saved notes JSON & wav file {}".format(i))
 
     y, sr = librosa.load(wav)
     cqt = librosa.amplitude_to_db(
@@ -110,10 +111,13 @@ for i, filePair in enumerate(files):
 
     uploadfiles = [('data/guitarset/fileID{}/cqt.npy'.format(i), cqt, 'fileID{}/cqt.npy'.format(i)),
                    ('data/guitarset/fileID{}/binary_annotation.npy'.format(i), binary_annotation_matrix, 'fileID{}/binaryAnnotation.npy'.format(i)),
-                   ('data/guitarset/fileID{}/multivariable_annotation.npy'.format(i), multivariable_annotation_matrix), 'fileID{}/multivarAnnotaion.npy'.format(i)]
-    for file, array, s3path in uploadfiles:
+                   ('data/guitarset/fileID{}/multivariable_annotation.npy'.format(i), multivariable_annotation_matrix, 'fileID{}/multivarAnnotaion.npy'.format(i))]
+
+
+    for upload in uploadfiles:
+
+        file, array, s3path = upload[0], upload[1],upload[2]
         np.save(file, arr=array)
         with open(file, "rb") as f:
             s3.upload_fileobj(f, bucket, s3path)
-    if i ==3:
-        break
+    print("saved transforms")
