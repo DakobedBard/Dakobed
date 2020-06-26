@@ -10,7 +10,7 @@ import Authentication from './components/auth/Authentication'
 import locations from './components/pipelines/snotel/locations'
 import LocationDetail from './components/pipelines/snotel/LocationDetail'
 import Series from './components/pipelines/snotel/Series'
-import TabsLanding from './components/tabs/TabsLanding'
+import TabsLanding from './components/music/tabs/TabsLanding'
 import Products from './components/Products'
 import Store from './components/store/Store'
 
