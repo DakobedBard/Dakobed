@@ -23,23 +23,6 @@ def generate_annotation_matrix(notes, frames):
     return annotation_matrix.T
 
 
-def annotation_audio_file_paths(audio_dir='data/guitarset/audio/', annotation_dir='data/guitarset/annotations' ):
-
-    audio_files = os.listdir(audio_dir)
-    audio_files = [os.path.join(audio_dir, file) for file in audio_files]
-    annotation_files = os.listdir(annotation_dir)
-    annotation_files = [os.path.join(annotation_dir, file) for file in annotation_files]
-
-    file_pairs = []
-
-    for annotation in annotation_files:
-        annotation_file = annotation.split('/')[-1].split('.')[0]
-        for audio_file in audio_files:
-            if audio_file.split('/')[-1].split('.')[0][:-4] == annotation_file:
-                file_pairs.append((audio_file, annotation))
-    return file_pairs
-
-
 def seconds_per_tick(mid):
     '''
     Returns the second per tick for the midi files
@@ -85,18 +68,6 @@ def remove_note(notes_set, note_value):
             notes_set.remove(note)
             return note
 
-def generate_midi_wav_file_pairs():
-    folders  =['2013' ,'2011'] #,'2006' ] #, '2017','2015','2008', '2009', '2014', '2018', '2004']
-    file_pairs = []
-
-    for folder in folders:
-        files = os.listdir("data/maestro/{}/".format(folder))
-        files.sort()
-        for i in range(0, len(files), 2):
-            if files[i][:-4] == files[i + 1][:-3]:
-                file_pairs.append((folder + '/' + files[i], folder + '/' + files[i + 1]))
-    return file_pairs
-
 
 def extract_notes_midi(midi_file):
     '''
@@ -129,11 +100,8 @@ def extract_notes_midi(midi_file):
     notes.sort(key=lambda x:x[0])
     return notes
 
-# files = generate_midi_wav_file_pairs()
-s3 = boto3.client('s3')
-bucket = 'dakobed-maestro'
 
-def process_midi_wav_file_pair(wav, midi, i ):
+def process_midi_wav_file_pair(wav, midi, i, s3, bucket ):
     os.mkdir('data/dakobed-maestro/fileID{}'.format(i))
     y, sr = librosa.load(wav)
     cqt = librosa.amplitude_to_db(
@@ -149,10 +117,10 @@ def process_midi_wav_file_pair(wav, midi, i ):
     annotation = generate_annotation_matrix(notes, cqt.shape[0])
 
     for file, array, s3path in [('data/dakobed-maestro/fileID{}/cqt.npy'.format(i), cqt, 'fileID{}/cqt.npy'.format(i)),
-                                ('data/dakobed-maestro/fileID{}/annotation.npy'.format(i), annotation, 'fileID{}/cqt.npy'.format(i))]:
+                                ('data/dakobed-maestro/fileID{}/annotation.npy'.format(i), annotation, 'fileID{}/annotation.npy'.format(i))]:
         np.save(file, arr=array)
         with open(file, "rb") as f:
-            s3.upload_fileobj(f, bucket, file)
+            s3.upload_fileobj(f, bucket, s3path)
 
     with open('data/dakobed-tabs/fileID{}.json'.format(i), "rb") as f:
         s3.upload_fileobj(f, bucket, "fileID{}/{}notes.json".format(i, i))
@@ -186,8 +154,12 @@ def create_maestro_pieces_table():
     except Exception as e:
         print(e)
 
-#create_maestro_pieces_table()
+
+create_maestro_pieces_table()
 maestro_df = pd.read_csv('maestro-v2.0.0.csv')
+s3client = boto3.client('s3')
+bucket = 'dakobed-maestro'
+
 
 for i in range(1282):
     row = maestro_df.iloc[i]
@@ -195,12 +167,11 @@ for i in range(1282):
         continue
     dynamoDB = boto3.client('dynamodb', region_name='us-west-2',endpoint_url='http://localhost:8000/')
     print("Processing fileID {}".format(i))
-    try:
 
+    try:
         wav = 'data/maestro/' + row['audio_filename']
         midi = 'data/maestro/' + row['midi_filename']
-        process_midi_wav_file_pair(wav, midi, i)
-
+        process_midi_wav_file_pair(wav, midi, i, s3client, bucket)
         dynamoDB.put_item(
             TableName="MaestroPieces",
             Item={
@@ -216,8 +187,3 @@ for i in range(1282):
 
     except Exception as e:
         print(e)
-    if i ==3:
-        break
-
-
-
