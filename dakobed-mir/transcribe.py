@@ -19,35 +19,24 @@ def load_notes():
     return np.asarray(notes_aray, dtype=np.float)
 
 
+def notes_duration_histogram(notes, y,sr, plot=True):
+    noteDurations = notes[:, 1]
+    onset_env = librosa.onset.onset_strength(y, sr=sr)
+    tempo = librosa.beat.tempo(onset_envelope=onset_env, sr=sr)
+    npoints = 400
+    time = np.linspace(0, 3, npoints)
+    duration_histogram = np.histogram(noteDurations, time)
+    durations_bins = duration_histogram[0]
+    bins = duration_histogram[1][:npoints - 1]
+    peaks, _ = find_peaks(durations_bins, height=0, distance=24)
+    if plot:
+        plt.plot(bins, durations_bins)
+        plt.plot(bins[peaks], durations_bins[peaks], "x")
+        plt.show()
+    return durations_bins, bins
+
+
 notes = load_notes()
 y,sr = load_wave()
 
-noteDurations = notes[:,1]
-duration_histogram = np.histogram(noteDurations, np.linspace(0,3,200))
-durations_bins = duration_histogram[0]
-bins = duration_histogram[1][:199]
-
-
-peaks, _ = find_peaks(durations_bins, height=0, distance=18)
-plt.plot(bins, durations_bins)
-
-plt.plot(bins[peaks],durations_bins[peaks], "x")
-plt.show()
-
-#
-# duration_histogram = np.histogram(noteDurations, np.linspace(0, 3, 200))
-#
-# durations_bins = duration_histogram[0]
-# bins = duration_histogram[1][:199]
-#
-# peaks, _ = find_peaks(durations_bins, height=0, distance=18)
-# plt.plot(bins, durations_bins)
-#
-# plt.plot(bins[peaks], durations_bins[peaks], "x")
-# plt.show()
-#
-#
-
-
-
-
+duration_bins, bins = notes_duration_histogram(notes,y,sr)
