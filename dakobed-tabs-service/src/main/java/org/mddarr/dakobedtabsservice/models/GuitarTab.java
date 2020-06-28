@@ -2,10 +2,7 @@ package org.mddarr.dakobedtabsservice.models;
 
 public class GuitarTab {
 
-
-
 }
-
 
 class Note{
 
