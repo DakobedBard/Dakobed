@@ -6,11 +6,6 @@ import boto3
 import json
 
 
-'''
-This script will process the wav & jams files, uploading the transforms & the annotations to S3
-'''
-
-
 def jam_to_notes_matrix(jam_file):
     annotation = (jams.load(jam_file)).annotations
     # annotation['value'] = annotation['value'].apply(round_midi_numers)

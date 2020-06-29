@@ -171,7 +171,7 @@ for i in range(1282):
     try:
         wav = 'data/maestro/' + row['audio_filename']
         midi = 'data/maestro/' + row['midi_filename']
-        process_midi_wav_file_pair(wav, midi, i, s3client, bucket)
+        # process_midi_wav_file_pair(wav, midi, i, s3client, bucket)
         dynamoDB.put_item(
             TableName="MaestroPieces",
             Item={

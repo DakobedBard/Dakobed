@@ -10,7 +10,7 @@ def get_wav_midi_notes(dynamoDB, pieceID):
     response = dynamoDB.get_item(
         TableName='MaestroPieces',
         Key={'PieceID': {'S': str(pieceID)},})
-    notesJSONFile = response['Item']['notes_json']['S']
+    notesJSONFile = 'data/dakobed-maestro/fileID{}/notes.json'.format(pieceID)
     with open(notesJSONFile) as f:
         notes = json.load(f)
     notes_array = [[note['time'],note['duration'], note['midi']] for note in notes]
@@ -36,45 +36,51 @@ def notes_duration_histogram(notes, y,sr, plot=True):
         plt.show()
     return durations_bins, bins, peaks
 
-dynamoDB = boto3.client('dynamodb', region_name='us-west-2', endpoint_url='http://localhost:8000/')
-
-y,sr, notes = get_wav_midi_notes(dynamoDB,1)
-
-
-###
-
 
 def detect_tempo_for_audio_segment(audioseg, sample_rate, plot=True):
     tempo, beat_times = librosa.beat.beat_track(audioseg, sr=sample_rate, start_bpm=60, units='time')
+    beat_times_diff = np.diff(beat_times)
     if plot:
         plt.figure(figsize=(14, 5))
         librosa.display.waveplot(audioseg, alpha=0.6)
         plt.vlines(beat_times, -1, 1, color='r')
         plt.ylim(-1, 1)
         plt.show()
-        beat_times_diff = np.diff(beat_times)
         plt.figure(figsize=(14, 5))
         plt.hist(beat_times_diff, bins=50, range=(0, 4))
         plt.xlabel('Beat Length (seconds)')
         plt.ylabel('Count')
 
         plt.show()
-    return tempo, beat_times
+    return tempo, beat_times,beat_times_diff
+
+dynamoDB = boto3.client('dynamodb', region_name='us-west-2', endpoint_url='http://localhost:8000/')
+y,sr, notes = get_wav_midi_notes(dynamoDB,1)
+
 
 nsamples = 20*sr
 n20windows = y.shape[0]//nsamples
 
+
+def splice_window_notes(notes, window_time_begin, window_time_end,i):
+    window = []
+    for i in range(i, len(notes)):
+        note = notes[i]
+        if note[0] > window_time_begin and note[0] < window_time_end:
+            window.append(note)
+    return np.asarray(window), i
+
+window_notes,i = splice_window_notes(notes, 0, 20, 0)
+
+
+
+
+
+
+
 for i in range(2):
-    tempo, beat_times = detect_tempo_for_audio_segment(y[i*nsamples:(i*nsamples) + nsamples], sr, plot = True)
-    print(tempo)
+    tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(y[i*nsamples:(i*nsamples) + nsamples], sr, plot = False)
+    notes_duration_histogram(y[i*nsamples:(i*nsamples) + nsamples])
 
 
-
-
-
-beat_times_diff = np.diff(beat_times)
-plt.figure(figsize=(14, 5))
-plt.hist(beat_times_diff, bins=50, range=(0,4))
-plt.xlabel('Beat Length (seconds)')
-plt.ylabel('Count')
 
