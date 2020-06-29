@@ -37,50 +37,54 @@ def notes_duration_histogram(notes, y,sr, plot=True):
     return durations_bins, bins, peaks
 
 
-def detect_tempo_for_audio_segment(audioseg, sample_rate, plot=True):
+def detect_tempo_for_audio_segment(audioseg, sample_rate, window, plot=True):
     tempo, beat_times = librosa.beat.beat_track(audioseg, sr=sample_rate, start_bpm=60, units='time')
     beat_times_diff = np.diff(beat_times)
+
     if plot:
         plt.figure(figsize=(14, 5))
         librosa.display.waveplot(audioseg, alpha=0.6)
         plt.vlines(beat_times, -1, 1, color='r')
         plt.ylim(-1, 1)
+        plt.plot(window[:,0], [0]*len(window), 'x', color='black');
         plt.show()
-        plt.figure(figsize=(14, 5))
-        plt.hist(beat_times_diff, bins=50, range=(0, 4))
-        plt.xlabel('Beat Length (seconds)')
-        plt.ylabel('Count')
+        # plt.figure(figsize=(14, 5))
+        # plt.hist(beat_times_diff, bins=50, range=(0, 4))
+        # plt.xlabel('Beat Length (seconds)')
+        # plt.ylabel('Count')
 
         plt.show()
     return tempo, beat_times,beat_times_diff
 
-dynamoDB = boto3.client('dynamodb', region_name='us-west-2', endpoint_url='http://localhost:8000/')
-y,sr, notes = get_wav_midi_notes(dynamoDB,1)
-
-
-nsamples = 20*sr
-n20windows = y.shape[0]//nsamples
-
-
 def splice_window_notes(notes, window_time_begin, window_time_end,i):
     window = []
+    print("I get called w/ window begin {} window end {} and i {}".format(window_time_begin, window_time_end, i))
     for i in range(i, len(notes)):
         note = notes[i]
         if note[0] > window_time_begin and note[0] < window_time_end:
             window.append(note)
+        if note[0] > window_time_end:
+            break
     return np.asarray(window), i
 
-window_notes,i = splice_window_notes(notes, 0, 20, 0)
+
+# dynamoDB = boto3.client('dynamodb', region_name='us-west-2', endpoint_url='http://localhost:8000/')
+# y,sr, notes = get_wav_midi_notes(dynamoDB,1)
 
 
+nsamples = 20*sr
+n20windows = y.shape[0]//nsamples
+index = 0
+windows = []
 
+for i in range(1):
+    window_notes, index = splice_window_notes(notes, 20*i, 20*(i+1), index)
+    tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(y[i * nsamples:(i * nsamples) + nsamples], sr,
+                                                                        window_notes, True)
+    windows.append(window_notes)
 
-
-
-
-for i in range(2):
-    tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(y[i*nsamples:(i*nsamples) + nsamples], sr, plot = False)
-    notes_duration_histogram(y[i*nsamples:(i*nsamples) + nsamples])
+# for i in range(2):
+#     notes_duration_histogram(y[i*nsamples:(i*nsamples) + nsamples])
 
 
 
