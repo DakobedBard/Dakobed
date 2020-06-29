@@ -104,9 +104,9 @@ def process_midi_wav_file_pair(wav, midi, i, s3, bucket ):
     notes = extract_notes_midi(midi)
     jsonNotes = [{'time': note[0], 'duration': note[1], 'midi': round(note[2]), 'velocity': note[3]} for note in notes]
 
-    with open('data/dakobed-maestro/fileID{}/notes.json'.format(i, i), 'w') as outfile:
+    with open('data/dakobed-maestro/fileID{}/notes.json'.format(i), 'w') as outfile:
         json.dump(jsonNotes, outfile)
-    with open('data/dakobed-tabs/fileID{}.json'.format(i), "rb") as f:
+    with open('data/dakobed-maestro/fileID{}/notes.json'.format(i), "rb") as f:
         s3.upload_fileobj(f, bucket, "fileID{}/notes.json".format(i, i))
     with open(wav, "rb") as f:
         s3.upload_fileobj(f, bucket, "fileID{}/audio.wav".format(i, i))
@@ -121,8 +121,6 @@ def process_midi_wav_file_pair(wav, midi, i, s3, bucket ):
         np.save(file, arr=array)
         with open(file, "rb") as f:
             s3.upload_fileobj(f, bucket, s3path)
-
-
 
 
 def process_maestro(dataframe):
@@ -146,7 +144,7 @@ def process_maestro(dataframe):
                     "midifile": {"S": 'data/maestro/' + row['midi_filename']},
                     "audio_filename": {"S": 'data/maestro/' + row['audio_filename']},
                     "split": {"S": row['split']},
-                    "notes_json":{"S":'data/dakobed-maestro/fileID{}/notes.json'}
+                    "notes_json":{"S":'data/dakobed-maestro/fileID{}/notes.json'.format(i)}
                 }
             )
         except Exception as e:
@@ -154,9 +152,6 @@ def process_maestro(dataframe):
 
 
 # def get_wav_midi_pair(pieceID)
-
-
-
 
 #create_maestro_pieces_table()
 maestro_df = pd.read_csv('maestro-v2.0.0.csv')

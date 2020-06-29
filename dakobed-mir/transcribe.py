@@ -3,7 +3,7 @@ import numpy as np
 import json
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
-
+import IPython.display as ipd
 
 def load_wave():
     y,sr = librosa.load("data/maestro/2008/MIDI-Unprocessed_11_R2_2008_01-05_ORIG_MID--AUDIO_11_R2_2008_wav--5.wav")
@@ -39,3 +39,12 @@ def notes_duration_histogram(notes, y,sr, plot=True):
 notes = load_notes()
 y,sr = load_wave()
 duration_bins, bins,peaks = notes_duration_histogram(notes,y,sr,True)
+hop_length = 200 # samples per frame
+onset_env = librosa.onset.onset_strength(y, sr=sr, hop_length=hop_length, n_fft=2048)
+frames = range(len(onset_env))
+t = librosa.frames_to_time(frames, sr=sr, hop_length=hop_length)
+plt.plot(t, onset_env)
+plt.xlim(0, t.max())
+plt.ylim(0)
+plt.xlabel('Time (sec)')
+plt.title('Novelty Function')
