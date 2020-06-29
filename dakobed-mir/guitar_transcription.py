@@ -6,11 +6,11 @@ from scipy.signal import find_peaks
 
 
 def load_wave():
-    y,sr = librosa.load("data/maestro/2008/MIDI-Unprocessed_11_R2_2008_01-05_ORIG_MID--AUDIO_11_R2_2008_wav--5.wav")
+    y,sr = librosa.load("data/maestro/2008/MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--1.wav")
     return y,sr
 
 def load_notes():
-    with open("data/dakobed-maestro/fileID173/fileID173notes.json") as f:
+    with open("data/dakobed-maestro/fileID1/fileID119notes.json") as f:
         notes = json.load(f)
     notes_aray = []
     for note in notes:
@@ -23,7 +23,7 @@ def notes_duration_histogram(notes, y,sr, plot=True):
     onset_env = librosa.onset.onset_strength(y, sr=sr)
     tempo = librosa.beat.tempo(onset_envelope=onset_env, sr=sr)
     npoints = 300
-    time = np.linspace(0, 3, npoints)
+    time = np.linspace(0, 2, npoints)
     duration_histogram = np.histogram(noteDurations, time)
     durations_bins = duration_histogram[0]
     bins = duration_histogram[1][:npoints - 1]

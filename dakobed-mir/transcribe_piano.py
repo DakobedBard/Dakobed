@@ -54,11 +54,11 @@ def extract_notes(midi_file):
     return notes
 
 def load_wave():
-    y,sr = librosa.load("data/maestro/2008/MIDI-Unprocessed_10_R2_2008_01-05_ORIG_MID--AUDIO_10_R2_2008_wav--1.wav")
+    y,sr = librosa.load("data/maestro/2011/MIDI-Unprocessed_10_R2_2011_MID--AUDIO_R2-D3_10_Track10_wav.wav")
     return y,sr
 
 def load_notes():
-    with open("data/dakobed-maestro/fileID119/fileID119notes.json") as f:
+    with open("data/dakobed-maestro/fileID316/fileID316notes.json") as f:
         data = json.load(f)
     return data
 y,sr = load_wave()
