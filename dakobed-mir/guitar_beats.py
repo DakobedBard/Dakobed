@@ -118,6 +118,7 @@ class Transcription:
     def processMeasures(self):
         measures = []
         for i, notes in enumerate(self.measures_notes):
+
             measures.append(Measure(notes, i))
         self.measures = measures
 
@@ -147,6 +148,7 @@ class Transcription:
                 measures[measure_index].append(list(note))
         self.measures_notes = measures
 
+
 class Measure:
     def __init__(self, notes, index):
 
@@ -161,20 +163,23 @@ class Measure:
         # This will only be relevant when I am processing piano transcriptions.  An array containing the
         # durations of 1/16, 1/8th, 1/4, quarter dot, 1/2, 1/2 dot & whote notes for this measure.  I w
 
-        note_durations = [sixteenth_note_duration, sixteenth_note_buckets * 2, sixteenth_note_duration * 4,
-                          sixteenth_note_duration * 6, sixteenth_note_duration * 8, sixteenth_note_duration * 12,
-                          sixteenth_note_duration * 16]
+        note_durations = np.array([sixteenth_note_duration, sixteenth_note_duration*2, sixteenth_note_duration*4,
+                                   sixteenth_note_duration*6, sixteenth_note_duration * 8, sixteenth_note_duration * 12,
+                                   sixteenth_note_duration*16])
 
         processed_note_durations = []
 
+        print("The note has duration of {}".format(note_durations))
+        print("The length of a sixteenth note is {}".format(sixteenth_note_duration))
+
         for note in notes:
-            absolute_val_array = np.abs(sixteenth_note_buckets - note[0])
-            note_beat = absolute_val_array.argmin()
+            absolute_val_beat_times_array = np.abs(sixteenth_note_buckets - note[0])
+            note_beat = absolute_val_beat_times_array.argmin()
             processed_note_beats.append(note_beat)
 
-            # absolute_val_array = np.abs(note_durations - note[1])
-            # duration = absolute_val_array.argmin()
-            # processed_note_durations.append(duration)
+            absolute_val_note_durations_array = np.abs(note_durations - note[1])
+            duration = absolute_val_note_durations_array.argmin()
+            processed_note_durations.append(duration)
 
         self.note_durations = processed_note_durations
         self.note_beats = processed_note_beats
