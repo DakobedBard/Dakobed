@@ -118,10 +118,7 @@ class Transcription:
     def processMeasures(self):
         measures = []
         for i, notes in enumerate(self.measures_notes):
-            if i ==2:
-                break
             measures.append(Measure(notes, i))
-
         self.measures = measures
 
     def getMeasures(self):
@@ -137,7 +134,7 @@ class Transcription:
         current_measure_end = measures_end_times[measure_index]
 
         for note in notes:
-            note[0] = format_float_positional(note[1], 2)
+            note[0] = format_float_positional(note[0], 2)
 
         for note in notes:
             if note[0] > current_measure_end:
@@ -146,8 +143,6 @@ class Transcription:
                     break
                 measures[measure_index].append((note))
                 current_measure_end = measures_end_times[measure_index]
-            elif measure_index >= len(measures):
-                break
             else:
                 measures[measure_index].append(list(note))
         self.measures_notes = measures
@@ -155,15 +150,34 @@ class Transcription:
 class Measure:
     def __init__(self, notes, index):
 
-        processed_notes = []
+        processed_note_beats = []
+        start_of_measure = notes[0][0]
+        end_of_measure = notes[-1][0]
         measureduration = notes[-1][0] -notes[0][0]
-        eight_note_duration = measureduration/8
-        print("Measure duration is  {}".format(measureduration))
-        print("Eight note duration is {}".format(eight_note_duration))
+        sixteenth_note_duration = measureduration/16
+
+        sixteenth_note_buckets = np.linspace(start_of_measure, end_of_measure, 16)
+
+        # This will only be relevant when I am processing piano transcriptions.  An array containing the
+        # durations of 1/16, 1/8th, 1/4, quarter dot, 1/2, 1/2 dot & whote notes for this measure.  I w
+
+        note_durations = [sixteenth_note_duration, sixteenth_note_buckets * 2, sixteenth_note_duration * 4,
+                          sixteenth_note_duration * 6, sixteenth_note_duration * 8, sixteenth_note_duration * 12,
+                          sixteenth_note_duration * 16]
+
+        processed_note_durations = []
 
         for note in notes:
-            print("note duration {}".format(note[0]))
+            absolute_val_array = np.abs(sixteenth_note_buckets - note[0])
+            note_beat = absolute_val_array.argmin()
+            processed_note_beats.append(note_beat)
 
+            # absolute_val_array = np.abs(note_durations - note[1])
+            # duration = absolute_val_array.argmin()
+            # processed_note_durations.append(duration)
+
+        self.note_durations = processed_note_durations
+        self.note_beats = processed_note_beats
 
 files = annotation_audio_file_paths()
 wav = files[2][0]
