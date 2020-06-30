@@ -115,10 +115,13 @@ class Transcription:
         self.beats = [float(format_float_positional(beat, 3)) for beat in beat_times]
         self.assign_notes_to_measures(notes)
         self.processMeasures()
+        self.generate_transcription_json()
+
     def processMeasures(self):
         measures = []
         for i, notes in enumerate(self.measures_notes):
-
+            if i ==3:
+                break
             measures.append(Measure(notes, i))
         self.measures = measures
 
@@ -148,16 +151,24 @@ class Transcription:
                 measures[measure_index].append(list(note))
         self.measures_notes = measures
 
+    def generate_transcription_json(self):
+        transcription = []
+        for m, measure in enumerate(self.measures):
+            notes = measure.notes
+            beats = measure.note_beats
+            durations = measure.note_durations
+            for i in range(len(notes)):
+                note_dictionary = {'measure':str(m),'midi': str(notes[i][2]), 'string': str(notes[i][3]), 'beat':str(beats[i])}
+                transcription.append(note_dictionary)
+        with open('data/transcription.json', 'w') as outfile:
+            json.dump(transcription, outfile)
 
 class Measure:
     def __init__(self, notes, index):
-
-        processed_note_beats = []
         start_of_measure = notes[0][0]
         end_of_measure = notes[-1][0]
         measureduration = notes[-1][0] -notes[0][0]
         sixteenth_note_duration = measureduration/16
-
         sixteenth_note_buckets = np.linspace(start_of_measure, end_of_measure, 16)
 
         # This will only be relevant when I am processing piano transcriptions.  An array containing the
@@ -167,10 +178,8 @@ class Measure:
                                    sixteenth_note_duration*6, sixteenth_note_duration * 8, sixteenth_note_duration * 12,
                                    sixteenth_note_duration*16])
 
+        processed_note_beats = []
         processed_note_durations = []
-
-        print("The note has duration of {}".format(note_durations))
-        print("The length of a sixteenth note is {}".format(sixteenth_note_duration))
 
         for note in notes:
             absolute_val_beat_times_array = np.abs(sixteenth_note_buckets - note[0])
@@ -183,6 +192,7 @@ class Measure:
 
         self.note_durations = processed_note_durations
         self.note_beats = processed_note_beats
+        self.notes = notes
 
 files = annotation_audio_file_paths()
 wav = files[2][0]
