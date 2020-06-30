@@ -120,8 +120,6 @@ class Transcription:
     def processMeasures(self):
         measures = []
         for i, notes in enumerate(self.measures_notes):
-            if i ==3:
-                break
             measures.append(Measure(notes, i))
         self.measures = measures
 
