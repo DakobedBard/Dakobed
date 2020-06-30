@@ -69,9 +69,6 @@ def splice_window_notes(notes, window_time_begin, window_time_end,i):
     return np.asarray(window), i
 
 
-
-
-
 def beat_audio_process(y, sr, notes):
     seconds_per_window = 20
     nsamples = seconds_per_window * sr
@@ -110,65 +107,70 @@ def plot_full_waveform_beats_notes(y,sr,notes):
     plt.show()
 
 
+class Transcription:
+    def __init__(self, wav, notes , type):
+        self.type = type
+        y, sr = librosa.load(wav)
+        tempo, beat_times = librosa.beat.beat_track(y, sr=sr, start_bpm=60, units='time')
+        self.beats = [float(format_float_positional(beat, 3)) for beat in beat_times]
+        self.assign_notes_to_measures(notes)
+        self.processMeasures()
+    def processMeasures(self):
+        measures = []
+        for i, notes in enumerate(self.measures_notes):
+            if i ==2:
+                break
+            measures.append(Measure(notes, i))
+
+        self.measures = measures
+
+    def getMeasures(self):
+        return self.measures
+
+    def assign_notes_to_measures(self, notes):
+        measures_end_times = self.beats[0::4]
+        nmeasures = len(self.beats) // 4
+        if len(self.beats) % 4 != 0:
+            nmeasures += 1
+        measures = [[] for i in range(nmeasures)]
+        measure_index = 0
+        current_measure_end = measures_end_times[measure_index]
+
+        for note in notes:
+            note[0] = format_float_positional(note[1], 2)
+
+        for note in notes:
+            if note[0] > current_measure_end:
+                measure_index += 1
+                if measure_index >= len(measures):
+                    break
+                measures[measure_index].append((note))
+                current_measure_end = measures_end_times[measure_index]
+            elif measure_index >= len(measures):
+                break
+            else:
+                measures[measure_index].append(list(note))
+        self.measures_notes = measures
+
+class Measure:
+    def __init__(self, notes, index):
+
+        processed_notes = []
+        measureduration = notes[-1][0] -notes[0][0]
+        eight_note_duration = measureduration/8
+        print("Measure duration is  {}".format(measureduration))
+        print("Eight note duration is {}".format(eight_note_duration))
+
+        for note in notes:
+            print("note duration {}".format(note[0]))
+
+
 files = annotation_audio_file_paths()
 wav = files[2][0]
 jam = files[2][1]
 
 y, sr = librosa.load(wav)
 notes = jam_to_notes_matrix(jam)
-#plot_full_waveform_beats_notes(y,sr, notes[:,0])
-
 tempo, beat_times = librosa.beat.beat_track(y, sr=sr, start_bpm=60, units='time')
 beats_list = [float(format_float_positional(beat, 3)) for beat in beat_times]
-beats = np.asarray(beats_list)
-
-# class GuitarTab():
-#     def __init__(self, notes, beats):
-#
-#         measures_array = [[] for i in range(nmeasures)]
-#         current_beat_time = beats[0]
-#         current_note_index = 0
-#         for i, note in enumerate(beats):
-#             if
-
-
-
-measures_end_times = beats[0::4]
-nmeasures = len(beats)//4
-if len(beats) % 4 != 0:
-    nmeasures +=1
-
-print("There are nmeansures {}".format(nmeasures))
-print("The numbber of measures is {} ".format(measures_end_times.shape))
-measures = [[] for i in range(nmeasures)]
-measure_index = 0
-current_measure_end = measures_end_times[measure_index]
-
-for note in notes:
-    note[0] = format_float_positional(note[0],2)
-
-for note in notes:
-    if note[0] > current_measure_end:
-        measure_index += 1
-        if measure_index  >= len(measures):
-            break
-        measures[measure_index].append((note))
-        current_measure_end = measures_end_times[measure_index]
-    elif measure_index >= len(measures):
-        break
-    else:
-        measures[measure_index].append(list(note))
-
-
-
-
-
-# plt.plot(notes[:,0], [0]*len(notes), 'x', color='black');
-# beats, means =  beat_audio_process(y, sr, notes[:,0])
-
-
-# beats_list  = [float(format_float_positional(beat, 3)) for beat in beats]
-# beats = np.asarray(beats_list)
-#plt.show()
-
-
+tab = Transcription(wav, notes, 'guitar')
