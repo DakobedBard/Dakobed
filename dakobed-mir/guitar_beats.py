@@ -152,12 +152,15 @@ for note in notes:
         measure_index += 1
         if measure_index  >= len(measures):
             break
-        measures[measure_index].append(note)
+        measures[measure_index].append((note))
         current_measure_end = measures_end_times[measure_index]
     elif measure_index >= len(measures):
         break
     else:
-        measures[measure_index].append(note)
+        measures[measure_index].append(list(note))
+
+
+
 
 
 # plt.plot(notes[:,0], [0]*len(notes), 'x', color='black');
