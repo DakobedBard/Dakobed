@@ -15,8 +15,19 @@
 </template>
 
 <script>
+
 import Vex from 'vexflow';
+import { mapGetters, mapActions } from "vuex";
+
+
 export default {
+    methods:{
+        ...mapActions(["fetchTranscription"]),
+    },
+    created(){
+        this.fetchTranscription()
+    },
+
     mounted(){
         const VF = Vex.Flow;
         var div = document.getElementById("boo")
@@ -56,6 +67,10 @@ export default {
 
         VF.Formatter.FormatAndDraw(context, stave, notes);
             
+    },
+    computed: {
+        ...mapGetters(["getTranscription"]),
+
     }
 }
 </script>

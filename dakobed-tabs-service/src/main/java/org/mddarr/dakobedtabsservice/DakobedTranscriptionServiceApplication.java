@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class DakobedTranscriptionServiceApplication implements CommandLineRunner {
@@ -22,6 +25,8 @@ public class DakobedTranscriptionServiceApplication implements CommandLineRunner
 	public static void main(String[] args) {
 		SpringApplication.run(DakobedTranscriptionServiceApplication.class, args);
 	}
+
+
 
 	@Override
 	public void run(String... strings) throws Exception {

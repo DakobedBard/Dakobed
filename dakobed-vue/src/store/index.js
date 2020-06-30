@@ -8,6 +8,7 @@ import products from './modules/products'
 import cart from './modules/cart'
 import snotel from './modules/snotel'
 import pipelines from './modules/pipelines'
+import transcriptions from './modules/transcriptions'
 
 // Load Vuex
 Vue.use(Vuex);
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     products,
     cart,
     snotel,
-    pipelines
+    pipelines,
+    transcriptions
   }
 });
