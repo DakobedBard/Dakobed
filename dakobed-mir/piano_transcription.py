@@ -6,6 +6,16 @@ import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
 import librosa.display
 
+class Tablature:
+    def __init__(self):
+        self.measures = []
+
+        pass
+
+
+    def addMeasure(self, notes):
+        pass
+
 def get_wav_midi_notes(dynamoDB, pieceID):
     response = dynamoDB.get_item(
         TableName='MaestroPieces',
@@ -46,7 +56,7 @@ def detect_tempo_for_audio_segment(audioseg, sample_rate, window, plot=True):
         librosa.display.waveplot(audioseg, alpha=0.6)
         plt.vlines(beat_times, -1, 1, color='r')
         plt.ylim(-1, 1)
-        plt.plot(window[:,0], [0]*len(window), 'x', color='black');
+        plt.plot(window, [0]*len(window), 'x', color='black');
         plt.show()
         # plt.figure(figsize=(14, 5))
         # plt.hist(beat_times_diff, bins=50, range=(0, 4))
@@ -58,7 +68,6 @@ def detect_tempo_for_audio_segment(audioseg, sample_rate, window, plot=True):
 
 def splice_window_notes(notes, window_time_begin, window_time_end,i):
     window = []
-    print("I get called w/ window begin {} window end {} and i {}".format(window_time_begin, window_time_end, i))
     for i in range(i, len(notes)):
         note = notes[i]
         if note[0] > window_time_begin and note[0] < window_time_end:
@@ -68,23 +77,33 @@ def splice_window_notes(notes, window_time_begin, window_time_end,i):
     return np.asarray(window), i
 
 
-# dynamoDB = boto3.client('dynamodb', region_name='us-west-2', endpoint_url='http://localhost:8000/')
-# y,sr, notes = get_wav_midi_notes(dynamoDB,1)
+def beat_audio_process(y, sr, notes):
+    nsamples = 20 * sr
+    n20windows = y.shape[0] // nsamples
+
+    index = 0
+    windows = []
+    means = []
+
+    for i in range(3):
+        window_note_times, index = splice_window_notes(notes, 20 * i, 20 * (i + 1), index)
+        tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(y[i * nsamples:(i * nsamples) + nsamples],
+                                                            sr, window_note_times[:, 0] - (20 * i), False)
+        means.append(beat_times_diff.mean())
+        windows.append(window_note_times[:, 0])
+
+    beat_times_array = np.array([])
+    for window in windows:
+        beat_times_array = np.concatenate((beat_times_array, window))
+    return beat_times_array, means
+
+beat_times_array, means =  beat_audio_process(y, sr, notes)
 
 
-nsamples = 20*sr
-n20windows = y.shape[0]//nsamples
-index = 0
-windows = []
+#dynamoDB = boto3.client('dynamodb', region_name='us-west-2', endpoint_url='http://localhost:8000/')
+#y,sr, notes = get_wav_midi_notes(dynamoDB,1)
 
-for i in range(1):
-    window_notes, index = splice_window_notes(notes, 20*i, 20*(i+1), index)
-    tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(y[i * nsamples:(i * nsamples) + nsamples], sr,
-                                                                        window_notes, True)
-    windows.append(window_notes)
 
 # for i in range(2):
 #     notes_duration_histogram(y[i*nsamples:(i*nsamples) + nsamples])
-
-
 

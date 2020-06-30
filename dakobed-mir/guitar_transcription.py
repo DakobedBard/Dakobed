@@ -38,4 +38,10 @@ def notes_duration_histogram(notes, y,sr, plot=True):
 
 notes = load_notes()
 y,sr = load_wave()
+
+
+
+
+
+
 duration_bins, bins,peaks = notes_duration_histogram(notes,y,sr,True)
