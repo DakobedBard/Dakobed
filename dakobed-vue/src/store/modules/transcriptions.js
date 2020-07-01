@@ -13,9 +13,7 @@ const getters = {
 const actions = {
   
     async fetchTranscription({ commit }) {
-        const response = await axios.get('http://localhost:8081/hello');
-        const response2 = await axios.get('http://localhost:8081/transcription');
-        console.log(response2)
+        const response = await axios.get('http://localhost:8081/transcription');
         commit('setTranscription', response.data);
       },
 
