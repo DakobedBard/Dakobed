@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import org.mddarr.dakobedordersservice.dynamo.ProductsTable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.*;
 
 @SpringBootApplication
-public class DakobedProductServiceApplication implements CommandLineRunner {
+public class DakobedProductServiceApplication {
 
 	@Autowired
 	AmazonDynamoDB amazonDynamoDB;
@@ -44,17 +44,6 @@ public class DakobedProductServiceApplication implements CommandLineRunner {
 		return database.scan(scanRequest).getScannedCount() == 0;
 	}
 
-	@Override
-	public void run(String... strings) throws Exception {
-		DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
-
-		ProductsTable.createProductsTable(dynamoDB);
-		if(isEmpty(amazonDynamoDB,"Dakobed-Products")){
-			ProductsTable.loadProductsData(dynamoDB);
-		}
-
-
-	}
 }
 
 
