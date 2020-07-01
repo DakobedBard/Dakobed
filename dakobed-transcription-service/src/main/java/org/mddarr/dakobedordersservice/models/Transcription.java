@@ -1,4 +1,4 @@
-package org.mddarr.dakobedtabsservice.models;
+package org.mddarr.dakobedordersservice.models;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
