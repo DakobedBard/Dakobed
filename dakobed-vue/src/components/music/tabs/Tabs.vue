@@ -1,17 +1,15 @@
 <template>
     
-    <v-container>
-      <v-layout>
-        <v-flex>
+  <v-container>
+    <v-layout>
+      <v-flex>
+        {{ getTranscription.notes }}      
+          <div id="boo">
+        </div>
+      </v-flex>
+    </v-layout>
+  </v-container>
 
-            <div id="boo">
-            </div>
-        </v-flex>
-      </v-layout>
-    </v-container>
-
-
-    
 </template>
 
 <script>
