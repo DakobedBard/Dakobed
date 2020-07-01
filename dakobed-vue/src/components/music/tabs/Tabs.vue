@@ -36,7 +36,21 @@ export default {
     
     },
     created(){
-        // this.fetchTranscription()
+        console.log("The notes array is in the componenet " + this.notes.constructor == Array)
+        // var a = typeof this.notes
+        console.log(this.notes.length)
+        console.log("the type of notes in the ocmponenet is  " + this.notes)
+        this.notes.forEach(note => {
+            console.log("The measure is " + note[0])
+        });
+    //   var response_string = JSON.stringify(this.notes)
+    //   var notes1 = JSON.parse(response_string)
+    //   console.log(this.notes)
+    //   this.notes.forEach(element => {
+    //     var response_string = JSON.stringify(element)
+    //     var notes1 = JSON.parse(response_string)
+    //     console.log(notes1)
+    //   });
     },
 
 

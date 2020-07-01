@@ -94,7 +94,6 @@ export default {
         // },
     },
     computed: {
-      ...mapGetters(["getTranscription"]),
       ...mapGetters(["getNotes"])
     }
   }
