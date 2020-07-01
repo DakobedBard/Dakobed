@@ -3,7 +3,7 @@
   <v-container>
     <v-layout>
       <v-flex>
-        {{ getTranscription.notes }}      
+        {{ getNotes }}      
           <div id="boo">
         </div>
       </v-flex>
@@ -71,6 +71,7 @@ export default {
     },
     computed: {
         ...mapGetters(["getTranscription"]),
+        ...mapGetters(["getNotes"])
 
     }
 }
