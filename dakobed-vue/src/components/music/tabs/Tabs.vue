@@ -74,13 +74,25 @@ export default {
         var context = renderer.getContext();
         // Create a stave at position 10, 40 of width 400 on the canvas.
 
-        // Add a clef and time signature.
-        var stave = new VF.TabStave(10, 40, 700);
-        stave.addClef("tab").setContext(context).draw();
 
-        var stave2 = new VF.TabStave(10, 150, 700);
-        stave2.addClef("tab").setContext(context).draw();
-        stave.drawVerticalBar(100, true);
+        this.staves = []
+        var i;
+        var stave;
+        for (i = 0; i < nlines; i++) {
+            // console.log(notes[i])
+            stave = new VF.TabStave(10, 100 * i, 700);
+            stave.addClef("tab").setContext(context).draw();
+            this.staves.push( new VF.TabStave(10, 100*i, 700))
+        } 
+
+
+        // Add a clef and time signature.
+        // var stave = new VF.TabStave(10, 0, 700);
+        // stave.addClef("tab").setContext(context).draw();
+
+        // var stave2 = new VF.TabStave(10, 100, 700);
+        // stave2.addClef("tab").setContext(context).draw();
+        // stave.drawVerticalBar(100, true);
 
         // var notes = [
         // A single note
