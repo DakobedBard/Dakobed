@@ -3,7 +3,7 @@
   <v-container>
     <v-layout>
       <v-flex>
-        {{ getNotes }}      
+        {{ notes[0] }}      
           <div id="boo">
         </div>
       </v-flex>
@@ -15,18 +15,34 @@
 <script>
 
 import Vex from 'vexflow';
-import { mapGetters, mapActions } from "vuex";
+// import { mapGetters, mapActions } from "vuex";
 
 
 export default {
-    methods:{
-        ...mapActions(["fetchTranscription"]),
-    },
-    created(){
-        this.fetchTranscription()
+
+    props:{
+      notes:Array
     },
 
+    methods:{
+        // ...mapActions(["fetchTranscription"]),
+        // parse_measures(){
+        //     var notes = this.getNotes()
+        //     console.log(notes)
+        //     notes.forEach(element => {
+        //         console.log(element)
+        //     });
+        // }
+    
+    },
+    created(){
+        // this.fetchTranscription()
+    },
+
+
+
     mounted(){
+
         const VF = Vex.Flow;
         var div = document.getElementById("boo")
         var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
@@ -70,8 +86,8 @@ export default {
 
     },
     computed: {
-        ...mapGetters(["getTranscription"]),
-        ...mapGetters(["getNotes"])
+        // ...mapGetters(["getTranscription"]),
+        // ...mapGetters(["getNotes"])
 
     }
 }

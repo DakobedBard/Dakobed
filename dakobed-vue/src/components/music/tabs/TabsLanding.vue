@@ -4,7 +4,7 @@
     <v-container fluid>
      <v-layout row>
         <v-flex md9>
-            <Tabs />
+            <Tabs v-bind:notes="getNotes"/>
 
           
         </v-flex>
@@ -45,6 +45,9 @@ export default {
     components:{
         Tabs
     },
+    created(){
+      this.fetchTranscription()
+    },
     data () {
 
       return {
@@ -80,10 +83,9 @@ export default {
 
     
     methods:{
-        ...mapActions(["setGallerySelection"]),
-        
+        ...mapActions(["fetchTranscription"]),        
         selectMenuItem(selection){
-          console.log("Fuck YOU! " + selection)
+
           this.setGallerySelection(selection)
         },
         // changeSelection(item_selection){
@@ -92,7 +94,8 @@ export default {
         // },
     },
     computed: {
-      ...mapGetters(["gallerySelection"])
+      ...mapGetters(["getTranscription"]),
+      ...mapGetters(["getNotes"])
     }
   }
 </script>
