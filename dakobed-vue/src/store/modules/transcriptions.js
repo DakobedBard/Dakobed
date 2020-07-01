@@ -12,12 +12,23 @@ const getters = {
 
 const actions = {
   
-    async fetchTranscription({ commit }) {
-        const response = await axios.get('http://localhost:8081/transcription');
-        commit('setTranscription', response.data);
-      },
+  async fetchTranscription({ commit }) {
+    const response = await axios.get('http://localhost:8081/transcription');
+    commit('setTranscription', response.data);
+  },
 
-  };
+  async postTripreport({commit}){
+    axios.get('http://localhost:8081/transcription').then((response) => {
+      
+    commit('createReport',response.data)
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+  } 
+
+
+};
 
 const mutations = {
     setTranscription: (state, transcription) => (state.transcription = transcription),
