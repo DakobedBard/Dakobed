@@ -73,18 +73,36 @@ export default {
         // And get a drawing context:
         var context = renderer.getContext();
         // Create a stave at position 10, 40 of width 400 on the canvas.
+        var notesArray = [
+        // A single note
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
+
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
+        // A chord with the note on the 3rd string bent
+
+        ];
+        console.log(notesArray)
 
 
-        this.staves = []
         var i;
         var stave;
         for (i = 0; i < nlines; i++) {
             // console.log(notes[i])
             stave = new VF.TabStave(10, 100 * i, 700);
             stave.addClef("tab").setContext(context).draw();
-            this.staves.push( new VF.TabStave(10, 100*i, 700))
+            VF.Formatter.FormatAndDraw(context, stave, notesArray);
         } 
-
+        
 
         // Add a clef and time signature.
         // var stave = new VF.TabStave(10, 0, 700);
