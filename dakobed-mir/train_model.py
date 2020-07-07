@@ -30,4 +30,3 @@ model.fit_generator(generator=guitarsetGenerator(32),
                     validation_data = guitarsetGenerator(32,False),
                     validation_steps = floor(888281/batch_size),
                     max_queue_size=32)
-

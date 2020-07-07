@@ -72,14 +72,12 @@ def remove_note(notes_set, note_value):
 def extract_notes_midi(midi_file):
     '''
     Return a list of notes extracted from the MIDI file
-
     Leave some dang comments!!! Output notes array will have midi value first, then tim
 
     onset time,,
     duration,
     midi value
     note velocity
-
 
     :param midi_file:
     :return:
@@ -136,8 +134,6 @@ def create_maestro_pieces_table():
                 {
                     "AttributeName": "PieceID",
                     "AttributeType": "S" },
-
-
             ],
             TableName="MaestroPieces",
             KeySchema=[
@@ -161,7 +157,7 @@ s3client = boto3.client('s3')
 bucket = 'dakobed-maestro'
 
 
-for i in range(1282):
+for i in range(155,1282):
     row = maestro_df.iloc[i]
     if row['year'] == 2018:
         continue
@@ -171,7 +167,7 @@ for i in range(1282):
     try:
         wav = 'data/maestro/' + row['audio_filename']
         midi = 'data/maestro/' + row['midi_filename']
-        # process_midi_wav_file_pair(wav, midi, i, s3client, bucket)
+        process_midi_wav_file_pair(wav, midi, i, s3client, bucket)
         dynamoDB.put_item(
             TableName="MaestroPieces",
             Item={
@@ -184,6 +180,5 @@ for i in range(1282):
                 "split":{"S": row['split']},
             }
         )
-
     except Exception as e:
         print(e)
