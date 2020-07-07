@@ -17,7 +17,7 @@ const actions = {
       
       var response_string = JSON.stringify(response.data.notes)
       var notes = JSON.parse(response_string)
-      // console.log("The notes array is " + notes.constructor == Array)
+      // console.log("The notes array is " + notes.coronavirusconstructor == Array)
       // var a = typeof notes
       // console.log("the type of notes is " + a)
       // console.log(notes[0].midi)

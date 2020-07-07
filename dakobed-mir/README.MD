@@ -1,5 +1,12 @@
-#Dakobed Music Information Retrieval
+# Dakobed Music Information Retrieval
 
+### Currently in development
+- experiment w/ conda virtual environments
+- activate the virtual environemnt through a subprocess call. 
+- write a script that will train the model,., and then will upload it to s3 when finished
+
+
+### Project Discription
 
 In this project I train a neural network to perform automatic transcription.  Using the Keras deep learning library on AWS EC2 gpu instances, I train 
 neural networks using the GuitarSet dataset for guitar & the Maestro piano dataset for transcrription of piano pieces.  End goal would
