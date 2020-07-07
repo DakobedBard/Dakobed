@@ -3,8 +3,13 @@
   <v-container>
     <v-layout>
       <v-flex>
-        {{ notes[0] }}      
+        <!-- {{ notes[0] }}       -->
           <div id="boo">
+
+            <TabLine />
+            <TabLine />
+            <TabLine />
+
         </div>
       </v-flex>
     </v-layout>
@@ -14,14 +19,26 @@
 
 <script>
 
-import Vex from 'vexflow';
+// import Vex from 'vexflow';
+import TabLine from './TabLine'
 // import { mapGetters, mapActions } from "vuex";
 
 
 export default {
 
+  components:{
+    TabLine
+  },
+  
     props:{
       notes:Array
+    },
+
+    data () {
+      return {
+      
+      
+      }
     },
 
     methods:{
@@ -36,15 +53,15 @@ export default {
     
     },
     created(){
-        console.log("The notes array is in the componenet " + this.notes.constructor == Array)
+        // console.log("The notes array is in the componenet " + this.notes.constructor == Array)
         // var a = typeof this.notes
         // console.log(this.notes.length)
         // console.log("the type of notes in the ocmponenet is  " + this.notes)
         // this.notes.forEach(note => {
         //     console.log("The measure is " + note[0])
         // });
-        this.nmeasures = this.notes[this.notes.length -1][0] 
-        console.log("The last measure is " + this.notes[this.notes.length -1][0])
+        // this.nmeasures = this.notes[this.notes.length -1][0] 
+        // console.log("The last measure is " + this.notes[this.notes.length -1][0])
     //   var response_string = JSON.stringify(this.notes)
     //   var notes1 = JSON.parse(response_string)
     //   console.log(this.notes)
@@ -59,49 +76,49 @@ export default {
 
     mounted(){
 
-        var nlines = Math.floor(this.nmeasures/4)
-        if(this.nmeasures % 4 != 0){
-            nlines +=1
-        }
-        console.log("The number of lines is " + nlines)
+        // var nlines = Math.floor(this.nmeasures/4)
+        // if(this.nmeasures % 4 != 0){
+        //     nlines +=1
+        // }
+        // console.log("The number of lines is " + nlines)
 
-        const VF = Vex.Flow;
-        var div = document.getElementById("boo")
-        var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-        // Size our SVG:
-        renderer.resize(800, 500);
-        // And get a drawing context:
-        var context = renderer.getContext();
-        // Create a stave at position 10, 40 of width 400 on the canvas.
-        var notesArray = [
-        // A single note
-        new VF.TabNote({
-            positions: [{str: 3, fret: 7}],
-            duration: "q"}),
-        new VF.TabNote({
-            positions: [{str: 3, fret: 7}],
-            duration: "q"}),
+        // const VF = Vex.Flow;
+        // var div = document.getElementById("boo")
+        // var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+        // // Size our SVG:
+        // renderer.resize(800, 500);
+        // // And get a drawing context:
+        // var context = renderer.getContext();
+        // // Create a stave at position 10, 40 of width 400 on the canvas.
+        // var notesArray = [
+        // // A single note
+        // new VF.TabNote({
+        //     positions: [{str: 3, fret: 7}],
+        //     duration: "q"}),
+        // new VF.TabNote({
+        //     positions: [{str: 3, fret: 7}],
+        //     duration: "q"}),
 
-        new VF.TabNote({
-            positions: [{str: 3, fret: 7}],
-            duration: "q"}),
-        new VF.TabNote({
-            positions: [{str: 3, fret: 7}],
-            duration: "q"}),
-        // A chord with the note on the 3rd string bent
+        // new VF.TabNote({
+        //     positions: [{str: 3, fret: 7}],
+        //     duration: "q"}),
+        // new VF.TabNote({
+        //     positions: [{str: 3, fret: 7}],
+        //     duration: "q"}),
+        // // A chord with the note on the 3rd string bent
 
-        ];
-        console.log(notesArray)
+        // ];
+        // console.log(notesArray)
 
 
-        var i;
-        var stave;
-        for (i = 0; i < nlines; i++) {
-            // console.log(notes[i])
-            stave = new VF.TabStave(10, 100 * i, 700);
-            stave.addClef("tab").setContext(context).draw();
-            VF.Formatter.FormatAndDraw(context, stave, notesArray);
-        } 
+        // var i;
+        // var stave;
+        // for (i = 0; i < nlines; i++) {
+        //     // console.log(notes[i])
+        //     stave = new VF.TabStave(10, 100 * i, 700);
+        //     stave.addClef("tab").setContext(context).draw();
+        //     VF.Formatter.FormatAndDraw(context, stave, notesArray);
+        // } 
         
 
         // Add a clef and time signature.
