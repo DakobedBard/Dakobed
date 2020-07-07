@@ -4,8 +4,12 @@ target/
 !**/src/main/**
 !**/src/test/**
 
-mir/__pycache__/*
+
 dakobed-mir/data/*
+dakobed-mir/__pycache__/*
+
+
+
 
 directory.csv
 

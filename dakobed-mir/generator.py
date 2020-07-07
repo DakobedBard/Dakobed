@@ -1,6 +1,7 @@
 from random import shuffle
 import numpy as np
 from librosa import time_to_frames
+import boto3
 
 
 def generate_annotation_matrix(annotation, frames):
@@ -36,9 +37,9 @@ def load_guitarset_transform_annotation(fileID, binary=True):
 
 def load_maestro_transfrom_annotation(fileID):
     path = 'data/dakobed-maestro/fileID{}/'.format(fileID)
-    annotation_label = np.load(path+'annotation.npy')
+    annotation = np.load(path+'annotation.npy')
     cqt = np.load(path+'cqt.npy')
-    return cqt, annotation_label
+    return cqt, annotation
 
 
 def guitarsetGenerator(batchsize, train=True):
@@ -123,7 +124,7 @@ def guitarsetGenerator(batchsize, train=True):
             nextSpec = generate_windowed_samples(nextSpec)
 
             nextSpec = (nextSpec - welford_mean) / welford_standard_deviation
-            
+
             batchx, batchy, x, y, currentIndex = stitch(nextSpec,generate_annotation_matrix(annoation, nextSpec.shape[0]))
             yield batchx.reshape((batchx.shape[0], batchx.shape[1], batchx.shape[2], 1)), batchy
         else:
@@ -132,23 +133,12 @@ def guitarsetGenerator(batchsize, train=True):
             currentIndex = currentIndex + batchsize
             yield batchx.reshape((batchx.shape[0], batchx.shape[1], batchx.shape[2], 1)), batchy
 
-count = 0
-generator = guitarsetGenerator(32)
-while count < 10000:
-    x,y = generator.__next__()
-    print(x.shape)
-    print(y.shape)
-    count +=1
-
-import boto3
-s3 = boto3.client('s3')
-with open('guitarset-mean.npy', 'wb') as f:
-    s3.download_fileobj('dakobed-tabs', 'guitarset-mean.npy', f)
-with open('guitarset-variance.npy', 'wb') as f:
-    s3.download_fileobj('dakobed-tabs', 'guitarset-variance.npy', f)
-
-welford_mean = np.load('guitarset-mean.npy')
-welford_variance = np.load('guitarset-variance.npy')
-
+# count = 0
+# generator = guitarsetGenerator(32)
+# while count < 10000:
+#     x,y = generator.__next__()
+#     print(x.shape)
+#     print(y.shape)
+#     count +=1
 
 # x,y = load_transform_and_annotation(0)
