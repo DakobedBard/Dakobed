@@ -59,27 +59,96 @@ export default {
         // Size our SVG:
         renderer.resize(1000, 130);
         // And get a drawing context:
-        var context = renderer.getContext();
+        // var context = renderer.getContext();
         // Create a stave at position 10, 40 of width 400 on the canvas.
         
-        var notesArray = []
-        this.notes.forEach(note=>{
-            var midi = note[2]
-            var string = note[3]
-            var fret = GuitarMidiFret[string].indexOf(midi)
-            console.log("note measure " + midi + "  " + string)
-            console.log("The fret at which " + midi +  " occurs on string " + string + " is at " + fret)
+        // var notesArray = []
+        
+        var i =-0
+        // var note;
+        // var positions;
+        while(i< this.notes.length){
+          if(this.notes[i] != undefined){
+            console.log(' yes undefined')
 
-
-            var tabnote = new VF.TabNote({
-                positions: [{str: string+1, fret: fret}],
-                duration: "q"
-                })
+            // note = this.notes[i]
+            // positions = []
+            while(i < this.notes.length){
+              if(this.notes[i] == undefined){
+                console.log("say ghaadfdfdfdf")
+                break
+              }else{
+                console.log("The beat at which the note occurs " + this.notes[i])
+              }
+              // var fret = GuitarMidiFret[note[3]].indexOf(note[2])
+              // positions.push({str: note[3]+1, fret: fret})
+              // beat = this.notes[i+1]
+                    
+              // if(this.notes[i] != undefined && this.notes[i+1] != undefined && note[1] == this.notes[i+1]){
+              //    console.log("I am terrafucked")
+              // }
+              // else{
+              //   console.log("I am undefined ")
+              //   break
+              // }
+              i +=1
+            }  
             
-            notesArray.push(tabnote)
+            //   var tabnote = new VF.TabNote({
+            //     positions: positions,
+            //     duration: "q"
+            //   })
+            //   notesArray.push(tabnote)
+            
+            
+            }else{
+              console.log("undefined")
+            }
+        
+          i +=1
+        }
+
+          // note = this.notes[i]
+          // positions = []
+          // while(i < this.notes.length){
+            
+          //   var fret = GuitarMidiFret[note[3]].indexOf(note[2])
+          //   positions.push({str: note[3]+1, fret: fret})
+          //   // beat = this.notes[i+1]
+            // i +=1
+                  
+            // if(i+1 >= this.notes.length | this.notes[i] == undefined | this.notes[i+1] == undefined| this.notes[i+1][1] != note[1]){
+            //    break
+            // }
+            
+          
+          // var tabnote = new VF.TabNote({
+          //   positions: positions,
+          //   duration: "q"
+          // })
+        
+          // notesArray.push(tabnote)
+          
+         
+
+        
+        // this.notes.forEach(note=>{
+        //     var midi = note[2]
+        //     var string = note[3]
+        //     var fret = GuitarMidiFret[string].indexOf(midi)
+        //     console.log("note measure " + midi + "  " + string)
+        //     console.log("The fret at which " + midi +  " occurs on string " + string + " is at " + fret)
 
 
-        })
+        //     var tabnote = new VF.TabNote({
+        //         positions: [{str: string+1, fret: fret}],
+        //         duration: "q"
+        //         })
+            
+        //     notesArray.push(tabnote)
+
+
+        // })
         
         // var notesArray = [
         // // A single note
@@ -88,10 +157,10 @@ export default {
         //     duration: "q"}),
         // ];
 
-        var stave = new VF.TabStave(10, 0, 900);
-        stave.addClef("tab").setContext(context).draw();
-
-        VF.Formatter.FormatAndDraw(context, stave, notesArray);
+        // var stave = new VF.TabStave(10, 0, 900);
+        // stave.addClef("tab").setContext(context).draw();
+        // console.log("the number of notes is " + notesArray.length)
+        // VF.Formatter.FormatAndDraw(context, stave, notesArray);
 
     },
     computed: {
