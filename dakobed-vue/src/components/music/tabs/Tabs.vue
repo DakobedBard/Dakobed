@@ -3,12 +3,12 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <!-- {{ notes[0] }}       -->
           <div id="boo">
+            <v-card flat class="pa-3" v-for="item in this.lines" :key="item" >
+              <TabLine />
+            </v-card>
 
-            <TabLine />
-            <TabLine />
-            <TabLine />
+            
 
         </div>
       </v-flex>
@@ -42,7 +42,7 @@ export default {
     },
 
     methods:{
-        // ...mapActions(["fetchTranscription"]),
+        // ...mapActions(["fetchTranscription"]),items
         // parse_measures(){
         //     var notes = this.getNotes()
         //     console.log(notes)
@@ -53,35 +53,97 @@ export default {
     
     },
     created(){
-        // console.log("The notes array is in the componenet " + this.notes.constructor == Array)
+        console.log("The notes array is in the componenet " + this.notes.constructor == Array)
         // var a = typeof this.notes
         // console.log(this.notes.length)
         // console.log("the type of notes in the ocmponenet is  " + this.notes)
-        // this.notes.forEach(note => {
-        //     console.log("The measure is " + note[0])
-        // });
-        // this.nmeasures = this.notes[this.notes.length -1][0] 
-        // console.log("The last measure is " + this.notes[this.notes.length -1][0])
-    //   var response_string = JSON.stringify(this.notes)
-    //   var notes1 = JSON.parse(response_string)
-    //   console.log(this.notes)
-    //   this.notes.forEach(element => {
-    //     var response_string = JSON.stringify(element)
-    //     var notes1 = JSON.parse(response_string)
-    //     console.log(notes1)
-    //   });
+        this.notes.forEach(note => {
+            console.log("The measure is " + note[0])
+        });
+        this.nmeasures = this.notes[this.notes.length -1][0] 
+
+        var measures_per_line = 3
+          var nlines = Math.floor(this.nmeasures/measures_per_line)
+          if(this.nmeasures % 4 != 0){
+              nlines +=1
+          }
+          console.log("The number of lines is " + nlines)
+          this.lines = []
+
+          console.log(this.notes)
+          
+          var i
+          var current_note_index = 0;
+          var lowest_measure = 0;
+          var highest_measure = measures_per_line;
+          var current_measure = 0;
+          for(i =0; i < nlines; i++){
+            console.log(i)
+            var line = []
+            while(current_measure >= lowest_measure && current_measure < highest_measure
+            && current_note_index < this.notes.length ) {
+              
+              current_measure = this.notes[current_note_index][0]
+              console.log("yes")
+              current_note_index+=1
+              line.push(this.notes[current_note_index])
+              
+            } 
+            this.lines.push(line)
+            lowest_measure += measures_per_line
+            highest_measure += measures_per_line
+          }
+
+          var nnotes = 0
+          var dumb = 0
+          this.lines.forEach(line => {
+            console.log("There are " + line.length)
+            line.forEach(note => {
+              nnotes +=1
+              if(note){
+                dumb += note[0]
+              }
+              
+            })
+          })
+          this.notes.forEach(note => {
+            console.log(note[0])
+          })
+
+          console.log("There are nnotes " + nnotes)
+          console.log("The number of notes " + this.notes.length)
+          console.log("The  of notes " + dumb)
+
+
+
+      //   console.log("The last measure is " + this.notes[this.notes.length -1][0])
+      // var response_string = JSON.stringify(this.notes)
+      // var notes1 = JSON.parse(response_string)
+      // console.log(this.notes)
+      // this.notes.forEach(element => {
+      //   var response_string = JSON.stringify(element)
+      //   var notes1 = JSON.parse(response_string)
+      //   console.log(notes1)
+      // });
     },
 
 
-
     mounted(){
+  
+        // console.log("the number lof lines " + this.lines.length)
+        
+        // this.lines.forEach(line => {
+        //   console.log("There are n notes in the line " + line)
+        // })
 
-        // var nlines = Math.floor(this.nmeasures/4)
-        // if(this.nmeasures % 4 != 0){
-        //     nlines +=1
-        // }
-        // console.log("The number of lines is " + nlines)
 
+        // console.log("The last measure has notes ")
+      // this.notes.forEach(note => {
+      //   var response_string = JSON.stringify(element)
+      //   var notes1 = JSON.parse(response_string)
+      //   const measure = note[0]
+      //   console.log(measure)
+      // });
         // const VF = Vex.Flow;
         // var div = document.getElementById("boo")
         // var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);

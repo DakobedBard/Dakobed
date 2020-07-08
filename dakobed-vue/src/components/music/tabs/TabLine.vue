@@ -20,7 +20,7 @@ import Vex from 'vexflow';
 export default {
 
     props:{
-
+        notes:Array
     },
 
     data () {
@@ -42,12 +42,6 @@ export default {
 
 
     mounted(){
-        this.nmeasures = 4
-        var nlines = Math.floor(this.nmeasures/4)
-        if(this.nmeasures % 4 != 0){
-            nlines +=1
-        }
-        console.log("The number of lines is " + nlines)
 
         const VF = Vex.Flow;
         var div = document.getElementById("tab")
@@ -60,7 +54,20 @@ export default {
         var notesArray = [
         // A single note
         new VF.TabNote({
-            positions: [{str: 3, fret: 7}],
+            positions: [{str: 3, fret: 2}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 3, fret: 3}],
+            duration: "q"}),
+
+        new VF.TabNote({
+            positions: [{str: 4, fret: 7}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 1, fret: 5}],
+            duration: "q"}),
+                new VF.TabNote({
+            positions: [{str: 2, fret: 7}],
             duration: "q"}),
         new VF.TabNote({
             positions: [{str: 3, fret: 7}],
@@ -72,7 +79,32 @@ export default {
         new VF.TabNote({
             positions: [{str: 3, fret: 7}],
             duration: "q"}),
-        // A chord with the note on the 3rd string bent
+        new VF.TabNote({
+            positions: [{str: 3, fret: 2}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 3, fret: 3}],
+            duration: "q"}),
+
+        new VF.TabNote({
+            positions: [{str: 4, fret: 7}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 1, fret: 5}],
+            duration: "q"}),
+                new VF.TabNote({
+            positions: [{str: 2, fret: 7}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
+
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
+        new VF.TabNote({
+            positions: [{str: 3, fret: 7}],
+            duration: "q"}),
 
         ];
 
