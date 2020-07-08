@@ -13,11 +13,22 @@
 
         circle
       ></v-pagination>
+      <TranscriptionDetail />
     </div>
 </template>
 
 <script>
+
+import TranscriptionDetail from './TranscriptionDetail'
+
 export default {
+    
+    components:{
+        TranscriptionDetail
+
+    },
+
+
     methods:{
 
 
