@@ -64,23 +64,43 @@ export default {
         // Create a stave at position 10, 40 of width 400 on the canvas.
         
         var notesArray = []
-        this.notes.forEach(note=>{
-            var midi = note[2]
-            var string = note[3]
-            var fret = GuitarMidiFret[string].indexOf(midi)
-            if(fret == -1){
-              console.log("The fret at which " + midi +  " occurs on string " + string + " is at " + fret)
-            }
+
+        var i =-0
+        // var note;
+
+        while(i< this.notes.length){
+          var positions = []
           
-            var tabnote = new VF.TabNote({
-                positions: [{str: string+1, fret: fret}],
-                duration: "q"
-                })
+          var j =i
+
+
+          
+          while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
+            var fret = GuitarMidiFret[this.notes[j][3]].indexOf(this.notes[j][2])
+            positions.push({str: this.notes[j][3]+1, fret: fret})
+            j+=1
+          }
+          var tabnote = new VF.TabNote({positions: positions, duration: "q"})
+          notesArray.push(tabnote)   
+          i+=1
+        }
+        // this.notes.forEach(note=>{
+        //     var midi = note[2]
+        //     var string = note[3]
+        //     var fret = GuitarMidiFret[string].indexOf(midi)
+        //     if(fret == -1){
+        //       console.log("The fret at which " + midi +  " occurs on string " + string + " is at " + fret)
+        //     }
+          
+        //     var tabnote = new VF.TabNote({
+        //         positions: [{str: string+1, fret: fret}],
+        //         duration: "q"
+        //         })
             
-            notesArray.push(tabnote)
+        //     notesArray.push(tabnote)
 
 
-        })
+        // })
         
         // var notesArray = [
         // // A single note
