@@ -77,14 +77,14 @@ def beat_audio_process(y, sr, notes):
     windows = []
     means = []
 
-        window_note_times, index = splice_window_notes(notes, seconds_per_window * i, seconds_per_window * (i + 1), index)
-        swindow = i*nsamples
-        ewindow = (i*nsamples) + nsamples
-        ywindow = y[swindow:ewindow]
-        tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(
-             ywindow, sr, window_note_times - (seconds_per_window * i), True)
-        means.append(beat_times_diff.mean())
-        windows.append(window_note_times)
+    window_note_times, index = splice_window_notes(notes, seconds_per_window * i, seconds_per_window * (i + 1), index)
+    swindow = i*nsamples
+    ewindow = (i*nsamples) + nsamples
+    ywindow = y[swindow:ewindow]
+    tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(
+        ywindow, sr, window_note_times - (seconds_per_window * i), True)
+    means.append(beat_times_diff.mean())
+    windows.append(window_note_times)
 
     beat_times_array = np.array([])
     for window in windows:
