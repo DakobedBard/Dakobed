@@ -47,6 +47,7 @@ export default {
     },
     created(){
       this.fetchTranscription()
+      // this.getS3Transcription(2)
     },
     data () {
 
@@ -83,7 +84,8 @@ export default {
 
     
     methods:{
-        ...mapActions(["fetchTranscription"]),        
+        ...mapActions(["fetchTranscription"]),
+        ...mapActions(["getS3Transcription"]),        
         selectMenuItem(selection){
 
           this.setGallerySelection(selection)

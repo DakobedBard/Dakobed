@@ -42,14 +42,16 @@ def jam_to_notes_matrix(jam_file):
 
 
 class Transcription:
-    def __init__(self, wav, notes , type):
-        self.type = type
+    def __init__(self, wav, jam, fileID):
+        notes = jam_to_notes_matrix(jam)
+        self.fileID = fileID
         y, sr = librosa.load(wav)
         tempo, beat_times = librosa.beat.beat_track(y, sr=sr, start_bpm=60, units='time')
         self.beats = [float(format_float_positional(beat, 3)) for beat in beat_times]
         self.assign_notes_to_measures(notes)
         self.processMeasures()
         self.generate_transcription_json()
+
 
     def processMeasures(self):
         measures = []
@@ -94,6 +96,10 @@ class Transcription:
                 transcription.append(note_dictionary)
         with open('data/transcription.json', 'w') as outfile:
             json.dump(transcription, outfile)
+        bucket = 'dakobed-guitarset'
+        s3 = boto3.client('s3')
+        with open('data/transcription.json', "rb") as f:
+            s3.upload_fileobj(f, bucket, 'fileID{}/{}transcription.json'.format(self.fileID, self.fileID))
 
 
 class Measure:
@@ -127,6 +133,7 @@ class Measure:
         self.note_beats = processed_note_beats
         self.notes = notes
 
+
 def transcription(fileID):
     files = annotation_audio_file_paths()
     wav = files[fileID][0]
@@ -138,4 +145,17 @@ def transcription(fileID):
     # beats_list = [float(format_float_positional(beat, 3)) for beat in beat_times]
     tab = Transcription(wav, notes, 'guitar')
 
-transcription(5)
+
+def save_guitarset_transcriptions_s3():
+    files = annotation_audio_file_paths()
+    for fileID in range(92,len(files)):
+        wav = files[fileID][0]
+        jam = files[fileID][1]
+        try:
+            tab = Transcription(wav, jam, fileID)
+        except:
+            pass
+        print("Processed filepair " + str(fileID))
+
+
+save_guitarset_transcriptions_s3()

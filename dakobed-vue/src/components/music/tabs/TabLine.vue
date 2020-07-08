@@ -27,8 +27,6 @@ var GuitarMidiFret = [
 ]
 
 
-
-
 export default {
 
     props:{
@@ -37,18 +35,13 @@ export default {
 
     data () {
       return {
-      
-      
+       
       }
     },    
     
-    
     created(){
         
-
     },
-
-
 
     mounted(){
         
@@ -65,6 +58,8 @@ export default {
 
         var notesArray = []
         var i =-0
+
+        
 
         while(i< this.notes.length){
           var positions = []
