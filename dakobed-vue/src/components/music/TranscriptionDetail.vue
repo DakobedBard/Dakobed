@@ -18,9 +18,10 @@ export default {
 
   data(){
     return {
-        
+        audiourl:"http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/" + this.fileID + "audio.wav"
     }
   }
+  
 
 
 }

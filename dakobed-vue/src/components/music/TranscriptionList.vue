@@ -13,7 +13,7 @@
 
         circle
       ></v-pagination>
-      <TranscriptionDetail />
+      <TranscriptionDetail v-bind:fileID="3" />
     </div>
 </template>
 
