@@ -69,16 +69,31 @@ export default {
         // var positions;
         while(i< this.notes.length){
           if(this.notes[i] != undefined){
-            console.log(' yes undefined')
-
+            
             // note = this.notes[i]
             // positions = []
             while(i < this.notes.length){
               if(this.notes[i] == undefined){
-                console.log("say ghaadfdfdfdf")
+                // console.log("say ghaadfdfdfdf")
                 break
               }else{
-                console.log("The beat at which the note occurs " + this.notes[i])
+                var j = i
+                while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
+                  // if(j!= i){
+
+                  // }
+                  j+=1
+                }
+                if(j != i+1){
+                  console.log("j " + j + " and i " + i)
+                  if(this.notes[j] != undefined && this.notes[i] != undefined){
+                      console.log("The beat at which i occurs is " + this.notes[i][1] + " and the note at which j occurs is " + this.notes[j-1][1])
+                  }
+                  
+                }
+
+                // console.log("The beat at which the note occurs " + this.notes[i][1])
+
               }
               // var fret = GuitarMidiFret[note[3]].indexOf(note[2])
               // positions.push({str: note[3]+1, fret: fret})
