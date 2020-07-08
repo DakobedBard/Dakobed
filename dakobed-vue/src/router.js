@@ -17,6 +17,7 @@ import Store from './components/store/Store'
 import ProductDetail from './components/store/ProductDetail'
 import ShoppingCart from './components/store/ShoppingCart'
 import TweetsLanding from './components/pipelines/tweets/TweetsLanding'
+import TranscriptionList from './components/music/TranscriptionList'
 // import googlemap from './components/pipelines/tweets/googlemap'
 Vue.use(Router)
 
@@ -98,7 +99,12 @@ export default new Router({
       {
         path: '/tweets',
         component: TweetsLanding
-      }
+      },
 
+      {
+        path: '/transcriptions',
+        component: TranscriptionList
+      },
+      
   ]
 })
