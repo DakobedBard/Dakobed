@@ -4,8 +4,8 @@
     <v-layout>
       <v-flex>
           <div id="boo">
-            <v-card flat class="pa-3" v-for="item in this.lines" :key="item" >
-              <TabLine />
+            <v-card flat class="pa-3" v-for="line in this.lines" :key="line.id" >
+              <TabLine  v-bind:notes="line.notes"/>
             </v-card>
 
             
@@ -53,13 +53,13 @@ export default {
     
     },
     created(){
-        console.log("The notes array is in the componenet " + this.notes.constructor == Array)
+
         // var a = typeof this.notes
         // console.log(this.notes.length)
         // console.log("the type of notes in the ocmponenet is  " + this.notes)
-        this.notes.forEach(note => {
-            console.log("The measure is " + note[0])
-        });
+        // this.notes.forEach(note => {
+        //     console.log("The measure is " + note[0])
+        // });
         this.nmeasures = this.notes[this.notes.length -1][0] 
 
         var measures_per_line = 3
@@ -67,52 +67,49 @@ export default {
           if(this.nmeasures % 4 != 0){
               nlines +=1
           }
-          console.log("The number of lines is " + nlines)
+
           this.lines = []
 
-          console.log(this.notes)
-          
           var i
           var current_note_index = 0;
           var lowest_measure = 0;
           var highest_measure = measures_per_line;
           var current_measure = 0;
           for(i =0; i < nlines; i++){
-            console.log(i)
             var line = []
             while(current_measure >= lowest_measure && current_measure < highest_measure
             && current_note_index < this.notes.length ) {
               
               current_measure = this.notes[current_note_index][0]
-              console.log("yes")
+
               current_note_index+=1
               line.push(this.notes[current_note_index])
               
             } 
-            this.lines.push(line)
+            this.lines.push({id:i, notes:line})
             lowest_measure += measures_per_line
             highest_measure += measures_per_line
           }
 
-          var nnotes = 0
-          var dumb = 0
-          this.lines.forEach(line => {
-            console.log("There are " + line.length)
-            line.forEach(note => {
-              nnotes +=1
-              if(note){
-                dumb += note[0]
-              }
+          // var nnotes = 0
+          // var dumb = 0
+          // this.lines.forEach(line => {
+          //   console.log("There are " + line.length)
+          //   line.forEach(note => {
+          //     nnotes +=1
+          //     if(note){
+          //       dumb += note[0]
+          //     }
               
-            })
-          })
-          this.notes.forEach(note => {
-            console.log(note[0])
-          })
+          //   })
+          // })
+          // this.notes.forEach(note => {
+          //   console.log(note[0])
+          // })
 
-          console.log("There are nnotes " + nnotes)
-          console.log("The number of notes " + this.notes.length)
-          console.log("The  of notes " + dumb)
+          // console.log("There are nnotes " + nnotes)
+          // console.log("The number of notes " + this.notes.length)
+          // console.log("The  of notes " + dumb)
 
 
 

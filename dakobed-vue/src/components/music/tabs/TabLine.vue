@@ -36,7 +36,7 @@ export default {
     },
     created(){
 
-
+        console.log("The number of notes is " + this.notes.length)
     },
 
 
@@ -111,7 +111,6 @@ export default {
         var stave = new VF.TabStave(10, 0, 900);
         stave.addClef("tab").setContext(context).draw();
 
-        console.log(notesArray)
         VF.Formatter.FormatAndDraw(context, stave, notesArray);
 
     },

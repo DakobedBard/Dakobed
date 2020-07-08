@@ -30,6 +30,7 @@ const actions = {
         note = notes[i]
         notesArray.push([note.measure, note.beat, note.midi, note.string])
       } 
+
       commit('setNotes', notesArray)
 
     }, (error) => {
