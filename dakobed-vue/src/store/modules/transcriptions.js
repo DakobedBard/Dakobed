@@ -7,11 +7,24 @@ const state = {
 };
 
 const getters = {
-  getNotes: state => state.notes
+  getNotes: state => state.notes,
+  getTrainingData: state => state.trainingData
 };
 
 const actions = {
   
+  async fetchTrainingData({commit}){
+      axios.get("http://localhost:8081/guitarset").then((response) => {
+
+        var response_string = JSON.stringify(response.data)
+        var data = JSON.parse(response_string)
+        commit('setTrainingData', data)
+        console.log("the length of the data " + data.length)
+      }, (error) => {
+        console.log(error);
+      });
+  },
+
   async getS3Transcription({commit}){
     var notesArray = []
     commit('setNotes', notesArray)
@@ -76,7 +89,7 @@ const actions = {
 const mutations = {
 
     setNotes: (state, notes) => (state.notes = notes),
-
+    setTrainingData: (state, trainingData) => (state.trainingData = trainingData),
 };
 
 export default {

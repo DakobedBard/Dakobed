@@ -51,6 +51,4 @@ public class TranscriptionController {
         return "hello";
     }
 
-
-
 }
