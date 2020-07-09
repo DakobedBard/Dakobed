@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.mddarr.dakobedordersservice.models.GuitarsetTrainingExample;
 import org.mddarr.dakobedordersservice.models.Note;
+import org.mddarr.dakobedordersservice.models.PianoTranscription;
 import org.mddarr.dakobedordersservice.models.Transcription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,12 @@ public class TranscriptionService {
         List<GuitarsetTrainingExample> trainingExamples = mapper.scan(GuitarsetTrainingExample.class, new DynamoDBScanExpression());
         return trainingExamples;
     }
+
+    public PianoTranscription getPianoTranscription() throws IOException {
+        PianoTranscription transcription = new PianoTranscription("/home/mddarr/data/Dakobed/dakobed-transcription-service/src/main/resources/piano_transcription.json");
+        return transcription;
+    }
+
 
 
     public Transcription getTab() throws IOException {

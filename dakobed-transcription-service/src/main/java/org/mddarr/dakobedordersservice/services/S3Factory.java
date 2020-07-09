@@ -1,7 +1,6 @@
 package org.mddarr.dakobedordersservice.services;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -32,7 +31,7 @@ public class S3Factory {
     }
 
     public byte[] getFile(int fileID) {
-        S3Object obj = amazonS3Client.getObject("dakobed-guitarset", "fileID" + fileID + "/" + fileID +"transcription.json");
+        S3Object obj = amazonS3Client.getObject("dakobed-guitarset", "fileID" + fileID + "/" + fileID + "piano_transcription.json");
         S3ObjectInputStream stream = obj.getObjectContent();
         try {
             byte[] content = IOUtils.toByteArray(stream);

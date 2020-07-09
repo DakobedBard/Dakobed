@@ -76,16 +76,45 @@ def extract_notes_midi(midi_file):
     return notes
 
 
+def process_midi_wav_file_pair(wav, midi, i, s3, bucket ):
+    os.mkdir('data/dakobed-maestro/fileID{}'.format(i))
+    y, sr = librosa.load(wav)
+    cqt = librosa.amplitude_to_db(
+        np.abs(librosa.core.cqt(y, sr=sr, n_bins=252, bins_per_octave=36, fmin=librosa.note_to_hz('C2'), norm=1))).T
+    notes = extract_notes_midi(midi)
+    # jsonNotes = []
+    # for note in notes:
+    #     jsonNotes.append({'time': note[0], 'duration': note[1], 'midi': round(note[2]), 'velocity': note[3]})
+    #
+    # with open('data/dakobed-maestro/fileID{}/fileID{}notes.json'.format(i, i), 'w') as outfile:
+    #     json.dump(jsonNotes, outfile)
+
+    annotation = generate_annotation_matrix(notes, cqt.shape[0])
+
+    for file, array, s3path in [('data/dakobed-maestro/fileID{}/cqt.npy'.format(i), cqt, 'fileID{}/cqt.npy'.format(i)),
+                                ('data/dakobed-maestro/fileID{}/annotation.npy'.format(i), annotation, 'fileID{}/annotation.npy'.format(i))]:
+        np.save(file, arr=array)
+        with open(file, "rb") as f:
+            s3.upload_fileobj(f, bucket, s3path)
+
+    # with open('data/dakobed-tabs/fileID{}.json'.format(i), "rb") as f:
+    #     s3.upload_fileobj(f, bucket, "fileID{}/{}notes.json".format(i, i))
+    with open(wav, "rb") as f:
+        s3.upload_fileobj(f, bucket, "fileID{}/audio.wav".format(i))
+
+
 class Transcription:
     def __init__(self, wav, notes, fileID ):
         y, sr = librosa.load(wav)
 
         tempo, beat_times = librosa.beat.beat_track(y, sr=sr, start_bpm=60, units='time')
         self.fileID = fileID
+        self.s3client = s3client
         self.beats = [float(format_float_positional(beat, 3)) for beat in beat_times]
         self.assign_notes_to_measures(notes)
         self.processMeasures()
         self.generate_transcription_json()
+
 
     def processMeasures(self):
         measures = []
@@ -130,7 +159,10 @@ class Transcription:
                 transcription.append(note_dictionary)
         with open('data/dakobed-maestro/fileID{}/transcription.json'.format(self.fileID), 'w') as outfile:
             json.dump(transcription, outfile)
-
+        s3client = boto3.client('s3')
+        bucket = 'dakobed-maestro'
+        with open('data/dakobed-maestro/fileID{}/transcription.json'.format(self.fileID), "rb") as f:
+            s3client.upload_fileobj(f, bucket, "fileID{}/transcription.json".format(self.fileID))
 
 class Measure:
     def __init__(self, notes, index):
@@ -170,18 +202,17 @@ s3client = boto3.client('s3')
 bucket = 'dakobed-maestro'
 
 
-for i in range(1282):
-    row = maestro_df.iloc[i]
+for fileID in range(4,1282):
+    row = maestro_df.iloc[fileID]
     if row['year'] == 2018:
         continue
-    print("Processing fileID {}".format(i))
+    print("Processing fileID {}".format(fileID))
     wav = 'data/maestro/' + row['audio_filename']
     midi = 'data/maestro/' + row['midi_filename']
 
-    y, sr = librosa.load(wav)
-    # cqt = librosa.amplitude_to_db(
-    #     np.abs(librosa.core.cqt(y, sr=sr, n_bins=252, bins_per_octave=36, fmin=librosa.note_to_hz('C2'), norm=1))).T
-    notes = extract_notes_midi(midi)
-    tab = Transcription(wav, notes, i)
-    if i ==1 :
-        break
+    try:
+        process_midi_wav_file_pair(wav, midi, fileID, s3client, bucket)
+        notes = extract_notes_midi(midi)
+        tab = Transcription(wav, notes, fileID)
+    except Exception as e:
+        print(e)
