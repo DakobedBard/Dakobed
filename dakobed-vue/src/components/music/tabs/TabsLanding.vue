@@ -46,8 +46,8 @@ export default {
         Tabs
     },
     created(){
-      this.fetchTranscription()
-      // this.getS3Transcription(2)
+      //this.fetchTranscription()
+      this.getS3Transcription()
     },
     data () {
 
@@ -57,8 +57,6 @@ export default {
           {selection:'tabs',title:'Tab Generator'},
           {selection:'covers',title: 'Guitar Covers'},
           {selection:'covers',title: 'Piano Covers'},
-
-
         ],
         directions: ['t', 'b', 'l', 'r', 's', 'e', 'x', 'y', 'a'],
         paddingSizes: ['auto', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
