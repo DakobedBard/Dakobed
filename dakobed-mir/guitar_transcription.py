@@ -200,20 +200,20 @@ notes = jam_to_notes_matrix(jam)
 tempo, beat_times = librosa.beat.beat_track(y, sr=sr, start_bpm=60, units='time')
 beats_list = [float(format_float_positional(beat, 3)) for beat in beat_times]
 tab = Transcription(wav, notes, 'guitar')
-    for i in range(n10windows):
-        window_note_times, index = splice_window_notes(notes, seconds_per_window * i, seconds_per_window * (i + 1), index)
-        swindow = i*nsamples
-        ewindow = (i*nsamples) + nsamples
-        ywindow = y[swindow:ewindow]
-        tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(
-             ywindow, sr, window_note_times - (seconds_per_window * i), True)
-        means.append(beat_times_diff.mean())
-        windows.append(window_note_times)
+for i in range(n10windows):
+    window_note_times, index = splice_window_notes(notes, seconds_per_window * i, seconds_per_window * (i + 1), index)
+    swindow = i*nsamples
+    ewindow = (i*nsamples) + nsamples
+    ywindow = y[swindow:ewindow]
+    tempo, beat_times, beat_times_diff = detect_tempo_for_audio_segment(
+        ywindow, sr, window_note_times - (seconds_per_window * i), True)
+    means.append(beat_times_diff.mean())
+    windows.append(window_note_times)
 
-    beat_times_array = np.array([])
-    for window in windows:
-        beat_times_array = np.concatenate((beat_times_array, window))
-    return beat_times_array, means
+beat_times_array = np.array([])
+for window in windows:
+    beat_times_array = np.concatenate((beat_times_array, window))
+return beat_times_array, means
 
 
 def plot_full_waveform_beats_notes(y,sr,notes):

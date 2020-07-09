@@ -23,9 +23,6 @@ def jam_to_notes_matrix(jam_file):
     return np.asarray(notes, dtype=np.float32)
 
 
-
-
-
 def notes_matrix_to_annotation(notes, nframes):
     binary_annotation_matrix = np.zeros((48, nframes))
     full_annotation_matrix = np.zeros((48,nframes, 6))
