@@ -17,10 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.mddarr.dakobedordersservice.models.GuitarsetTrainingExample;
-import org.mddarr.dakobedordersservice.models.Note;
-import org.mddarr.dakobedordersservice.models.PianoTranscription;
-import org.mddarr.dakobedordersservice.models.Transcription;
+import org.mddarr.dakobedordersservice.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +58,28 @@ public class TranscriptionService {
         return transcription;
     }
 
+    public PianoTranscription getPianoTranscriptionS3(String fileID) throws IOException {
+        List<PianoNote> notes = new ArrayList<>();
+        byte[] bytes = s3Factory.getMaestroTranscription(fileID);
+
+        JsonParser parser = new JsonFactory().createParser(bytes);
+        JsonNode rootNode = new ObjectMapper().readTree(parser);
+        Iterator<JsonNode> iter = rootNode.iterator();
+        ObjectNode currentNode;
+
+        while (iter.hasNext()) {
+            currentNode = (ObjectNode) iter.next();
+            int beat = currentNode.path("beat").asInt();
+            int measure = currentNode.path("measure").asInt();
+            int midi = currentNode.path("midi").asInt();
+            int duration = currentNode.path("duration").asInt();
+            PianoNote note = new PianoNote(midi, beat, measure, duration);
+            notes.add(note);
+        }
+        return new PianoTranscription(notes);
+    }
+
+
     public Transcription getTranscriptionS3(int fileID) throws IOException {
         List<Note> notes = new ArrayList<>();
         byte[] a = s3Factory.getFile(fileID);
@@ -80,13 +99,6 @@ public class TranscriptionService {
             notes.add(note);
         }
         return new Transcription(notes);
-
-//        try (FileOutputStream fos = new FileOutputStream("src/main/resources/trans1.json")) {
-//            fos.write(a);
-//            //fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
     }
 
 }

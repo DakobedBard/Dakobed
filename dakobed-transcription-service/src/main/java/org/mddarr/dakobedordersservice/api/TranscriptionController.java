@@ -37,23 +37,28 @@ public class TranscriptionController {
         return transcriptionService.getGuitarSetTrainingData();
     }
 
-    @RequestMapping(value="S3transcription")
-    public String what(){
-        return "heyh";
-    }
+//    @RequestMapping(value="S3transcription")
+//    public String what(){
+//        return "heyh";
+//    }
     @RequestMapping(value = "pianoTranscription")
     public PianoTranscription getPianoTranscription() throws IOException {
         return transcriptionService.getPianoTranscription();
     }
 
-//    @RequestMapping(value = "S3transcription")
-//    public Transcription getS3Transcription(@RequestParam("fileID") int fileid) throws IOException {
-//        return transcriptionService.getTranscriptionS3(fileid);
-//    }
+    @RequestMapping(value = "S3transcription")
+    public Transcription getS3Transcription(@RequestParam("fileID") int fileid) throws IOException {
+        return transcriptionService.getTranscriptionS3(fileid);
+    }
 
     @RequestMapping(value = "hello")
     public String hello(){
         return "hello";
+    }
+
+    @RequestMapping(value="pianoTranscriptionS3")
+    public PianoTranscription getPianoTranscriptonS3(@RequestParam("fileID") String fileID) throws IOException {
+        return transcriptionService.getPianoTranscriptionS3(fileID);
     }
 
 }

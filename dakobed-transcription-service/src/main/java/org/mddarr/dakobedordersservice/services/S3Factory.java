@@ -30,8 +30,8 @@ public class S3Factory {
         amazonS3Client.putObject(defaultBucketName, uploadFile.getName(), uploadFile);
     }
 
-    public byte[] getFile(int fileID) {
-        S3Object obj = amazonS3Client.getObject("dakobed-guitarset", "fileID" + fileID + "/" + fileID + "piano_transcription.json");
+    public byte[] getMaestroTranscription(String fileID){
+        S3Object obj = amazonS3Client.getObject("dakobed-maestro", "fileID" + fileID + "/" + "transcription.json");
         S3ObjectInputStream stream = obj.getObjectContent();
         try {
             byte[] content = IOUtils.toByteArray(stream);
@@ -42,5 +42,25 @@ public class S3Factory {
         }
         return null;
     }
+
+
+
+    public byte[] getFile(int fileID) {
+        S3Object obj = amazonS3Client.getObject("dakobed-guitarset", "fileID" + fileID + "/" + fileID + "transcription.json");
+        S3ObjectInputStream stream = obj.getObjectContent();
+        try {
+            byte[] content = IOUtils.toByteArray(stream);
+            obj.close();
+            return content;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
+
 
 }

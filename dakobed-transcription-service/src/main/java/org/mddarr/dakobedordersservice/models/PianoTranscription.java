@@ -33,4 +33,9 @@ public class PianoTranscription {
             notes.add(note);
         }
     }
+
+    public PianoTranscription(List<PianoNote> notes){
+        this.notes = notes;
+    }
+
 }
