@@ -8,7 +8,7 @@
          </v-card-title>
       </v-card>
       
-      <v-data-table dense :headers="headers" :items="data" item-key="fileID" class="elevation-1"></v-data-table>
+      <v-data-table dense :headers="headers"   :items="data" item-key="fileID" class="elevation-1"></v-data-table>
 
 
 
@@ -43,7 +43,7 @@ export default {
 
     },
     mounted() {
-      console.log("Hello")
+      console.log(this.$el.textContent) // I'm text inside the component.
       console.log(this.$el.textContent) // I'm text inside the component.
     },
 
@@ -52,6 +52,10 @@ export default {
     },
 
     methods:{
+
+      rowClicked(item){
+        console.log(item)
+      },
       ...mapActions(["fetchTrainingData"]),    
 
       nextPage(){
