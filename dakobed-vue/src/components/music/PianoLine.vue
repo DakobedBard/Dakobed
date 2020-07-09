@@ -57,7 +57,23 @@ export default {
         pianostave.setContext(context).draw();
 
 
+        var notes = [
+        new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
+        new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
+        new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }),
+        new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q" })
+      ];
 
+      // Create a voice in 4/4 and add the notes from above
+      var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
+      voice.addTickables(notes);
+
+      // Format and justify the notes to 400 pixels.
+      var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
+      console.log(formatter)
+      // Render voice
+      voice.draw(context, pianostave2);
+      
     },
     computed: {
 

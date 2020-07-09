@@ -2,17 +2,14 @@
   <v-container>
     <v-layout>
       <v-flex>
-        The type is {{transcription_type}}
-
         <div v-if="transcription_type=='guitar'">
           <v-card flat class="pa-3" v-for="line in this.lines" :key="line.id" >
             <TabLine  v-bind:notes="line.notes"/>
           </v-card>
         </div>
         <div v-if="transcription_type=='piano'">
-          Else
+
           <v-card flat class="pa-3" v-for="line in this.lines" :key="line.id" >
-            Hello
             <PianoLine  v-bind:notes="line.notes"/>
           </v-card>
         </div>
