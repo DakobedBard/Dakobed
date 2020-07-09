@@ -108,7 +108,8 @@ export default new Router({
       },
       
       {
-        path: '/transcription_detail/:id',
+        name:'transcription_detail',
+        path: '/transcription_detail/:fileID',
         component: TranscriptionDetail
       }
 

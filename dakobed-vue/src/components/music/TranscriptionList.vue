@@ -14,15 +14,15 @@
         :items="getTrainingData"
       > 
       <template v-slot:item="{ item }">
-            <tr @click="rowClicked(item)">
+            <tr @click="rowClicked(item.fileID)">
                 <td>{{item.title}}</td>
+
             </tr>
-
         </template>
-
       </v-data-table>
 
       <TranscriptionDetail v-bind:fileID="3" />
+      <router-view></router-view>
     </div>
 </template>
 
@@ -31,7 +31,7 @@
 import TranscriptionDetail from './TranscriptionDetail'
 import { mapGetters, mapActions } from "vuex";
 import axios from 'axios';
-
+import router from '../../router'
 
 export default {
     
@@ -62,8 +62,9 @@ export default {
 
     methods:{
 
-      rowClicked(item){
-        console.log(item)
+      rowClicked(fileID){
+        console.log()
+        router.push({ name: 'transcription_detail', params: { fileID: fileID } })
       },
       ...mapActions(["fetchTrainingData"]),    
 
