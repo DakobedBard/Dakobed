@@ -2,8 +2,8 @@ import axios from 'axios';
 // import { compile } from 'vue-template-compiler';
 
 const state = {
-  notes: []
-
+  notes: [],
+  trainingData:[]
 };
 
 const getters = {

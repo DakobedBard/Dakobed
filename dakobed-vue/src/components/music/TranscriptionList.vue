@@ -3,14 +3,24 @@
       
       <v-card>
         <v-card-title>
-            GuitarSet transcription training dataddf
+            GuitarSet Transcription Training Examples
 
          </v-card-title>
       </v-card>
       
-      <v-data-table dense :headers="headers"   :items="data" item-key="fileID" class="elevation-1"></v-data-table>
+    <v-data-table
+        v-model="selected"  
+        :headers="headers"
+        :items="getTrainingData"
+      > 
+      <template v-slot:item="{ item }">
+            <tr @click="rowClicked(item)">
+                <td>{{item.title}}</td>
+            </tr>
 
+        </template>
 
+      </v-data-table>
 
       <TranscriptionDetail v-bind:fileID="3" />
     </div>
@@ -43,8 +53,7 @@ export default {
 
     },
     mounted() {
-      console.log(this.$el.textContent) // I'm text inside the component.
-      console.log(this.$el.textContent) // I'm text inside the component.
+
     },
 
     computed:{
@@ -58,12 +67,6 @@ export default {
       },
       ...mapActions(["fetchTrainingData"]),    
 
-      nextPage(){
-         this.pageNumber++;
-      },
-      prevPage(){
-        this.pageNumber--;
-    }
   },
   props:{
 
@@ -71,10 +74,10 @@ export default {
 
   data(){
     return {
+      selected:[],
+      trainingData: [],
 
-        trainingData: [],
-
-        page: 1,
+      page: 1,
       
       headers: [
         {

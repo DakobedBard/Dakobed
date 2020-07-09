@@ -2,9 +2,9 @@
   <div>
       Transcription Detail
     
-    <audio controls autoplay>
+    <!-- <audio controls autoplay>
       <source src="http://d3rak0tzwsp682.cloudfront.net/fileID3/3audio.wav" type="audio/wav">
-    </audio>
+    </audio> -->
 
   </div>
 </template>

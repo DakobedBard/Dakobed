@@ -7,7 +7,7 @@ const state = {
 };
 
 const getters = {
-  g: state => state.locations,
+  getLocations: state => state.locations,
   getPipelineSelection: state => state.pipelines_selection
 
 };
