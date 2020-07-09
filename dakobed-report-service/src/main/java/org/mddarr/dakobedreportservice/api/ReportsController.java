@@ -42,7 +42,8 @@ public class ReportsController {
 
         List<Report> snotelData = mapper.query(Report.class, queryExpression);
         return snotelData;
-
     }
+
+
 
 }

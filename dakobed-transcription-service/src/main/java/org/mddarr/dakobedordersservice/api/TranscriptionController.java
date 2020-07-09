@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 
+import org.mddarr.dakobedordersservice.models.GuitarsetTrainingExample;
 import org.mddarr.dakobedordersservice.models.Transcription;
 import org.mddarr.dakobedordersservice.services.TranscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +31,24 @@ public class TranscriptionController {
         return transcriptionService.getTab();
     }
 
-
-    @RequestMapping(value = "S3transcription")
-    public Transcription getS3Transcription(@RequestParam("fileID") int fileid) throws IOException {
-        return transcriptionService.getTranscriptionS3(fileid);
+    @RequestMapping(value = "guitarset")
+    public List<GuitarsetTrainingExample> getTrainingData(){
+        return transcriptionService.getGuitarSetTrainingData();
     }
+
+    @RequestMapping(value="S3transcription")
+    public String what(){
+        return "heyh";
+    }
+
+//    @RequestMapping(value = "S3transcription")
+//    public Transcription getS3Transcription(@RequestParam("fileID") int fileid) throws IOException {
+//        return transcriptionService.getTranscriptionS3(fileid);
+//    }
 
     @RequestMapping(value = "hello")
     public String hello(){
         return "hello";
     }
-
-
 
 }

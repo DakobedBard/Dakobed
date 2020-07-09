@@ -1,6 +1,11 @@
 package org.mddarr.dakobedordersservice.services;
 
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
@@ -12,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.mddarr.dakobedordersservice.models.GuitarsetTrainingExample;
 import org.mddarr.dakobedordersservice.models.Note;
 import org.mddarr.dakobedordersservice.models.Transcription;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +34,20 @@ public class TranscriptionService {
     @Autowired
     S3Factory s3Factory;
 
+    @Autowired
+    AmazonDynamoDB amazonDynamoDB;
+
+
     String note_json_file_path = "/home/mddarr/data/Dakobed/dakobed-transcription-service/src/main/resources/transcription1.json";
+
+    public List<GuitarsetTrainingExample> getGuitarSetTrainingData(){
+        DynamoDBMapperConfig mapperConfig = new DynamoDBMapperConfig.Builder()
+                .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement("Dakobed-GuitarSet")).build();
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB, mapperConfig);
+        List<GuitarsetTrainingExample> trainingExamples = mapper.scan(GuitarsetTrainingExample.class, new DynamoDBScanExpression());
+        return trainingExamples;
+    }
+
 
     public Transcription getTab() throws IOException {
         Transcription transcription = new Transcription(note_json_file_path);
