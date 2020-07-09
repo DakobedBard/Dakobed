@@ -7,12 +7,6 @@
          </v-card-title>
       </v-card>
       
-      <v-pagination dark
-        v-model="page"
-        :length="8"
-
-        circle
-      ></v-pagination>
       <TranscriptionDetail v-bind:fileID="3" />
     </div>
 </template>
