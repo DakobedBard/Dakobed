@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.mddarr</groupId>
-	<artifactId>dakobed-product-service</artifactId>
+	<artifactId>dakobed-transcription-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>dakobed-product-service</name>
+	<name>dakobed-transcription-service</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -43,6 +43,12 @@
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.11.106</version>
 		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.106</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
