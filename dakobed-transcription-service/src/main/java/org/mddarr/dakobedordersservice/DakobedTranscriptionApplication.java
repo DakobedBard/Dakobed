@@ -14,6 +14,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.FileOutputStream;
+
 @SpringBootApplication
 public class DakobedTranscriptionApplication implements CommandLineRunner {
 
@@ -27,7 +29,6 @@ public class DakobedTranscriptionApplication implements CommandLineRunner {
 
 	private static final Logger logger = LogManager.getLogger(DakobedTranscriptionApplication.class);
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(DakobedTranscriptionApplication.class, args);
 	}
@@ -39,7 +40,14 @@ public class DakobedTranscriptionApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		s3Factory.getFile();
+//		byte[] a = s3Factory.getFile();
+//		try (FileOutputStream fos = new FileOutputStream("src/main/resources/trans1.json")) {
+//			fos.write(a);
+//			//fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
+//		}catch (Exception e){
+//			e.printStackTrace();
+//		}
+//		System.out.println("The byte array is " + a.length);
 	}
 }
 

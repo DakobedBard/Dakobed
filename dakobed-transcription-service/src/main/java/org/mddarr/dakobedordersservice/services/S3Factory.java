@@ -31,8 +31,8 @@ public class S3Factory {
         amazonS3Client.putObject(defaultBucketName, uploadFile.getName(), uploadFile);
     }
 
-    public byte[] getFile() {
-        S3Object obj = amazonS3Client.getObject("dakobed-guitarset", "fileID1/1transcription.json");
+    public byte[] getFile(int fileID) {
+        S3Object obj = amazonS3Client.getObject("dakobed-guitarset", "fileID" + fileID + "/" + fileID +"transcription.json");
         S3ObjectInputStream stream = obj.getObjectContent();
         try {
             byte[] content = IOUtils.toByteArray(stream);

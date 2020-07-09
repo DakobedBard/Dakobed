@@ -31,7 +31,10 @@ public class TranscriptionController {
     }
 
 
-
+    @RequestMapping(value = "S3transcription")
+    public Transcription getS3Transcription(@RequestParam("fileID") int fileid) throws IOException {
+        return transcriptionService.getTranscriptionS3(fileid);
+    }
 
     @RequestMapping(value = "hello")
     public String hello(){
