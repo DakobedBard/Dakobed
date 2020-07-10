@@ -25,9 +25,10 @@ const MidiKeyMap = {28:'e/1',29:'f/1',30:'f/1',31:'g/1',32:'g/1', 33:'a/1',34:'a
 }
 
 const DurationMap = {0:'16', 1:'8',2:'q', 3:'q', 4:'h',5:'h',6:'h'}
-
+const DurationToBeats={}
 console.log(MidiKeyMap[44])
 console.log(DurationMap)
+console.log(DurationToBeats)
 
 export default {
 
@@ -78,8 +79,20 @@ export default {
         var notesArray = []
         // console.log(notesArray)
         var i =0
+        var beat =0
+        var currentbeat = 0
+        console.log(beat)
+        console.log(currentbeat)
+
+        var previous_treble_beat = 0
+        var previous_bass_beat = 0
+        console.log(previous_bass_beat)
+        console.log(previous_treble_beat)
+
         while(i< this.notes.length){
-        
+
+          currentBeat = this.notes[i][1]
+
           var keys = []
           console.log(keys)
           var treblekeys = []
@@ -90,47 +103,75 @@ export default {
           var j =i
           var note
           var duration
+      
 
-          while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
+          while(this.notes[j]!= undefined && this.notes[j][1] == currentBeat){
 
             note = this.notes[j]            
-            currentBeat = note[1]
+            
             duration = note[3]
-
             console.log("duration " +  duration + " DurationMap " + DurationMap[duration] )
 
-          
             if(note[2] <= 56){
               basskeys.push(MidiKeyMap[note[2]])
             }else{
               treblekeys.push(MidiKeyMap[note[2]])
             }
             // console.log("this.notes[j] " + this.notes[j][3] )
-
             // positions.push({str: Math.floor(this.notes[j][3])+1, fret: fret})
             j+=1
           }
 
           console.log("Note[2] " + note[2])
-          var treblenote = new VF.StaveNote({clef: "treble", keys: treblekeys, duration: DurationMap[duration] })
-          var bassnote = new VF.StaveNote({clef: "bass", keys: basskeys, duration: DurationMap[duration] })
+          
+          if(treblekeys.length > 0 ){
+            var treblenote = new VF.StaveNote({clef: "treble", keys: treblekeys, duration: DurationMap[duration] })
+            trebleArray.push(treblenote)
+          }else{
+            console.log("the duration of this rest is " + duration)
+            var treblerest = new VF.StaveNote({clef: "treble", keys: ['b/4'], duration: DurationMap[duration] +'r' })
+            trebleArray.push(treblerest)
+            previous_treble_beat = currentBeat
+          }
 
-// var tabnote = new VF.TabNote({positions: positions, duration: "q"})
 
+          if(basskeys.length > 0 ){
+            var bassnote = new VF.StaveNote({clef: "bass", keys: basskeys, duration: DurationMap[duration] })
+            previous_bass_beat = currentBeat
+            bassArray.push(bassnote)
+          }else{
+            var bassrest = new VF.StaveNote({clef: "bass", keys: ['D/3'], duration: DurationMap[duration] +'r' })
+            bassArray.push(bassrest)
+          }
+          
         
-          trebleArray.push(treblenote)
-          bassArray.push(bassnote)
-
-          // else{
-          //   console.log("note [2] " + note[2] )
-          //   var basenote = new VF.StaveNote({stem_direction: 1,clef: "bass", keys:[MidiKeyMap[39]], duration: "q" })
-          //   bassArray.push(basenote)
-          // }
-
-
           i=j
           
         }
+
+
+
+      var treble_beams = VF.Beam.generateBeams(trebleArray);
+      VF.Formatter.FormatAndDraw(context, trebleStave, trebleArray);
+      treble_beams.forEach(function(b) {b.setContext(context).draw()})
+
+
+
+      var beams = VF.Beam.generateBeams(bassArray);
+      
+      VF.Formatter.FormatAndDraw(context, bassStave, bassArray);
+      beams.forEach(function(b) {b.setContext(context).draw()})
+
+
+
+      trebleStave.drawVerticalBar(400, true);
+
+    },
+    computed: {
+
+    }
+}
+
       //   var notes = [
       //   new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
       //   new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
@@ -145,29 +186,10 @@ export default {
       // var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
       // voice.draw(context, trebleStave);
       // formatter.getElementById
-
-
-      var treble_beams = VF.Beam.generateBeams(trebleArray);
-      VF.Formatter.FormatAndDraw(context, trebleStave, trebleArray);
-      treble_beams.forEach(function(b) {b.setContext(context).draw()})
-
-
-
-      var beams = VF.Beam.generateBeams(bassArray);
-      VF.Formatter.FormatAndDraw(context, bassStave, bassArray);
-      beams.forEach(function(b) {b.setContext(context).draw()})
-
       // var basevoice = new VF.Voice({num_beats: 5,  beat_value: 4});
       // basevoice.addTickables(bassArray);
       // var bassformatter = new VF.Formatter().joinVoices([basevoice]).format([basevoice], 400);
       // basevoice.draw(context, bassStave);
       // bassformatter.getElementById
 
-
-
-    },
-    computed: {
-
-    }
-}
 </script>

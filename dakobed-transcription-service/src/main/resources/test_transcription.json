@@ -1,18 +1,27 @@
 [{"measure": "0", "midi": "60", "duration": "2", "beat": "0"},
   {"measure": "0", "midi": "64", "duration": "2", "beat": "0"},
   {"measure": "0", "midi": "60", "duration": "2", "beat": "0"},
-  {"measure": "0", "midi": "54", "duration": "2", "beat": "0"},
 
+  {"measure": "0", "midi": "54", "duration": "2", "beat": "1"},
   {"measure": "0", "midi": "60", "duration": "2", "beat": "2"},
   {"measure": "0", "midi": "64", "duration": "2", "beat": "2"},
+  {"measure": "0", "midi": "60", "duration": "1", "beat": "6"},
+  {"measure": "0", "midi": "64", "duration": "1", "beat": "6"},
 
   {"measure": "1", "midi": "60", "duration": "2", "beat": "0"},
-  {"measure": "1", "midi": "64", "duration": "2", "beat": "0"},
+  {"measure": "1", "midi": "66", "duration": "2", "beat": "0"},
+  {"measure": "1", "midi": "54", "duration": "2", "beat": "0"},
+
   {"measure": "1", "midi": "60", "duration": "2", "beat": "2"},
+  {"measure": "1", "midi": "54", "duration": "2", "beat": "2"},
   {"measure": "2", "midi": "64", "duration": "2", "beat": "2"},
+
   {"measure": "2", "midi": "60", "duration": "2", "beat": "4"},
+  {"measure": "2", "midi": "54", "duration": "2", "beat": "4"},
   {"measure": "2", "midi": "64", "duration": "2", "beat": "4"},
+
   {"measure": "2", "midi": "60", "duration": "2", "beat": "6"},
+
   {"measure": "2", "midi": "60", "duration": "2", "beat": "11"},
   {"measure": "2", "midi": "64", "duration": "2", "beat": "11"}]
 
