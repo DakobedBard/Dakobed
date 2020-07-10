@@ -34,7 +34,7 @@ const actions = {
       var note;  
       for (i = 0; i < notes.length; i++) {
         note = notes[i]
-        notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.string])
+        notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.duration])
       } 
 
       commit('setNotes', notesArray)

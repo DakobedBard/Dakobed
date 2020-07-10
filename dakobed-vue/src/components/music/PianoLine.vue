@@ -3,8 +3,9 @@
   <v-container>
     <v-layout>
       <v-flex>  
-          <div id="tab">
-        </div>
+          <div id="tab">  
+          </div>
+          {{firstMeasure}}
       </v-flex>
     </v-layout>
   </v-container>
@@ -16,14 +17,17 @@
 import Vex from 'vexflow';
 // import { mapGetters, mapActions } from "vuex";
 
-MidiKeyMap = {33:'a1',34:'a1',35:'b1',36:'c2',37:'c2',38:'d2', 39:'d2', 40:'e2',41:'f2',42:'f2',
-  43:'g2',44:'g2',45:'a2',46:'a2','b2':47,'c3':48, 49:'c3',50:'d3',51:'d3',52:'e3',53:'f3',54:'f3',
-  55:'g3',56:'g3',57:'a3',58:'a3', 59:'b3',60:'c4',61:'c4',62:'d4',63:'d4', 64:'e4', 65:'f4',66:'g4',
-  67:'g4', 68:'a4',69:'a4',70:'b4',71:'c5',72:'c5',73:'d5',74:'d5',75:'e5', 76:'f5', 77:'g5', 78:'g5', 
-  79:'a5', 80:'a5', 81:'b5', 82:'c6'
+const MidiKeyMap = {33:'a/1',34:'a/1',35:'b/1',36:'c/2',37:'c/2',38:'d/2', 39:'d/2', 40:'e/2',41:'f/2',42:'f/2',
+  43:'g/2',44:'g/2',45:'a/2',46:'a/2','b/2':47,'c/3':48, 49:'c/3',50:'d/3',51:'d/3',52:'e/3',53:'f/3',54:'f/3',
+  55:'g/3',56:'g/3',57:'a/3',58:'a/3', 59:'b/3',60:'c/4',61:'c/4',62:'d/4',63:'d/4', 64:'e/4', 65:'f/4',66:'g/4',
+  67:'g/4', 68:'a/4',69:'a/4',70:'b/4',71:'c/5',72:'c/5',73:'d/5',74:'d/5',75:'e/5', 76:'f/5', 77:'g/5', 78:'g/5', 
+  79:'a/5', 80:'a/5', 81:'b/5', 82:'c/6'
 }
 
+const DurationMap = {0:'16', 1:'8',2:'q', 3:'q', 4:'h',5:'h',6:'h'}
 
+console.log(MidiKeyMap[44])
+console.log(DurationMap)
 
 export default {
 
@@ -33,7 +37,7 @@ export default {
 
     data () {
       return {
-       
+        firstMeasure:this.notes[0][0]
       }
     },    
     
@@ -46,24 +50,30 @@ export default {
         while(this.notes[this.notes.length-1] == undefined){
           this.notes.pop()
         }
-        
+
+        this.firstMeasure = this.notes[0][0]
+        var currentBeat =0
+        var beats_per_measure = 4
+        console.log(currentBeat + beats_per_measure)
         const VF = Vex.Flow;
         var div = document.getElementById("tab")
         var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
         renderer.resize(1500, 180);
         var context = renderer.getContext();
 
-        var pianostave2 = new VF.Stave(10, 0, 1200);
-        pianostave2.addClef("treble").addTimeSignature("4/4");
-        pianostave2.setContext(context).draw();
+        var trebleStave = new VF.Stave(10, 0, 1200);
+        trebleStave.addClef("treble").addTimeSignature("4/4");
+        trebleStave.setContext(context).draw();
 
 
-        var pianostave = new VF.Stave(10, 80, 1200);
-        pianostave.addClef("bass").addTimeSignature("4/4");
-        pianostave.setContext(context).draw();
+        var bassStave = new VF.Stave(10, 80, 1200);
+        bassStave.addClef("bass").addTimeSignature("4/4");
+        bassStave.setContext(context).draw();
 
-
-
+        var trebleArray = []
+        var bassArray = []
+        console.log("BaseArray " + bassArray)
+        console.log("trebleArray " + trebleArray)
         var notesArray = []
         // console.log(notesArray)
         var i =0
@@ -73,17 +83,29 @@ export default {
           console.log(keys)  
           var j =i
           var note
+          var duration
           while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
+
+
+
             note = this.notes[j]
-            console.log(note)
+            
+            currentBeat = note[1]
+            duration = note[3]
+
+
+            console.log(note + duration)
+            console.log(MidiKeyMap[54])
             // console.log("this.notes[j] " + this.notes[j][3] )
 
             // positions.push({str: Math.floor(this.notes[j][3])+1, fret: fret})
             j+=1
           }
-          var pianonote = new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" })
+          var pianonote = new VF.StaveNote({clef: "treble", keys: [MidiKeyMap[65]], duration: "q" })
           // var tabnote = new VF.TabNote({positions: positions, duration: "q"})
           notesArray.push(pianonote)   
+          var basenote = new VF.StaveNote({clef: "bass", keys:['c/3'], duration: "q" })
+          bassArray.push(basenote)
           i+=1
           
         }
@@ -97,13 +119,20 @@ export default {
       // Create a voice in 4/4 and add the notes from above
       var voice = new VF.Voice({num_beats: 5,  beat_value: 4});
       voice.addTickables(notesArray);
-
       // Format and justify the notes to 400 pixels.
       var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
-      // console.log(formatter)
-      // Render voice
-      voice.draw(context, pianostave2);
+      voice.draw(context, trebleStave);
       formatter.getElementById
+
+
+      var basevoice = new VF.Voice({num_beats: 5,  beat_value: 4});
+      basevoice.addTickables(bassArray);
+      var bassformatter = new VF.Formatter().joinVoices([basevoice]).format([basevoice], 400);
+      basevoice.draw(context, bassStave);
+      bassformatter.getElementById
+
+
+
     },
     computed: {
 
