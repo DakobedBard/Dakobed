@@ -55,15 +55,14 @@ export default {
     mounted() {
 
     },
-
+    
     computed:{
       ...mapGetters(["getTrainingData"])
     },
 
     methods:{
-
+      ...mapActions(["getS3Transcription"]),     
       rowClicked(fileID){
-        console.log()
         router.push({ name: 'transcription_detail', params: { fileID: fileID } })
       },
       ...mapActions(["fetchTrainingData"]),    

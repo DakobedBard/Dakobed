@@ -11,8 +11,6 @@
               Ho
           </div>
 
-
-
           <Transcription v-bind:transcription_type="transcription_type" v-bind:notes="getNotes"/>          
         </v-flex>
         <v-flex md3>

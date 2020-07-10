@@ -25,12 +25,12 @@ const actions = {
       });
   },
 
-  async getS3Transcription({commit}){
+  async getS3Transcription({commit}, fileID){
     var notesArray = []
     commit('setNotes', notesArray)
 
     // axios.get("https://dakobed-guitarset.s3-us-west-2.amazonaws.com/fileID" + fileID + "/" + fileID + "transcription.json").then((response) => {
-      axios.get("https://dakobed-guitarset.s3-us-west-2.amazonaws.com/fileID3/3transcription.json").then((response) => {
+      axios.get("https://dakobed-guitarset.s3-us-west-2.amazonaws.com/fileID" + fileID+"/"+fileID +"transcription.json").then((response) => {
       console.log(response)
       var response_string = JSON.stringify(response.data)
       var notes = JSON.parse(response_string)
