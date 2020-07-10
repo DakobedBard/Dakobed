@@ -6,7 +6,8 @@ const state = {
   trainingData:[],
   maestroTrainingData:[],
   lines:[],
-  nmeasures:-1
+  nmeasures:-1,
+  pianoLines:[]
 };
 
 const getters = {
@@ -14,7 +15,9 @@ const getters = {
   getTrainingData: state => state.trainingData,
   getLines:state => state.lines,
   getNMeasures: state => state.getNMeasures,
-  getMaestroTraningData: state => state.maestroTrainingData
+  getMaestroTraningData: state => state.maestroTrainingData,
+
+  getPianoLines: state => state.pianoLines
 };
 
 const actions = {
@@ -23,17 +26,19 @@ const actions = {
   async fetchMaestroTranscription({commit}){
     axios.get("http://localhost:8081/maestroExample").then((response) => {
 
-      var response_string = JSON.stringify(response.data)
+      var response_string = JSON.stringify(response.data.notes)
       var notes = JSON.parse(response_string)
 
       var notesArray = []
       var i ;
       var note;
+      console.log("notes array from before vuex " + notes.length)      
       for (i = 0; i < notes.length; i++) {
         console.log(notes[i])
         note = notes[i]
         notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.string])
       } 
+      console.log("notes array from vuex " + notesArray.length)
 
       commit('setNotes', notesArray)
 
@@ -125,6 +130,13 @@ async fetchMaestroTrainingData({commit}){
 };
 
 const mutations = {
+
+
+    setPianoNotes: (state, notes) => {
+      state.pianoLines = notes
+    },
+
+
 
     setNotes: (state, notes) => {
       state.notes = notes

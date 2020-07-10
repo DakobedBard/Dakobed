@@ -5,17 +5,17 @@
     <!-- <audio id="audio" controls>
       <source  id="audioSource" src="" type="audio/wav">
     </audio> -->
-      <v-card flat class="pa-3" v-for="line in getLines" :key="line.id" >
-        <TabLine  v-bind:notes="line.notes"/>
-  
-      </v-card>
+          <v-card flat class="pa-3" v-for="line in getLines" :key="line.id" >
+            <PianoLine  v-bind:notes="line.notes"/>
+          </v-card>
 
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import TabLine from './TabLine'
+
+import PianoLine from './PianoLine'
 
 
 export default {
@@ -45,7 +45,8 @@ export default {
 
   },
   components:{
-    TabLine
+
+    PianoLine
   },
   mounted(){
 
