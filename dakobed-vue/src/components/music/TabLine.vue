@@ -13,7 +13,7 @@
 
 <script>
 
-import Vex from 'vexflow';
+// import Vex from 'vexflow';
 // import { mapGetters, mapActions } from "vuex";
 
 var GuitarMidiFret = [
@@ -40,7 +40,8 @@ export default {
     },    
     
     created(){
-        
+        console.log("NOTES " + this.notes)
+        console.log("NOTES " + GuitarMidiFret)
     },
 
     mounted(){
@@ -49,36 +50,36 @@ export default {
           this.notes.pop()
         }
         
-        const VF = Vex.Flow;
-        var div = document.getElementById("tab")
-        var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-        renderer.resize(1500, 130);
-        var context = renderer.getContext();
+        // const VF = Vex.Flow;
+        // var div = document.getElementById("tab")
+        // var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+        // renderer.resize(1500, 130);
+        // var context = renderer.getContext();
 
 
-        var notesArray = []
-        var i =-0
+        // var notesArray = []
+        // var i =-0
 
         
 
-        while(i< this.notes.length){
-          var positions = []
-          var j =i
+        // while(i< this.notes.length){
+        //   var positions = []
+        //   var j =i
 
-          while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
-            var fret = GuitarMidiFret[this.notes[j][3]].indexOf(this.notes[j][2])
-            positions.push({str: this.notes[j][3]+1, fret: fret})
-            j+=1
-          }
-          var tabnote = new VF.TabNote({positions: positions, duration: "q"})
-          notesArray.push(tabnote)   
-          i+=1
-        }
+        //   while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
+        //     var fret = GuitarMidiFret[this.notes[j][3]].indexOf(this.notes[j][2])
+        //     positions.push({str: this.notes[j][3]+1, fret: fret})
+        //     j+=1
+        //   }
+        //   var tabnote = new VF.TabNote({positions: positions, duration: "q"})
+        //   notesArray.push(tabnote)   
+        //   i+=1
+        // }
 
-        var stave = new VF.TabStave(10, 0, 1400);
-        stave.addClef("tab").setContext(context).draw();
+        // var stave = new VF.TabStave(10, 0, 1400);
+        // stave.addClef("tab").setContext(context).draw();
 
-        VF.Formatter.FormatAndDraw(context, stave, notesArray);
+        // VF.Formatter.FormatAndDraw(context, stave, notesArray);
 
     },
     computed: {

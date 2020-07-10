@@ -21,14 +21,12 @@
         </template>
       </v-data-table>
 
-      <TranscriptionDetail v-bind:fileID="3" />
       <router-view></router-view>
     </div>
 </template>
 
 <script>
 
-import TranscriptionDetail from './TranscriptionDetail'
 import { mapGetters, mapActions } from "vuex";
 import axios from 'axios';
 import router from '../../router'
@@ -49,7 +47,6 @@ export default {
     },
 
     components:{
-        TranscriptionDetail
 
     },
     mounted() {

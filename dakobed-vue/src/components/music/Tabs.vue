@@ -3,9 +3,10 @@
   <v-container>
     <v-layout>
       <v-flex>
+        {{ lines}}
           <v-card flat class="pa-3" v-for="line in this.lines" :key="line.id" >
             Almost blue
-            <!-- <TabLine  v-bind:notes="line.notes"/> -->
+            <TabLine  v-bind:notes="line.notes"/>
           </v-card>
 
       </v-flex>

@@ -23,7 +23,7 @@ const actions = {
         var response_string = JSON.stringify(response.data)
         var data = JSON.parse(response_string)
         commit('setTrainingData', data)
-        console.log("the length of the data " + data.length)
+
       }, (error) => {
         console.log(error);
       });
@@ -44,7 +44,7 @@ const actions = {
       for (i = 0; i < nnotes; i++) {
         // console.log(notes[i])
         note = notes[i]
-        notesArray.push([note.measure, note.beat, note.midi, note.string])
+        notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.string])
       } 
       commit('setNotes', notesArray)
 
@@ -71,7 +71,7 @@ const actions = {
       for (i = 0; i < nnotes; i++) {
         // console.log(notes[i])
         note = notes[i]
-        notesArray.push([note.measure, note.beat, note.midi, note.string])
+        notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.string])
       } 
 
       commit('setNotes', notesArray)

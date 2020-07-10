@@ -35,8 +35,8 @@ export default {
         Transcription
     },
     created(){
-      this.fetchTranscription()
-      // this.getS3Transcription(2)
+      //this.fetchTranscription()
+      this.getS3Transcription(2)
     },
     data () {
 

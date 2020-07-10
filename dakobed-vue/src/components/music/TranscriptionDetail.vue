@@ -6,8 +6,8 @@
       <source src="http://d3rak0tzwsp682.cloudfront.net/fileID3/3audio.wav" type="audio/wav">
     </audio> -->
       <v-card flat class="pa-3" v-for="line in getLines" :key="line.id" >
-        <!-- <TabLine  v-bind:notes="line.notes"/> -->
-        {{line}}
+        <TabLine  v-bind:notes="line.notes"/>
+        {{line.notes}}
       </v-card>
 
   </div>
@@ -15,7 +15,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-// import TabLine from './TabLine'
+import TabLine from './TabLine'
 
 
 export default {
@@ -46,7 +46,7 @@ export default {
     ...mapGetters(["getLines"])
   },
   components:{
-    // TabLine
+    TabLine
   }
   
 }
