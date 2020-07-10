@@ -4,6 +4,7 @@ import axios from 'axios';
 const state = {
   notes: [],
   trainingData:[],
+  maestroTrainingData:[],
   lines:[],
   nmeasures:-1
 };
@@ -12,11 +13,51 @@ const getters = {
   getNotes: state => state.notes,
   getTrainingData: state => state.trainingData,
   getLines:state => state.lines,
-  getNMeasures: state => state.getNMeasures
+  getNMeasures: state => state.getNMeasures,
+  getMaestroTraningData: state => state.maestroTrainingData
 };
 
 const actions = {
-  
+
+    
+  async fetchMaestroTranscription({commit}){
+    axios.get("http://localhost:8081/maestroExample").then((response) => {
+
+      var response_string = JSON.stringify(response.data)
+      var notes = JSON.parse(response_string)
+
+      var notesArray = []
+      var i ;
+      var note;
+      for (i = 0; i < notes.length; i++) {
+        console.log(notes[i])
+        note = notes[i]
+        notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.string])
+      } 
+
+
+      commit('setNotes', notesArray)
+
+    }, (error) => {
+      console.log(error);
+    });
+},
+
+async fetchMaestroTrainingData({commit}){
+  axios.get("http://localhost:8081/maestro").then((response) => {
+    
+    var response_string = JSON.stringify(response.data)
+    var data = JSON.parse(response_string)
+    console.log("yess indeed " + data.length )
+    commit('setMaestroTrainingData', data)
+
+  }, (error) => {
+    console.log(error);
+  });
+},
+
+
+
   async fetchTrainingData({commit}){
       axios.get("http://localhost:8081/guitarset").then((response) => {
 
@@ -117,6 +158,7 @@ const mutations = {
 
     },
     setTrainingData: (state, trainingData) => (state.trainingData = trainingData),
+    setMaestroTrainingData: (state, trainingData) => (state.maestroTrainingData = trainingData),
 };
 
 export default {

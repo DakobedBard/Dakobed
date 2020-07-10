@@ -19,6 +19,9 @@ import ShoppingCart from './components/store/ShoppingCart'
 import TweetsLanding from './components/pipelines/tweets/TweetsLanding'
 import TranscriptionList from './components/music/TranscriptionList'
 import TranscriptionDetail from './components/music/TranscriptionDetail'
+
+import MaestroTranscriptions from './components/music/MaestroTranscriptions'
+
 // import googlemap from './components/pipelines/tweets/googlemap'
 Vue.use(Router)
 
@@ -111,7 +114,13 @@ export default new Router({
         name:'transcription_detail',
         path: '/transcription_detail/:fileID',
         component: TranscriptionDetail
-      }
+      },
+      {
+        path: '/maestro',
+        component: MaestroTranscriptions
+      },
+
+      
 
   ]
 })

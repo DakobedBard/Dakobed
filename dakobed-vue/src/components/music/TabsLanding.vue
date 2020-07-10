@@ -7,9 +7,7 @@
           <div v-if="transcription_type=='guitar'">
               Hey
           </div>
-          <div v-else>
-              Ho
-          </div>
+
 
           <Transcription v-bind:transcription_type="transcription_type" v-bind:notes="getNotes"/>          
         </v-flex>
@@ -36,7 +34,11 @@ export default {
     },
     created(){
       //this.fetchTranscription()
-      this.getS3Transcription(2)
+      if(this.transcription_type == "guitar"){
+        this.getS3Transcription(2)
+      }else{
+        this.fetchMaestroTranscription()
+      }
     },
     data () {
 
@@ -49,7 +51,8 @@ export default {
     
     methods:{
         ...mapActions(["fetchTranscription"]),
-        ...mapActions(["getS3Transcription"]),        
+        ...mapActions(["getS3Transcription"]),
+        ...mapActions(["fetchMaestroTranscription"]),        
         selectMenuItem(selection){
 
           this.setGallerySelection(selection)

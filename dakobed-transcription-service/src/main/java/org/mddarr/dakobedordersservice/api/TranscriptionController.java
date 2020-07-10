@@ -68,4 +68,10 @@ public class TranscriptionController {
         return transcriptionService.getPianoTranscriptionS3(fileID);
     }
 
+    @RequestMapping(value="maestroExample")
+    public PianoTranscription getMaestroExample() throws IOException {
+        return transcriptionService.getPianoTranscription();
+    }
+
+
 }

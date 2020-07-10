@@ -61,7 +61,6 @@ public class TranscriptionService {
     }
 
 
-
     public Transcription getTab() throws IOException {
         Transcription transcription = new Transcription(note_json_file_path);
         return transcription;

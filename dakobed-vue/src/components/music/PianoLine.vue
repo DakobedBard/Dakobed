@@ -70,10 +70,10 @@ export default {
 
       // Format and justify the notes to 400 pixels.
       var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
-      console.log(formatter)
+      // console.log(formatter)
       // Render voice
       voice.draw(context, pianostave2);
-      
+      formatter.getElementById
     },
     computed: {
 

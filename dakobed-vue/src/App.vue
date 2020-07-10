@@ -62,10 +62,11 @@ export default {
           // {title:'Authentication', icon:'image-filter-hdr', route:'/authentication/' }, 
           // {title:'Locations', icon:'image-filter-hdr', route:'/locations/' }, 
           // {title:'Store', icon:'image-filter-hdr', route:'/store/' },
-          {title:'Tabs', icon:'image-filter-hdr', route:'/tabs/' }, 
-         {title:'Tweets', icon:'image-filter-hdr', route:'/tweets/' }, 
-        {title:'Transcriptions', icon:'image-filter-hdr', route:'/transcriptions/' }, 
+        //  {title:'Tweets', icon:'image-filter-hdr', route:'/tweets/' }, 
+        {title:'Tabs', icon:'image-filter-hdr', route:'/tabs/' }, 
 
+        {title:'Transcriptions', icon:'image-filter-hdr', route:'/transcriptions/' }, 
+        {title:'Maestro', icon:'image-filter-hdr', route:'/maestro/' }, 
 
         ],
 
