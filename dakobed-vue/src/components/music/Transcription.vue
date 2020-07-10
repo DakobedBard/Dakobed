@@ -7,6 +7,7 @@
             <TabLine  v-bind:notes="line.notes"/>
           </v-card>
         </div>
+        
         <div v-if="transcription_type=='piano'">
 
           <v-card flat class="pa-3" v-for="line in this.lines" :key="line.id" >

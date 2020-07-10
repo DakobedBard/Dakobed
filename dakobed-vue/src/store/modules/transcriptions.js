@@ -1,14 +1,18 @@
 import axios from 'axios';
-// import { compile } from 'vue-template-compiler';
+
 
 const state = {
   notes: [],
-  trainingData:[]
+  trainingData:[],
+  lines:[],
+  nmeasures:-1
 };
 
 const getters = {
   getNotes: state => state.notes,
-  getTrainingData: state => state.trainingData
+  getTrainingData: state => state.trainingData,
+  getLines:state => state.lines,
+  getNMeasures: state => state.getNMeasures
 };
 
 const actions = {
@@ -26,17 +30,12 @@ const actions = {
   },
 
   async getS3Transcription({commit}, fileID){
-    var notesArray = []
-    commit('setNotes', notesArray)
 
     // axios.get("https://dakobed-guitarset.s3-us-west-2.amazonaws.com/fileID" + fileID + "/" + fileID + "transcription.json").then((response) => {
       axios.get("https://dakobed-guitarset.s3-us-west-2.amazonaws.com/fileID" + fileID+"/"+fileID +"transcription.json").then((response) => {
       console.log(response)
       var response_string = JSON.stringify(response.data)
       var notes = JSON.parse(response_string)
-      console.log("The notes array is " + notes.coronavirusconstructor == Array)
-      var a = typeof notes
-      console.log("the type of notes is " + a)
       console.log(notes[0].midi)
       var nnotes = notes.length
       var notesArray = []
@@ -47,7 +46,6 @@ const actions = {
         note = notes[i]
         notesArray.push([note.measure, note.beat, note.midi, note.string])
       } 
-      console.log("The number of notes is " + notes.length)
       commit('setNotes', notesArray)
 
     }, (error) => {
@@ -88,7 +86,36 @@ const actions = {
 
 const mutations = {
 
-    setNotes: (state, notes) => (state.notes = notes),
+    setNotes: (state, notes) => {
+      state.notes = notes
+
+      var nmeasures = notes[notes.length -1][0] 
+      var measures_per_line = 3
+      var nlines = Math.floor(nmeasures/measures_per_line)
+      if(nmeasures % 4 != 0){
+          nlines +=1
+      }
+      var lines = []
+      var i
+      var current_note_index = 0;
+      var lowest_measure = 0;
+      var highest_measure = measures_per_line;
+      var current_measure = 0;
+      for(i =0; i < nlines; i++){
+        var line = []
+        while(current_measure >= lowest_measure && current_measure < highest_measure && current_note_index < notes.length ) {
+            current_measure = notes[current_note_index][0]
+            current_note_index+=1
+            line.push(notes[current_note_index])   
+        } 
+        lines.push({id:i, notes:line})
+        lowest_measure += measures_per_line
+        highest_measure += measures_per_line
+      }
+      state.nmeasures = nmeasures
+      state.lines = lines
+
+    },
     setTrainingData: (state, trainingData) => (state.trainingData = trainingData),
 };
 

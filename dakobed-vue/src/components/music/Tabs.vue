@@ -4,7 +4,8 @@
     <v-layout>
       <v-flex>
           <v-card flat class="pa-3" v-for="line in this.lines" :key="line.id" >
-            <TabLine  v-bind:notes="line.notes"/>
+            Almost blue
+            <!-- <TabLine  v-bind:notes="line.notes"/> -->
           </v-card>
 
       </v-flex>
