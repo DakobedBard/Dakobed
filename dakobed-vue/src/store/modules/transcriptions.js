@@ -31,14 +31,11 @@ const actions = {
 
       var notesArray = []
       var i ;
-      var note;
-      console.log("notes array from before vuex " + notes.length)      
+      var note;  
       for (i = 0; i < notes.length; i++) {
-        console.log(notes[i])
         note = notes[i]
         notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.string])
       } 
-      console.log("notes array from vuex " + notesArray.length)
 
       commit('setNotes', notesArray)
 
@@ -52,7 +49,6 @@ async fetchMaestroTrainingData({commit}){
     
     var response_string = JSON.stringify(response.data)
     var data = JSON.parse(response_string)
-    console.log("yess indeed " + data.length )
     commit('setMaestroTrainingData', data)
 
   }, (error) => {
@@ -78,10 +74,9 @@ async fetchMaestroTrainingData({commit}){
 
     // axios.get("https://dakobed-guitarset.s3-us-west-2.amazonaws.com/fileID" + fileID + "/" + fileID + "transcription.json").then((response) => {
       axios.get("https://dakobed-guitarset.s3-us-west-2.amazonaws.com/fileID" + fileID+"/"+fileID +"transcription.json").then((response) => {
-      console.log(response)
       var response_string = JSON.stringify(response.data)
       var notes = JSON.parse(response_string)
-      console.log(notes[0].midi)
+ 
       var nnotes = notes.length
       var notesArray = []
       var i ;
