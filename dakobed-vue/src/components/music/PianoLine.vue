@@ -57,16 +57,37 @@ export default {
         pianostave.setContext(context).draw();
 
 
-        var notes = [
-        new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
-        new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
-        new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }),
-        new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q" })
-      ];
+
+        var notesArray = []
+        // console.log(notesArray)
+        var i =0
+        while(i< 5){//this.notes.length){
+        
+          var keys = []
+          console.log(keys)  
+          var j =i
+          while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
+            // console.log("this.notes[j] " + this.notes[j][3] )
+
+            // positions.push({str: Math.floor(this.notes[j][3])+1, fret: fret})
+            j+=1
+          }
+          var pianonote = new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" })
+          // var tabnote = new VF.TabNote({positions: positions, duration: "q"})
+          notesArray.push(pianonote)   
+          i+=1
+          
+        }
+      //   var notes = [
+      //   new VF.StaveNote({clef: "treble", keys: ["c/4"], duration: "q" }),
+      //   new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
+      //   new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }),
+      //   new VF.StaveNote({clef: "treble", keys: ["c/4", "e/4", "g/4"], duration: "q" })
+      //  ];
 
       // Create a voice in 4/4 and add the notes from above
-      var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-      voice.addTickables(notes);
+      var voice = new VF.Voice({num_beats: 5,  beat_value: 4});
+      voice.addTickables(notesArray);
 
       // Format and justify the notes to 400 pixels.
       var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 400);
