@@ -35,7 +35,6 @@ const actions = {
         notesArray.push([note.measure, note.beat, Math.floor(note.midi), note.string])
       } 
 
-
       commit('setNotes', notesArray)
 
     }, (error) => {

@@ -20,6 +20,9 @@ import TweetsLanding from './components/pipelines/tweets/TweetsLanding'
 import TranscriptionList from './components/music/TranscriptionList'
 import TranscriptionDetail from './components/music/TranscriptionDetail'
 
+
+import PianoTranscriptionDetail from './components/music/PianoTranscriptionDetail'
+
 import MaestroTranscriptions from './components/music/MaestroTranscriptions'
 
 // import googlemap from './components/pipelines/tweets/googlemap'
@@ -118,6 +121,11 @@ export default new Router({
       {
         path: '/maestro',
         component: MaestroTranscriptions
+      },
+      {
+        name:'piano-transcription',
+        path: '/piano-transcription',
+        component: PianoTranscriptionDetail
       },
 
       

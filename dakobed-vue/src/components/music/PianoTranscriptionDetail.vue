@@ -21,13 +21,11 @@ import TabLine from './TabLine'
 export default {
   created(){
     this.fileID = this.$route.params.fileID
-    this.getS3Transcription(this.fileID)
+    this.fetchMaestroTranscription()
   },
   
   methods:{
-    ...mapActions(["fetchTranscription"]),
-    ...mapActions(["getS3Transcription"]),
-
+    ...mapActions(["fetchMaestroTranscription"]),
   },
 
 
@@ -51,13 +49,13 @@ export default {
   },
   mounted(){
 
-    var audio = document.getElementById('audio');
+    // var audio = document.getElementById('audio');
 
-    var source = document.getElementById('audioSource');
-    source.src = "http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/" + this.fileID + "audio.wav"
+    // var source = document.getElementById('audioSource');
+    // source.src = "http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/" + this.fileID + "audio.wav"
 
-    audio.load(); //call this to just preload the audio without playing
-    audio.play(); //call this to play the song right away
+    // audio.load(); //call this to just preload the audio without playing
+    // audio.play(); //call this to play the song right away
   }
   
 }

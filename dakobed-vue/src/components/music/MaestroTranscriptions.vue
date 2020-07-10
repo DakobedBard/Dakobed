@@ -16,8 +16,8 @@
       > 
       <template v-slot:item="{ item }">
             <tr @click="rowClicked(item.fileID)">
+                <td>{{item.title}}</td>
                 <td>{{item.composer}}</td>
-
             </tr>
         </template>
       </v-data-table>
@@ -58,7 +58,7 @@ export default {
     methods:{
       ...mapActions(["fetchMaestroTrainingData"]),     
       rowClicked(fileID){
-        router.push({ name: 'transcription_detail', params: { fileID: fileID } })
+        router.push({ name: 'piano-transcription', params: { fileID: fileID } })
       },
       ...mapActions(["fetchTrainingData"]),    
 
