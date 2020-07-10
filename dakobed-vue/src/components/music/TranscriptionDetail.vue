@@ -54,7 +54,7 @@ export default {
     var audio = document.getElementById('audio');
 
     var source = document.getElementById('audioSource');
-    source.src = this.audioURL;
+    source.src = "http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/" + this.fileID + "audio.wav"
 
     audio.load(); //call this to just preload the audio without playing
     audio.play(); //call this to play the song right away
