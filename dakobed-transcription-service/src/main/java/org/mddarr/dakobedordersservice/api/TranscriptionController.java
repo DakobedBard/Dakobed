@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 
 import org.mddarr.dakobedordersservice.models.GuitarsetTrainingExample;
+import org.mddarr.dakobedordersservice.models.MaestroTrainingExample;
 import org.mddarr.dakobedordersservice.models.PianoTranscription;
 import org.mddarr.dakobedordersservice.models.Transcription;
 import org.mddarr.dakobedordersservice.services.TranscriptionService;
@@ -36,6 +37,12 @@ public class TranscriptionController {
     public List<GuitarsetTrainingExample> getTrainingData(){
         return transcriptionService.getGuitarSetTrainingData();
     }
+
+    @RequestMapping(value="maestro")
+    public List<MaestroTrainingExample> getMaestroTrainingData(){
+        return transcriptionService.getMaestroTrainingData();
+    }
+
 
 //    @RequestMapping(value="S3transcription")
 //    public String what(){

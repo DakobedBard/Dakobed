@@ -38,6 +38,15 @@ public class TranscriptionService {
 
     String note_json_file_path = "/home/mddarr/data/Dakobed/dakobed-transcription-service/src/main/resources/transcription1.json";
 
+    public List<MaestroTrainingExample> getMaestroTrainingData(){
+        DynamoDBMapperConfig mapperConfig = new DynamoDBMapperConfig.Builder()
+                .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement("Dakobed-Maestro")).build();
+        DynamoDBMapper mapper = new DynamoDBMapper(amazonDynamoDB, mapperConfig);
+        List<MaestroTrainingExample> trainingExamples = mapper.scan(MaestroTrainingExample.class, new DynamoDBScanExpression());
+        return trainingExamples;
+    }
+
+
     public List<GuitarsetTrainingExample> getGuitarSetTrainingData(){
         DynamoDBMapperConfig mapperConfig = new DynamoDBMapperConfig.Builder()
                 .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement("Dakobed-GuitarSet")).build();

@@ -197,6 +197,31 @@ class Measure:
         self.notes = notes
 
 
+def create_maestro_pieces_table():
+    dynamodb = boto3.resource('dynamodb', region_name='us-west-2') #, endpoint_url='http://localhost:8000/')
+    try:
+        resp = dynamodb.create_table(
+            AttributeDefinitions=[
+                {
+                    "AttributeName": "PieceID",
+                    "AttributeType": "S" },
+            ],
+            TableName="Dakobed-Maestro",
+            KeySchema=[
+                {
+                    "AttributeName": "PieceID",
+                    "KeyType": "HASH"
+                },
+            ],
+            ProvisionedThroughput={
+                "ReadCapacityUnits": 1,
+                "WriteCapacityUnits": 1
+            })
+
+    except Exception as e:
+        print(e)
+create_maestro_pieces_table()
+
 maestro_df = pd.read_csv('maestro-v2.0.0.csv')
 s3client = boto3.client('s3')
 bucket = 'dakobed-maestro'
@@ -210,9 +235,23 @@ for fileID in range(4,1282):
     wav = 'data/maestro/' + row['audio_filename']
     midi = 'data/maestro/' + row['midi_filename']
 
+    dynamoDB = boto3.client('dynamodb', region_name='us-west-2')
     try:
-        process_midi_wav_file_pair(wav, midi, fileID, s3client, bucket)
+        dynamoDB.put_item(
+            TableName="Dakobed-Maestro",
+            Item={
+                "PieceID" : {"S":str(fileID)},
+                "PieceName": {"S":row['canonical_title']},
+                "Composer":{"S":row['canonical_composer']}
+            }
+        )
+    except Exception as e:
+        print(e)
+
+    try:
+        #process_midi_wav_file_pair(wav, midi, fileID, s3client, bucket)
         notes = extract_notes_midi(midi)
         tab = Transcription(wav, notes, fileID)
     except Exception as e:
         print(e)
+

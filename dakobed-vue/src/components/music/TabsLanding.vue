@@ -41,7 +41,7 @@ export default {
     data () {
 
       return {
-        transcription_type:"guitar"
+        transcription_type:"piano"
       
       }
     },
