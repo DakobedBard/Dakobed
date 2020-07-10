@@ -73,7 +73,7 @@ export default {
           }
             var tabnote = new VF.TabNote({positions: positions, duration: "q"})
             notesArray.push(tabnote)   
-            i+=1
+            i=j
           }
 
         var stave = new VF.TabStave(10, 0, 1400);
