@@ -40,7 +40,7 @@ export default {
         var response_string = JSON.stringify(response.data)
         var data = JSON.parse(response_string)
         this.data = data
-        console.log("the length of the this.data " + this.data.length)
+
       }, (error) => {
         console.log(error);
       });
