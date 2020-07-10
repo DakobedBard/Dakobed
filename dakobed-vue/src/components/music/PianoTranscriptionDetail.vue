@@ -5,7 +5,7 @@
     <!-- <audio id="audio" controls>
       <source  id="audioSource" src="" type="audio/wav">
     </audio> -->
-          <v-card flat class="pa-3" v-for="line in getLines.slice(1,4)" :key="line.id" >
+          <v-card flat class="pa-3" v-for="line in getLines.slice(0,1)" :key="line.id" >
             <PianoLine  v-bind:notes="line.notes"/>
           </v-card>
 

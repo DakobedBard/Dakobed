@@ -74,6 +74,7 @@ export default {
         var bassArray = []
         console.log("BaseArray " + bassArray)
         console.log("trebleArray " + trebleArray)
+        console.log("notesarray " + notesArray)
         var notesArray = []
         // console.log(notesArray)
         var i =0
@@ -81,8 +82,11 @@ export default {
         
           var keys = []
           console.log(keys)
-          // var basskeys = []
-          // console.log(basskeys)    
+          var treblekeys = []
+          console.log(treblekeys)    
+
+          var basskeys = []
+          console.log(basskeys)    
           var j =i
           var note
           var duration
@@ -95,8 +99,12 @@ export default {
 
             console.log("duration " +  duration + " DurationMap " + DurationMap[duration] )
 
-
-
+          
+            if(note[2] <= 56){
+              basskeys.push(MidiKeyMap[note[2]])
+            }else{
+              treblekeys.push(MidiKeyMap[note[2]])
+            }
             // console.log("this.notes[j] " + this.notes[j][3] )
 
             // positions.push({str: Math.floor(this.notes[j][3])+1, fret: fret})
@@ -104,10 +112,15 @@ export default {
           }
 
           console.log("Note[2] " + note[2])
-           var pianonote = new VF.StaveNote({clef: "treble", keys: [MidiKeyMap[note[2]]], duration: DurationMap[duration] })
-          // var tabnote = new VF.TabNote({positions: positions, duration: "q"})
-          notesArray.push(pianonote)   
-          
+          var treblenote = new VF.StaveNote({clef: "treble", keys: treblekeys, duration: DurationMap[duration] })
+          var bassnote = new VF.StaveNote({clef: "bass", keys: basskeys, duration: DurationMap[duration] })
+
+// var tabnote = new VF.TabNote({positions: positions, duration: "q"})
+
+        
+          trebleArray.push(treblenote)
+          bassArray.push(bassnote)
+
           // else{
           //   console.log("note [2] " + note[2] )
           //   var basenote = new VF.StaveNote({stem_direction: 1,clef: "bass", keys:[MidiKeyMap[39]], duration: "q" })
@@ -115,7 +128,7 @@ export default {
           // }
 
 
-          i+=1
+          i=j
           
         }
       //   var notes = [
@@ -134,15 +147,15 @@ export default {
       // formatter.getElementById
 
 
-      var treble_beams = VF.Beam.generateBeams(notesArray);
-      VF.Formatter.FormatAndDraw(context, trebleStave, notesArray);
+      var treble_beams = VF.Beam.generateBeams(trebleArray);
+      VF.Formatter.FormatAndDraw(context, trebleStave, trebleArray);
       treble_beams.forEach(function(b) {b.setContext(context).draw()})
 
 
 
-      // var beams = VF.Beam.generateBeams(bassArray);
-      // VF.Formatter.FormatAndDraw(context, bassStave, bassArray);
-      // beams.forEach(function(b) {b.setContext(context).draw()})
+      var beams = VF.Beam.generateBeams(bassArray);
+      VF.Formatter.FormatAndDraw(context, bassStave, bassArray);
+      beams.forEach(function(b) {b.setContext(context).draw()})
 
       // var basevoice = new VF.Voice({num_beats: 5,  beat_value: 4});
       // basevoice.addTickables(bassArray);

@@ -56,7 +56,7 @@ public class TranscriptionService {
     }
 
     public PianoTranscription getPianoTranscription() throws IOException {
-        PianoTranscription transcription = new PianoTranscription("/home/mddarr/data/Dakobed/dakobed-transcription-service/src/main/resources/piano_transcription.json");
+        PianoTranscription transcription = new PianoTranscription("/home/mddarr/data/Dakobed/dakobed-transcription-service/src/main/resources/test_transcription.json");
         return transcription;
     }
 
