@@ -2,12 +2,12 @@
   <div>
       Transcription Detail {{fileID}}
 
-    <!-- <audio controls autoplay>
-      <source src="http://d3rak0tzwsp682.cloudfront.net/fileID3/3audio.wav" type="audio/wav">
-    </audio> -->
+    <audio id="audio" controls>
+      <source  id="audioSource" src="" type="audio/wav">
+    </audio>
       <v-card flat class="pa-3" v-for="line in getLines" :key="line.id" >
         <TabLine  v-bind:notes="line.notes"/>
-        {{line.notes}}
+  
       </v-card>
 
   </div>
@@ -37,16 +37,27 @@ export default {
 
   data(){
     return {
-        audiourl:"http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/" + this.fileID + "audio.wav",
+        audioURL:"http://d3rak0tzwsp682.cloudfront.net/fileID3/3audio.wav",
         transcriptionurl:"http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/" + this.fileID + "transcription.json"
     }
   },
   computed: {
     ...mapGetters(["getNotes"]),
     ...mapGetters(["getLines"])
+
   },
   components:{
     TabLine
+  },
+  mounted(){
+
+    var audio = document.getElementById('audio');
+
+    var source = document.getElementById('audioSource');
+    source.src = this.audioURL;
+
+    audio.load(); //call this to just preload the audio without playing
+    audio.play(); //call this to play the song right away
   }
   
 }

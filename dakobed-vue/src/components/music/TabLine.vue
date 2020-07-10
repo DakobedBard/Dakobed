@@ -65,7 +65,7 @@ export default {
           var j =i
           while(this.notes[j]!= undefined && this.notes[j][1] == this.notes[i][1]){
             // console.log("this.notes[j] " + this.notes[j][3] )
-            console.log("String " + this.notes[j][3]+1  )
+
             var fret = GuitarMidiFret[Math.floor(this.notes[j][3])].indexOf(this.notes[j][2])
 
             positions.push({str: Math.floor(this.notes[j][3])+1, fret: fret})
