@@ -4,8 +4,6 @@ import com.typesafe.config.Config;
 
 public class AppConfig {
 
-    private final String bootstrapServers;
-    private final String schemaRegistryUrl;
     private final String sourceTopicName;
     private final String elasticSearchURL;
     private final String tweetTopicName;
@@ -18,8 +16,6 @@ public class AppConfig {
         // this.bootstrapServers = "http://kafka:9092";
 //        this.schemaRegistryUrl = "http://schema-registry:8081";
         this.elasticSearchURL = "http://elasticsearch7:29200";
-        this.bootstrapServers = "http://" + arguments[1]; // localhost:9092";
-        this.schemaRegistryUrl = "http://" + arguments[2]; // arlocalhost:8081";
 
         this.sourceTopicName = "kafka.source.tweet."+arguments[0];
         this.tweetTopicName = arguments[0];
@@ -28,14 +24,6 @@ public class AppConfig {
     }
 
     public int getQueuCapacity(){return 100;}
-
-    public String getBootstrapServers() {
-        return bootstrapServers;
-    }
-
-    public String getSchemaRegistryUrl() {
-        return schemaRegistryUrl;
-    }
 
     public String getSourceTopicName() {
         return sourceTopicName;
