@@ -12,7 +12,7 @@ Host the SPA in an S3 bucket.
 npm run build
 serve ./dist
 
-aws s3 sync ./dist s3://dakobed-app-client
+aws s3 sync ./dist s3://dalinar-mir.com
 
 
 

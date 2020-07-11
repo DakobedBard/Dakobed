@@ -11,13 +11,15 @@ s3_resource = boto3.resource('s3')
 bucketName = 'dakobed-guitarset'
 bucket = s3_resource.Bucket(bucketName)
 
-
+os.mkdir('data')
+os.mkdir('data/dakobed-guitarset')
 for fileID in range(360):
     print(fileID)
     os.mkdir('data/dakobed-guitarset/fileID{}/'.format(fileID))
     path = 'data/dakobed-guitarset/fileID{}'.format(fileID)
-    cqtfile = 'data/dakobed-guitarset/fileID{}/cqt.npy'.format(fileID)
-    annotation_file = 'data/dakobed-guitarset/fileID{}/binary_annotation_label.npy'.format(fileID)
-    print(cqtfile)
+    cqtfile = 'fileID{}/cqt.npy'.format(fileID)
+    annotation_file = 'fileID{}/binary_annotation.npy'.format(fileID)
     bucket.download_file(cqtfile, path+'/cqt.npy')
     bucket.download_file(annotation_file, path+'/annotation.npy')
+    if fileID > 3:
+        break

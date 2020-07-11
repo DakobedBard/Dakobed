@@ -38,7 +38,7 @@ export default {
   data(){
     return {
         audioURL:"http://d3rak0tzwsp682.cloudfront.net/fileID3/3audio.wav",
-        transcriptionurl:"http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/" + this.fileID + "transcription.json"
+        transcriptionurl:"http://d3rak0tzwsp682.cloudfront.net/fileID" + this.fileID + "/transcription.json"
     }
   },
   computed: {

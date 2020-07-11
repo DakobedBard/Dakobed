@@ -249,9 +249,9 @@ for fileID in range(4,1282):
         print(e)
 
     try:
-        #process_midi_wav_file_pair(wav, midi, fileID, s3client, bucket)
+        process_midi_wav_file_pair(wav, midi, fileID, s3client, bucket)
         notes = extract_notes_midi(midi)
-        tab = Transcription(wav, notes, fileID)
+        #tab = Transcription(wav, notes, fileID)
     except Exception as e:
         print(e)
 

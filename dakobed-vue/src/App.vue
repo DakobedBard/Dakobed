@@ -62,7 +62,7 @@ export default {
           // {title:'Authentication', icon:'image-filter-hdr', route:'/authentication/' }, 
           // {title:'Locations', icon:'image-filter-hdr', route:'/locations/' }, 
           // {title:'Store', icon:'image-filter-hdr', route:'/store/' },
-        //  {title:'Tweets', icon:'image-filter-hdr', route:'/tweets/' }, 
+        {title:'Tweets', icon:'image-filter-hdr', route:'/tweets/' }, 
         {title:'Tabs', icon:'image-filter-hdr', route:'/tabs/' }, 
 
         {title:'Transcriptions', icon:'image-filter-hdr', route:'/transcriptions/' }, 
