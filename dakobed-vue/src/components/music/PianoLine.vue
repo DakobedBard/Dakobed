@@ -5,7 +5,7 @@
       <v-flex>  
           <div id="tab">  
           </div>
-          {{firstMeasure}}
+
       </v-flex>
     </v-layout>
   </v-container>
@@ -25,7 +25,11 @@ const MidiKeyMap = {28:'e/1',29:'f/1',30:'f/1',31:'g/1',32:'g/1', 33:'a/1',34:'a
 }
 
 const DurationMap = {0:'16', 1:'8',2:'q', 3:'q', 4:'h',5:'h',6:'h'}
-const DurationToBeats={}
+const DurationToBeats= {0:1, 1:2, 3:4, 4:6, 5:8}
+
+
+const BeatsToRestDuration = {1:'16r',2:'8r',3:'qr',4:'hr' }
+
 console.log(MidiKeyMap[44])
 console.log(DurationMap)
 console.log(DurationToBeats)
@@ -73,71 +77,80 @@ export default {
 
         var trebleArray = []
         var bassArray = []
-        console.log("BaseArray " + bassArray)
-        console.log("trebleArray " + trebleArray)
-        console.log("notesarray " + notesArray)
+        // console.log("BaseArray " + bassArray)
+        // console.log("trebleArray " + trebleArray)
+
         var notesArray = []
-        // console.log(notesArray)
+        console.log("notesarray " + notesArray)
+
         var i =0
         var beat =0
-        var currentbeat = 0
+
         console.log(beat)
-        console.log(currentbeat)
+
 
         var previous_treble_beat = 0
         var previous_bass_beat = 0
         console.log(previous_bass_beat)
         console.log(previous_treble_beat)
-
+        var previous_treble_duration = 0
+        console.log(previous_treble_duration)
         while(i< this.notes.length){
 
           currentBeat = this.notes[i][1]
-
-          var keys = []
-          console.log(keys)
+          console.log("OG current beat " + this.notes[i][1])
           var treblekeys = []
-          console.log(treblekeys)    
-
           var basskeys = []
-          console.log(basskeys)    
+          
           var j =i
-          var note
+
           var duration
-      
-
+          
           while(this.notes[j]!= undefined && this.notes[j][1] == currentBeat){
-
-            note = this.notes[j]            
             
-            duration = note[3]
-            console.log("duration " +  duration + " DurationMap " + DurationMap[duration] )
+            duration = this.notes[j][3]
 
-            if(note[2] <= 56){
-              basskeys.push(MidiKeyMap[note[2]])
+            if(this.notes[j][2] <= 56){
+              basskeys.push(MidiKeyMap[this.notes[j][2]])
             }else{
-              treblekeys.push(MidiKeyMap[note[2]])
+              treblekeys.push(MidiKeyMap[this.notes[j][2]])
             }
             // console.log("this.notes[j] " + this.notes[j][3] )
             // positions.push({str: Math.floor(this.notes[j][3])+1, fret: fret})
             j+=1
           }
 
-          console.log("Note[2] " + note[2])
-          
           if(treblekeys.length > 0 ){
             var treblenote = new VF.StaveNote({clef: "treble", keys: treblekeys, duration: DurationMap[duration] })
+            //console.log(treblenote)
             trebleArray.push(treblenote)
+            var diff = currentBeat - previous_treble_beat - DurationToBeats[previous_treble_duration]
+
+          
+            console.log("The current beat " + currentBeat + " and the previous beat " + previous_treble_beat + " and previous treble duration " + DurationToBeats[previous_treble_duration])
+            console.log("the diff " + diff)
+            console.log("The encoding of the rest duration is " + DurationToBeats[diff])
+            if(diff > 0 ){
+            
+
+
+            BeatsToRestDuration[diff]
+            }
+
+            previous_treble_beat = currentBeat
+            previous_treble_duration = duration
+
           }else{
-            console.log("the duration of this rest is " + duration)
+
             var treblerest = new VF.StaveNote({clef: "treble", keys: ['b/4'], duration: DurationMap[duration] +'r' })
             trebleArray.push(treblerest)
-            previous_treble_beat = currentBeat
-          }
 
+          }
 
           if(basskeys.length > 0 ){
             var bassnote = new VF.StaveNote({clef: "bass", keys: basskeys, duration: DurationMap[duration] })
             previous_bass_beat = currentBeat
+            previous_treble_duration = duration
             bassArray.push(bassnote)
           }else{
             var bassrest = new VF.StaveNote({clef: "bass", keys: ['D/3'], duration: DurationMap[duration] +'r' })
@@ -149,22 +162,16 @@ export default {
           
         }
 
-
-
       var treble_beams = VF.Beam.generateBeams(trebleArray);
       VF.Formatter.FormatAndDraw(context, trebleStave, trebleArray);
       treble_beams.forEach(function(b) {b.setContext(context).draw()})
-
-
 
       var beams = VF.Beam.generateBeams(bassArray);
       
       VF.Formatter.FormatAndDraw(context, bassStave, bassArray);
       beams.forEach(function(b) {b.setContext(context).draw()})
 
-
-
-      trebleStave.drawVerticalBar(400, true);
+      // trebleStave.drawVerticalBar(400, true);
 
     },
     computed: {

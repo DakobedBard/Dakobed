@@ -5,6 +5,20 @@ Run locally
 npm install 
 npm run serve
 
+
+
+Host the SPA in an S3 bucket.  
+
+npm run build
+serve ./dist
+
+aws s3 sync ./dist s3://dakobed-app-client
+
+
+
+
+
+
 #### ECR 
 
 

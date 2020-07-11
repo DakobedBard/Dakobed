@@ -45,8 +45,7 @@ const actions = {
 },
 
 async fetchMaestroTrainingData({commit}){
-  axios.get("http://localhost:8081/maestro").then((response) => {
-    
+  axios.get(window.__runtime_configuration.apiEndpoint +"/maestro").then((response) => {
     var response_string = JSON.stringify(response.data)
     var data = JSON.parse(response_string)
     commit('setMaestroTrainingData', data)
