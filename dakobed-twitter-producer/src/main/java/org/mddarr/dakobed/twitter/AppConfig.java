@@ -7,7 +7,7 @@ public class AppConfig {
     private final String bootstrapServers;
     private final String schemaRegistryUrl;
     private final String sourceTopicName;
-
+    private final String elasticSearchURL;
     private final String tweetTopicName;
     private final String applicationId;
     private final String tweetTopic;
@@ -17,7 +17,7 @@ public class AppConfig {
 
         // this.bootstrapServers = "http://kafka:9092";
 //        this.schemaRegistryUrl = "http://schema-registry:8081";
-
+        this.elasticSearchURL = "http://elasticsearch7:29200";
         this.bootstrapServers = "http://" + arguments[1]; // localhost:9092";
         this.schemaRegistryUrl = "http://" + arguments[2]; // arlocalhost:8081";
 
