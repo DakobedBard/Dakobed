@@ -29,8 +29,8 @@
 <!--        <module>dakobed-report-service</module>-->
 <!--        <module>dakobed-services</module>-->
 <!--        <module>dakobed-snotel-service</module>-->
-<!--        <module>dakobed-twitter-service</module>-->
-        <module>dakobed-twitter-producer</module>
+        <module>dakobed-twitter-service</module>
+<!--        <module>dakobed-twitter-producer</module>-->
 <!--        <module>dakobed-transcription-service</module>-->
 
     </modules>
