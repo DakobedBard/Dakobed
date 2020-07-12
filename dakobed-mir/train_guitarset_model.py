@@ -176,7 +176,7 @@ def build_model():
     return model
 
 
-#download_guitarset_transforms()
+download_guitarset_transforms()
 
 
 batch_size = 32
