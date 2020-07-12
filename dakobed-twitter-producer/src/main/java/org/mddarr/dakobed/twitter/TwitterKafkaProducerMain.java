@@ -19,8 +19,10 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
+import org.mddarr.dakobed.twitter.model.Tweet;
 import org.mddarr.dakobed.twitter.runnable.TweetStreamsThread;
 import org.mddarr.dakobed.twitter.runnable.TweetsAvroProducerThread;
+import org.mddarr.dakobed.twitter.runnable.TweetsElasticSearchThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twitter4j.Status;
@@ -39,6 +41,7 @@ public class TwitterKafkaProducerMain {
     private CountDownLatch latch;
     private TweetStreamsThread tweetStreams;
     private TweetsAvroProducerThread tweetsProducer;
+    private TweetsElasticSearchThread elasticSearchThread;
     private TweetStreamsThread tweetsThread;
     public static void main(String[] args) throws IOException {
         TwitterKafkaProducerMain app = new TwitterKafkaProducerMain(args);
@@ -48,38 +51,72 @@ public class TwitterKafkaProducerMain {
     private TwitterKafkaProducerMain(String[] arguments){
         AppConfig appConfig = new AppConfig(ConfigFactory.load(), arguments);
 
-//        latch = new CountDownLatch(2);
-//        executor = Executors.newFixedThreadPool(2);
-//        ArrayBlockingQueue<Status> statusQueue = new ArrayBlockingQueue<Status>(appConfig.getQueuCapacity());
-//        tweetsThread = new TweetStreamsThread(appConfig, statusQueue, latch);
+        latch = new CountDownLatch(2);
+        executor = Executors.newFixedThreadPool(2);
+        ArrayBlockingQueue<Status> statusQueue = new ArrayBlockingQueue<Status>(appConfig.getQueuCapacity());
+        tweetsThread = new TweetStreamsThread(appConfig, statusQueue, latch);
+        elasticSearchThread = new TweetsElasticSearchThread(appConfig, statusQueue, latch);
 //        tweetsProducer = new TweetsAvroProducerThread(appConfig,statusQueue,latch);
     }
 
     public void start() throws IOException {
 
-        RestHighLevelClient client = new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost("localhost", 29200, "http"),
-                        new HttpHost("localhost", 9201, "http")));
-
-        IndexRequest request = new IndexRequest("tweets");
-        String jsonString = "{" +
-                "\"user\":\"frank\"," +
-                "\"postDate\":\"2020-03-02\"," +
-                "\"message\":\"created this document from Java\"" +
-                "}";
-        request.source(jsonString, XContentType.JSON);
-
+        log.info("Application started!");
+        executor.submit(tweetsThread);
+        executor.submit(elasticSearchThread);
+        log.info("Stuff submit");
         try {
-            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
-            System.out.println(response);
-
-        } catch (ElasticsearchException e) {
-            if (e.status() == RestStatus.CONFLICT) {
-            }
+            log.info("Latch await");
+            latch.await();
+            log.info("Threads completed");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            shutdown();
+            log.info("Application closed succesfully");
         }
 
-        client.close();
+
+//        RestHighLevelClient client = new RestHighLevelClient(
+//                RestClient.builder(
+//                        new HttpHost("localhost", 29200, "http"),
+//                        new HttpHost("localhost", 9201, "http")));
+//
+//        IndexRequest request = new IndexRequest("tweets");
+//        String jsonString = "{" +
+//                "\"user\":\"frank\"," +
+//                "\"postDate\":\"2020-03-02\"," +
+//                "\"message\":\"created this document from Java\"" +
+//                "}";
+//
+//        request.source(jsonString, XContentType.JSON);
+//
+//        try {
+//            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+//            System.out.println(response);
+//
+//        } catch (ElasticsearchException e) {
+//            if (e.status() == RestStatus.CONFLICT) {
+//            }
+//        }
+//
+//
+//        jsonString = "{" +
+//                "\"user\":\"george\"," +
+//                "\"postDate\":\"2020-03-02\"," +
+//                "\"message\":\"created this document from Java\"" +
+//                "}";
+//        request.source(jsonString, XContentType.JSON);
+//
+//        try {
+//            IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+//            System.out.println(response);
+//
+//        } catch (ElasticsearchException e) {
+//            if (e.status() == RestStatus.CONFLICT) {
+//            }
+//        }
+//        client.close();
 
 //        CreateIndexRequest request = new CreateIndexRequest("users");
 //        request.settings(Settings.builder()
@@ -151,20 +188,7 @@ public class TwitterKafkaProducerMain {
 //            }
 //        }));
 //
-//        log.info("Application started!");
-//        executor.submit(tweetsThread);
-//        executor.submit(tweetsProducer);
-//        log.info("Stuff submit");
-//        try {
-//            log.info("Latch await");
-//            latch.await();
-//            log.info("Threads completed");
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } finally {
-//            shutdown();
-//            log.info("Application closed succesfully");
-//        }
+
 
     }
 

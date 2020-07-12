@@ -18,7 +18,7 @@ import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
-public class TweetsElasticSearchThread {
+public class TweetsElasticSearchThread implements Runnable{
     LocationParser locationParser;
     private final Log log = LogFactory.getLog(getClass());
     private final AppConfig appConfig;
