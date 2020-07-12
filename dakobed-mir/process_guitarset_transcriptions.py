@@ -54,8 +54,6 @@ def annotation_audio_file_paths(audio_dir='data/guitarset/audio/', annotation_di
     return file_pairs
 
 
-
-
 class Transcription:
     def __init__(self, wav, jam, fileID):
         notes = jam_to_notes_matrix(jam)
@@ -122,7 +120,6 @@ class Transcription:
 
 class Measure:
     def __init__(self, notes, index):
-        print("do i have notes!!! " + str(len(notes)))
         start_of_measure = notes[0][0]
         end_of_measure = notes[-1][0]
         measureduration = notes[-1][0] -notes[0][0]
@@ -159,32 +156,24 @@ def process_wav_jam_pair(jam, wav, i):
     os.mkdir('data/dakobed-guitarset/fileID{}'.format(i))
 
     y, sr = librosa.load(wav)
-    cqt = librosa.amplitude_to_db( np.abs(librosa.core.cqt(y, sr=sr, n_bins=72, bins_per_octave=24, fmin=librosa.note_to_hz('C2'), norm=1))).T
+    cqt = librosa.amplitude_to_db( np.abs(librosa.core.cqt(y, sr=sr, n_bins=144, bins_per_octave=24, fmin=librosa.note_to_hz('C2'), norm=1))).T
     notes = jam_to_notes_matrix(jam)
-    # jsonNotes = []
-    # for note in notes:
-    #     jsonNotes.append({'time': note[0], 'duration': note[1], 'midi': round(note[2]), 'velocity': note[3]})
-
-    # with open('data/dakobed-guitarset/fileID{}/fileID{}notes.json'.format(i, i), 'w') as outfile:
-    #     json.dump(jsonNotes, outfile)
 
     binary_annotation, multivariate_annotation = notes_matrix_to_annotation(notes, cqt.shape[0])
 
     for file, array, s3path in [('data/dakobed-guitarset/fileID{}/cqt.npy'.format(i), cqt, 'fileID{}/cqt.npy'.format(i)),
-                                ('data/dakobed-guitarset/fileID{}/binary_annotation.npy'.format(i), multivariate_annotation,'fileID{}/binary_annotation.npy'.format(i)),
+                                ('data/dakobed-guitarset/fileID{}/binary_annotation.npy'.format(i), binary_annotation,'fileID{}/binary_annotation.npy'.format(i)),
                                 ('data/dakobed-guitarset/fileID{}/multivariate_annotation.npy'.format(i), multivariate_annotation,'fileID{}/multivariate_annotation.npy'.format(i))]:
         np.save(file, arr=array)
         with open(file, "rb") as f:
             s3.upload_fileobj(f, bucket, s3path)
     with open(wav, "rb") as f:
         s3.upload_fileobj(f, bucket, "fileID{}/audio.wav".format(i))
-    # with open(wav, "rb") as f:
-    #     s3.upload_fileobj(f, bucket, "fileID{}/{}audio.wav".format(i, i))
 
 
 def save_transforms_and_annotations():
     files = annotation_audio_file_paths()
-    for fileID in range(135,len(files)):
+    for fileID in range(len(files)):
         wav = files[fileID][0]
         jam = files[fileID][1]
 

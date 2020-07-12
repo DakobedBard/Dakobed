@@ -39,30 +39,34 @@ def generate_annotation_matrix(annotation, frames):
         starting_frame = time_to_frames(note[1])
         duration_frames = time_to_frames(note[2] - note[1])
         note_value = note[0]
+        print('annotation shape {}'.format(annotation_matrix.shape))
+        print("starting frame " + str(starting_frame))
+        print("duration frames " + str(duration_frames))
+        print("int note value " + str(int(note_value)))
         annotation_matrix[int(note_value) - 25][starting_frame:starting_frame + duration_frames] = 1
     return annotation_matrix.T
 
 
 def load_transform_and_annotation(fileID, binary = True):
     path = 'data/dakobed-guitarset/fileID{}/'.format(fileID)
-    annotation_label = np.load(path+'annotation.npy') if binary else np.load(path+'multivariable_annotation.npy')
+    annotation_label = np.load(path+'binary_annotation.npy') if binary else np.load(path+'multivariable_annotation.npy')
     cqt = np.load(path+'cqt.npy')
     return cqt, annotation_label
 
 
-def load_guitarset_transform_annotation(fileID, binary=True):
-    path = 'data/guitarset/fileID{}/'.format(fileID)
-    annotation_label = np.load(path + 'binary_annotation.npy') if binary else np.load(
-        path + 'multivariable_annotation.npy')
-    cqt = np.load(path + 'cqt.npy')
-    return cqt, annotation_label
-
-
-def load_maestro_transfrom_annotation(fileID):
-    path = 'data/dakobed-maestro/fileID{}/'.format(fileID)
-    annotation = np.load(path+'annotation.npy')
-    cqt = np.load(path+'cqt.npy')
-    return cqt, annotation
+# def load_guitarset_transform_annotation(fileID, binary=True):
+#     path = 'data/guitarset/fileID{}/'.format(fileID)
+#     annotation_label = np.load(path + 'binary_annotation.npy') if binary else np.load(
+#         path + 'multivariable_annotation.npy')
+#     cqt = np.load(path + 'cqt.npy')
+#     return cqt, annotation_label
+#
+#
+# def load_maestro_transfrom_annotation(fileID):
+#     path = 'data/dakobed-maestro/fileID{}/'.format(fileID)
+#     annotation = np.load(path+'annotation.npy')
+#     cqt = np.load(path+'cqt.npy')
+#     return cqt, annotation
 
 
 def guitarsetGenerator(batchsize, train=True):
@@ -122,7 +126,7 @@ def guitarsetGenerator(batchsize, train=True):
     with open('guitarset-mean.npy', 'wb') as f:
         s3.download_fileobj('dakobed-guitarset', 'guitarset-mean.npy', f)
     with open('guitarset-variance.npy', 'wb') as f:
-        s3.download_fileobj('dakobed-guitarset', 'guitarset-variance.npy', f)
+        s3.download_fileobj('dakobed-guitarset', 'guitarset-var.npy', f)
 
     welford_mean = np.load('guitarset-mean.npy')
     welford_variance = np.load('guitarset-variance.npy')
@@ -176,7 +180,7 @@ def build_model():
     return model
 
 
-download_guitarset_transforms()
+#download_guitarset_transforms()
 
 
 batch_size = 32
