@@ -13,7 +13,7 @@
         <v-card  tile flat>
           <v-card-text>What are people tweeting about at {{latSelection }}, {{ lngSelection }} ? </v-card-text>
 
-          
+          {{ getTweets }}
           </v-card>
       </v-flex>
   </v-layout> 
@@ -35,9 +35,14 @@ export default {
 
   },
 
+  created(){
+    this.fetchTweets()
+    
+  },
 
   methods:{
     ...mapActions(["setPipelineSelection"]),
+    ...mapActions(["fetchTweets"]),
     placeMarker(location) {
       this.marker = new window.google.maps.Marker({
         position: location, 
@@ -59,12 +64,12 @@ export default {
     }
   },
 
-
   components:{
 
   },
   computed: {
     ...mapGetters(["getPipelineSelection"]),
+    ...mapGetters(["getTweets"]),
 
   },
   mounted(){
