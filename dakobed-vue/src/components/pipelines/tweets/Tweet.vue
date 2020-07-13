@@ -2,8 +2,11 @@
 <v-container fluid="">
   <v-layout>
       <v-flex>
-          <v-card>
+          <v-card dark>
               {{username}}
+              
+              
+              {{content}}
           </v-card>
       </v-flex>
   </v-layout>
