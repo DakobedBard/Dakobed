@@ -12,14 +12,20 @@
       <v-flex md5>
         <v-card  tile flat>
           <v-card-text>What are people tweeting about at {{latSelection }}, {{ lngSelection }} ? </v-card-text>
+        <div v-for="tweet of getTweets" v-bind:key="tweet.id">
+          {{tweet.username}}
+        </div>
+    
 
-          {{ getTweets }}
+
+
+          {{ getTweets.length }}
           </v-card>
       </v-flex>
   </v-layout> 
   <v-layout>
     <v-flex>
-
+      <Tweet username="Charlie" />
     </v-flex>
   </v-layout>
     
@@ -29,8 +35,11 @@
 
 
 import { mapGetters, mapActions } from "vuex";
-
+import Tweet from './Tweet'
 export default {
+  components:{
+    Tweet
+  },
   props:{
 
   },
@@ -64,9 +73,7 @@ export default {
     }
   },
 
-  components:{
 
-  },
   computed: {
     ...mapGetters(["getPipelineSelection"]),
     ...mapGetters(["getTweets"]),
