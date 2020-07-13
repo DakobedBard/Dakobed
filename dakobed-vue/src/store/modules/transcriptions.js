@@ -58,7 +58,13 @@ async fetchMaestroTrainingData({commit}){
 
 
   async fetchTrainingData({commit}){
-      axios.get("http://localhost:8081/guitarset").then((response) => {
+
+    const api_gateway_url = 'https://cuyis4cbvg.execute-api.us-west-2.amazonaws.com/dstage/guitarset'
+    
+    const localhost_url = "http://localhost:8081/guitarset"
+    console.log(localhost_url)
+
+      axios.get(api_gateway_url).then((response) => {
 
         var response_string = JSON.stringify(response.data)
         var data = JSON.parse(response_string)
