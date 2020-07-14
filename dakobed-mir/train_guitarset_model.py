@@ -15,9 +15,9 @@ def download_guitarset_transforms():
     bucketName = 'dakobed-guitarset'
     bucket = s3_resource.Bucket(bucketName)
 
-    os.mkdir('data')
-    os.mkdir('data/dakobed-guitarset')
-    for fileID in range(360):
+    # os.mkdir('data')
+    # os.mkdir('data/dakobed-guitarset')
+    for fileID in range(197,360):
         print(fileID)
         os.mkdir('data/dakobed-guitarset/fileID{}/'.format(fileID))
         path = 'data/dakobed-guitarset/fileID{}'.format(fileID)
@@ -180,7 +180,7 @@ def build_model():
     return model
 
 
-#download_guitarset_transforms()
+download_guitarset_transforms()
 
 
 batch_size = 32

@@ -1,5 +1,3 @@
-/*eslint no-unused-vars: "error"*/
-
 <template>
   <v-app>
     <nav>

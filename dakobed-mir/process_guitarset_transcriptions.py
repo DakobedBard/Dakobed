@@ -174,12 +174,13 @@ def process_wav_jam_pair(jam, wav, i):
 def save_transforms_and_annotations():
     files = annotation_audio_file_paths()
     for fileID in range(len(files)):
-        wav = files[fileID][0]
-        jam = files[fileID][1]
+        if fileID > 213:
+            wav = files[fileID][0]
+            jam = files[fileID][1]
 
-        process_wav_jam_pair(jam, wav, fileID)
-        tab = Transcription(wav, jam, fileID)
-        # print("Processed filepair " + str(fileID))
+            process_wav_jam_pair(jam, wav, fileID)
+            tab = Transcription(wav, jam, fileID)
+            # print("Processed filepair " + str(fileID))
 
 
 save_transforms_and_annotations()
